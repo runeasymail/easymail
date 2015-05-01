@@ -8,16 +8,16 @@ This script install:
 - Mysql
 
 ## Requirement
-- Dedicated machine or Virtual private server (VPS) and parameter not lower than:
+- Dedicated machine or Virtual private server (VPS) and parametres not lower than:
   - RAM 512 MB 
   - HDD/SSD 10 GB.
-- Fresh installed Ubuntu/Debian server with 14.04 or newer.
+- Fresh installed Debian or Ubuntu server with 14.04 or newer.
 
 ## Instalation
 To run installation we have to:
 - Update the package lists from the repositories ```apt-get update``` 
 - Install git if we don't have it ```apt-get install git -y ```
-- Clone the "easymail" repository ```git clone git@github.com:GyunerZeki/easymail.git```
+- Clone the "easymail" repository ```git clone git@github.com:GyunerZeki/easymail.git /easymail```
 - Run bash script ```bash /easymail/init.sh```
 
 or just run:
