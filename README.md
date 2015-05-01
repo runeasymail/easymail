@@ -1,4 +1,4 @@
-# easymail - easy for install mail server
+# easymail - easy way for installing mail server
 This script install:
 - Dovecot
 - Postfix
