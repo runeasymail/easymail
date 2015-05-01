@@ -11,7 +11,7 @@ This script install:
 - Dedicated machine or Virtual private server (VPS) and parameter not lower than:
   - RAM 512 MB 
   - HDD/SSD 10 GB.
-- Fresh istalled Ubuntu/Debian server with 14.04 or newer.
+- Fresh installed Ubuntu/Debian server with 14.04 or newer.
 
 ## Instalation
 To run installation we have to:
