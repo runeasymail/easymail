@@ -6,7 +6,6 @@ CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # Collect all hostname in one place in the beginning.
 # Configure SpamAssassin
 # Make satisfaction way for certificate.
-# Roundube password can not be changed must be fixed.
 
 ##################
 # Specific for Docker
@@ -234,7 +233,7 @@ cd /usr/share/nginx/roundcubemail/plugins/password/
 cp config.inc.php.dist config.inc.php 
 
 sed -i "s/<?php/<?php \n # PLEASE READ ME \n #Some array values are overwritten in the end of this file!/" config.inc.php
-echo `cat $CURRENT_DIR/roundcube_password_plugin_config` >> /usr/share/nginx/roundcubemail/config/config.inc.php
+cat $CURRENT_DIR/roundcube_password_plugin_config >> /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
 
 service php5-fpm restart
 service nginx reload
