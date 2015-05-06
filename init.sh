@@ -2,7 +2,6 @@
 CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 # What I have to improve in this script.
-# Collect all password in one place in the beginning.
 # Collect all hostname in one place in the beginning.
 # Configure SpamAssassin
 # Make satisfaction way for certificate.
@@ -18,8 +17,14 @@ CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # docker run -it -p=110:110 -p=25:25 -p=995:995 -p=8080:80 -p=587:587 -p=993:993 -p=143:143 -h cursedly-host.gzeki.com  --name="email_server"  ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
 ###################
 
-debconf-set-selections <<< 'mysql-server mysql-server/root_password password YOUR_PASSWORD'
-debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password YOUR_PASSWORD'
+PASSWORD="TYPE_YOUR_PASSWORD_HERE"
+
+function set_password {
+	sed -i "s/__EASYMAIL_PASSWORD__/$PASSWORD/" $1
+}
+
+debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
 debconf-set-selections <<< "postfix postfix/mailname string cursedly-host.gzeki.com"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-exists string error"
@@ -35,7 +40,7 @@ set timeout 10
 spawn mysql_secure_installation
 
 expect \"Enter current password for root (enter for none):\"
-send \"YOUR_PASSWORD\r\"
+send \"$PASSWORD\r\"
 
 expect \"Change the root password?\"
 send \"n\r\"
@@ -54,8 +59,8 @@ send \"y\r\"
 
 expect eof"
 
-mysqladmin -uroot -pYOUR_PASSWORD create mailserver	
-mysql -uroot -pYOUR_PASSWORD << EOF
+mysqladmin -uroot -p$PASSWORD create mailserver	
+mysql -uroot -p$PASSWORD << EOF
 GRANT SELECT ON mailserver.* TO 'mailuser'@'127.0.0.1' IDENTIFIED BY 'mailuserpass';
 FLUSH PRIVILEGES;
 USE mailserver;
@@ -214,10 +219,10 @@ cd /usr/share/nginx/roundcubemail/
 sed -i "s/;cgi.fix_pathinfo=.*/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
 
 
-mysqladmin -uroot -pYOUR_PASSWORD create roundcube	
-mysql -uroot -pYOUR_PASSWORD << EOF
+mysqladmin -uroot -p$PASSWORD create roundcube	
+mysql -uroot -p$PASSWORD << EOF
 GRANT SELECT ON roundcube.* TO 'roundcube'@'127.0.0.1' IDENTIFIED BY '';
-GRANT EXECUTE, SHOW VIEW, ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, INDEX, INSERT, REFERENCES, TRIGGER, UPDATE, LOCK TABLES ON roundcube.* TO 'roundcube'@'127.0.0.1' IDENTIFIED BY 'YOUR_PASSWORD';
+GRANT EXECUTE, SHOW VIEW, ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, INDEX, INSERT, REFERENCES, TRIGGER, UPDATE, LOCK TABLES ON roundcube.* TO 'roundcube'@'127.0.0.1' IDENTIFIED BY '$PASSWORD';
 GRANT SELECT, UPDATE  ON mailserver.* TO 'roundcube'@'127.0.0.1';
 FLUSH PRIVILEGES;
 USE roundcube;
@@ -225,8 +230,9 @@ EOF
 
 chmod -R 644 /usr/share/nginx/roundcubemail/temp /usr/share/nginx/roundcubemail/logs
 cp $CURRENT_DIR/roundcube_config /usr/share/nginx/roundcubemail/config/config.inc.php
+set_password /usr/share/nginx/roundcubemail/config/config.inc.php
 
-mysql -uroot -pYOUR_PASSWORD roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
+mysql -uroot -p$PASSWORD roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
 rm -r /usr/share/nginx/roundcubemail/installer
 
 cd /usr/share/nginx/roundcubemail/plugins/password/
@@ -234,6 +240,7 @@ cp config.inc.php.dist config.inc.php
 
 sed -i "s/<?php/<?php \n # PLEASE READ ME \n #Some array values are overwritten in the end of this file!/" config.inc.php
 cat $CURRENT_DIR/roundcube_password_plugin_config >> /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
+set_password /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
 
 service php5-fpm restart
 service nginx reload

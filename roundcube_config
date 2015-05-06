@@ -1,7 +1,7 @@
 <?php 
 
 // SQL DATABASE
-$config['db_dsnw'] = 'mysql://roundcube:YOUR_PASSWORD@127.0.0.1/roundcube';
+$config['db_dsnw'] = 'mysql://roundcube:__EASYMAIL_PASSWORD__@127.0.0.1/roundcube';
 
 // LOGGING
 $config['log_driver'] = 'syslog';
