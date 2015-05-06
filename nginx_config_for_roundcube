@@ -1,12 +1,12 @@
 server {
 	listen 80;
-	server_name cursedly-host.gzeki.com;
-	return 302 https://cursedly-host.gzeki.com;
+	server_name __EASYMAIL_HOSTNAME__;
+	return 302 https://__EASYMAIL_HOSTNAME__;
 }
 
 server {
 	listen 443;
-	server_name cursedly-host.gzeki.com;
+	server_name __EASYMAIL_HOSTNAME__;
 	ssl on;
 	ssl_certificate /etc/dovecot/dovecot.pem;
 	ssl_certificate_key /etc/dovecot/private/dovecot.pem;

@@ -4,7 +4,7 @@ header ("Content-Type:text/xml");
 
 $domain = $_SERVER["HTTP_HOST"];
 $mail = $_GET['emailaddress'];
-$host = 'cursedly-host.gzeki.com';
+$host = '__EASYMAIL_HOSTNAME__';
 
 echo <<<EOP
 <?xml version="1.0"?> 

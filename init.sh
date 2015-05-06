@@ -2,8 +2,6 @@
 CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 # What I have to improve in this script.
-# Collect all hostname in one place in the beginning.
-# Configure SpamAssassin
 # Make satisfaction way for certificate.
 
 ##################
@@ -14,18 +12,23 @@ CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ##################
 # Example for Docker
 # apt-get update && apt-get install docker.io -y
-# docker run -it -p=110:110 -p=25:25 -p=995:995 -p=8080:80 -p=587:587 -p=993:993 -p=143:143 -h cursedly-host.gzeki.com  --name="email_server"  ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+# docker run -it -p=110:110 -p=25:25 -p=995:995 -p=8080:80 -p=587:587 -p=993:993 -p=143:143 -h <HOSTNAME>  --name="email_server"  ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
 ###################
 
+HOSTNAME="TYPE_YOUR_HOSTNAME_HERE"
 PASSWORD="TYPE_YOUR_PASSWORD_HERE"
 
 function set_password {
 	sed -i "s/__EASYMAIL_PASSWORD__/$PASSWORD/" $1
 }
 
+function set_hostname {
+	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/" $1
+}
+
 debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
-debconf-set-selections <<< "postfix postfix/mailname string cursedly-host.gzeki.com"
+debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-exists string error"
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-name string localhost"
@@ -91,15 +94,15 @@ CREATE TABLE \`virtual_aliases\` (
 
 
 INSERT INTO \`mailserver\`.\`virtual_domains\` (\`id\` ,\`name\`) 
-VALUES('1', 'cursedly-host.gzeki.com');
+VALUES('1', '$HOSTNAME');
   
 INSERT INTO \`mailserver\`.\`virtual_users\` (\`id\`, \`domain_id\`, \`password\` , \`email\`)
-VALUES ('1', '1', '\$1\$pfhfftkU\$3/0sv66/HiM0Dn6l3qRiq/', 'admin@cursedly-host.gzeki.com');
+VALUES ('1', '1', '\$1\$pfhfftkU\$3/0sv66/HiM0Dn6l3qRiq/', 'admin@$HOSTNAME');
 # This password $1$pfhfftkU$3/0sv66/HiM0Dn6l3qRiq/ IS 123456 
 # note must escape \$ in that way in linux EOP  
 
 INSERT INTO \`mailserver\`.\`virtual_aliases\` (\`id\`, \`domain_id\`, \`source\`, \`destination\`)
-VALUES('1', '1', 'alias@cursedly-host.gzeki.com', 'admin@cursedly-host.gzeki.com');
+VALUES('1', '1', 'alias@$HOSTNAME', 'admin@$HOSTNAME');
 EOF
 
 cp /etc/postfix/main.cf /etc/postfix/main.cf.orig
@@ -169,7 +172,7 @@ protocols = imap pop3 lmtp
 sed -i "s/mail_location = .*/mail_location = maildir:\/var\/mail\/vhosts\/%d\/\%n/g" /etc/dovecot/conf.d/10-mail.conf
 sed -i "s/#mail_privileged_group =/mail_privileged_group = mail/g" /etc/dovecot/conf.d/10-mail.conf
 
-mkdir -p /var/mail/vhosts/cursedly-host.gzeki.com
+mkdir -p /var/mail/vhosts/$HOSTNAME
 groupadd -g 5000 vmail
 useradd -g vmail -u 5000 vmail -d /var/mail
 chown -R vmail:vmail /var/mail
@@ -248,9 +251,13 @@ service nginx reload
 # Install autoconfig and autodiscover
 mkdir /usr/share/nginx/autoconfig_and_autodiscover
 cp $CURRENT_DIR/autoconfig.php /usr/share/nginx/autoconfig_and_autodiscover/
-cp $CURRENT_DIR/autodiscover.php /usr/share/nginx/autoconfig_and_autodiscover/
-cp $CURRENT_DIR/nginx_config_for_autoconfig_and_autodiscover /etc/nginx/sites-enabled/autoconfig_and_autodiscover
+set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
 
+cp $CURRENT_DIR/autodiscover.php /usr/share/nginx/autoconfig_and_autodiscover/
+set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
+
+cp $CURRENT_DIR/nginx_config_for_autoconfig_and_autodiscover /etc/nginx/sites-enabled/autoconfig_and_autodiscover
+set_hostname /etc/nginx/sites-enabled/nginx_config_for_autoconfig_and_autodiscover
 
 # Install SpamAssassin
 apt-get install spamassassin spamc -y
@@ -283,7 +290,7 @@ apt-get install dovecot-sieve dovecot-managesieved
 
 echo "
 protocol lmtp {
-  postmaster_address = admin@cursedly-host.gzeki.com
+	postmaster_address = admin@$HOSTNAME
   mail_plugins = $mail_plugins sieve
 }
 " >> /etc/dovecot/conf.d/20-lmtp.conf
@@ -318,14 +325,13 @@ sievec /var/lib/dovecot/sieve/default.sieve
 # Message with content  XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X must always be spam.
 
 # Postfix
-# postmap -q admin@cursedly-host.gzeki.com mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf must return 1
-# postmap -q alias@cursedly-host.gzeki.com mysql:/etc/postfix/mysql-virtual-alias-maps.cf must return admin@cursedly-host.gzeki.com
-# postmap -q cursedly-host.gzeki.com mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf must return 1
+# postmap -q admin@$HOSTNAME mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf must return 1
+# postmap -q alias@$HOSTNAME mysql:/etc/postfix/mysql-virtual-alias-maps.cf must return admin@$HOSTNAME
+# postmap -q $HOSTNAME mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf must return 1
 
 # Debugging
 # openssl passwd -1 123456  WORKING CUURECTLY
 # openssl passwd -1 123456  = $1$pfhfftkU$3/0sv66/HiM0Dn6l3qRiq/
-
 
 
 

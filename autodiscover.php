@@ -4,7 +4,7 @@ $data = file_get_contents("php://input");
 preg_match("/\<EMailAddress\>(.*?)\<\/EMailAddress\>/", $data, $matches);
 //set Content-Type
 header("Content-Type: application/xml");
-$host = 'cursedly-host.gzeki.com';
+$host = '__EASYMAIL_HOSTNAME__';
 
 echo '<?xml version="1.0" encoding="utf-8" ?>'; ?>
 
