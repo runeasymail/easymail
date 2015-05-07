@@ -214,6 +214,8 @@ apt-get install nginx php5-fpm php5-mcrypt php5-intl php5-mysql -y
 
 rm -r /etc/nginx/sites-enabled/*
 cp $CURRENT_DIR/nginx_config_for_roundcube /etc/nginx/sites-enabled/roundcube
+set_hostname /etc/nginx/sites-enabled/roundcube
+
 cd /tmp && wget http://netcologne.dl.sourceforge.net/project/roundcubemail/roundcubemail/1.1.1/roundcubemail-1.1.1-complete.tar.gz
 tar -xvzf roundcubemail-1.1.1-complete.tar.gz
 mkdir /usr/share/roundcubemail
