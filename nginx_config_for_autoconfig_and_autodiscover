@@ -1,6 +1,6 @@
 server {
 	listen 443;
-	server_name autoconfig.* autodiscover.*;
+	server_name autoconfig.__EASYMAIL_HOSTNAME__ autodiscover.__EASYMAIL_HOSTNAME__;
 	
 	root /usr/share/nginx/autoconfig_and_autodiscover;
 	index index.php index.html index.htm;
@@ -30,7 +30,7 @@ server {
 
 server {
 	listen 80;
-	server_name autoconfig.* autodiscover.*;
+	server_name autoconfig.__EASYMAIL_HOSTNAME__ autodiscover.__EASYMAIL_HOSTNAME__;
 	
 	root /usr/share/nginx/autoconfig_and_autodiscover;
 	index index.php index.html index.htm;

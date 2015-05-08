@@ -19,11 +19,11 @@ HOSTNAME="TYPE_YOUR_HOSTNAME_HERE"
 PASSWORD="TYPE_YOUR_PASSWORD_HERE"
 
 function set_password {
-	sed -i "s/__EASYMAIL_PASSWORD__/$PASSWORD/" $1
+	sed -i "s/__EASYMAIL_PASSWORD__/$PASSWORD/g" $1
 }
 
 function set_hostname {
-	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/" $1
+	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
 
 debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
@@ -252,6 +252,7 @@ service nginx reload
 
 # Install autoconfig and autodiscover
 mkdir /usr/share/nginx/autoconfig_and_autodiscover
+
 cp $CURRENT_DIR/autoconfig.php /usr/share/nginx/autoconfig_and_autodiscover/
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
 
@@ -259,7 +260,7 @@ cp $CURRENT_DIR/autodiscover.php /usr/share/nginx/autoconfig_and_autodiscover/
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
 
 cp $CURRENT_DIR/nginx_config_for_autoconfig_and_autodiscover /etc/nginx/sites-enabled/autoconfig_and_autodiscover
-set_hostname /etc/nginx/sites-enabled/nginx_config_for_autoconfig_and_autodiscover
+set_hostname /etc/nginx/sites-enabled/autoconfig_and_autodiscover
 
 # Install SpamAssassin
 apt-get install spamassassin spamc -y
