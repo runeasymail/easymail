@@ -15,7 +15,7 @@ echo '<?xml version="1.0" encoding="utf-8" ?>'; ?>
             <Action>settings</Action>
             <Protocol>
                 <Type>IMAP</Type>
-                <Server><? echo $host; ?></Server>
+                <Server><?php echo $host; ?></Server>
                 <Port>993</Port>
                 <DomainRequired>off</DomainRequired>
                 <LoginName><?php echo $matches[1]; ?></LoginName>
@@ -25,7 +25,7 @@ echo '<?xml version="1.0" encoding="utf-8" ?>'; ?>
             </Protocol>
             <Protocol>
                 <Type>POP3</Type>
-                <Server><? echo $host; ?></Server>
+                <Server><?php echo $host; ?></Server>
                 <Port>995</Port>
                 <DomainRequired>off</DomainRequired>
                 <LoginName><?php echo $matches[1]; ?></LoginName>
@@ -35,7 +35,7 @@ echo '<?xml version="1.0" encoding="utf-8" ?>'; ?>
             </Protocol> 
             <Protocol>
                 <Type>SMTP</Type>
-                <Server><? echo $host; ?></Server>
+                <Server><?php echo $host; ?></Server>
                 <Port>587</Port>
                 <DomainRequired>off</DomainRequired>
                 <LoginName><?php echo $matches[1]; ?></LoginName>
