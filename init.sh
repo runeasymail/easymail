@@ -123,29 +123,18 @@ postconf -e virtual_mailbox_domains=mysql:/etc/postfix/mysql-virtual-mailbox-dom
 postconf -e virtual_mailbox_maps=mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
 postconf -e virtual_alias_maps=mysql:/etc/postfix/mysql-virtual-alias-maps.cf	
 
-echo "
-user = mailuser
+function postfix_mysql_file {
+	echo "user = mailuser
 password = mailuserpass
 hosts = 127.0.0.1
-dbname = mailserver
-query = SELECT 1 FROM virtual_domains WHERE name='%s'
-" > /etc/postfix/mysql-virtual-mailbox-domains.cf
+dbname = mailserver 
+$1 " > $2
+}
 
-echo "
-user = mailuser
-password = mailuserpass
-hosts = 127.0.0.1
-dbname = mailserver
-query = SELECT 1 FROM virtual_users WHERE email='%s'
-" > /etc/postfix/mysql-virtual-mailbox-maps.cf
-
-echo "
-user = mailuser
-password = mailuserpass
-hosts = 127.0.0.1
-dbname = mailserver
-query = SELECT destination FROM virtual_aliases WHERE source='%s'
-" > /etc/postfix/mysql-virtual-alias-maps.cf
+cd /etc/postfix/
+postfix_mysql_file "query = SELECT 1 FROM virtual_domains WHERE name='%s'" mysql-virtual-mailbox-domains.cf
+postfix_mysql_file "query = SELECT 1 FROM virtual_users WHERE email='%s'" mysql-virtual-mailbox-maps.cf
+postfix_mysql_file "query = SELECT destination FROM virtual_aliases WHERE source='%s'" mysql-virtual-alias-maps.cf
 
 cp /etc/postfix/master.cf /etc/postfix/master.cf.orig
 cp /etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf.orig
@@ -335,6 +324,4 @@ sievec /var/lib/dovecot/sieve/default.sieve
 # Debugging
 # openssl passwd -1 123456  WORKING CUURECTLY
 # openssl passwd -1 123456  = $1$pfhfftkU$3/0sv66/HiM0Dn6l3qRiq/
-
-
 
