@@ -16,7 +16,7 @@ CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ###################
 
 HOSTNAME="TYPE_YOUR_HOSTNAME_HERE"
-PASSWORD="TYPE_YOUR_PASSWORD_HERE"
+export PASSWORD="TYPE_YOUR_PASSWORD_HERE"
 
 function set_password {
 	sed -i "s/__EASYMAIL_PASSWORD__/$PASSWORD/g" $1
@@ -26,8 +26,8 @@ function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
 
-debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
+bash $CURRENT_DIR/mysql/install.sh
+
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-exists string error"
@@ -35,32 +35,6 @@ debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-name string local
 debconf-set-selections <<< "dovecot-core dovecot-core/create-ssl-cert boolean true"
 
 apt-get update && apt-get install expect postfix postfix-mysql dovecot-core dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-mysql mysql-server -y
-
-mysql_install_db
-expect -c "
-
-set timeout 10
-spawn mysql_secure_installation
-
-expect \"Enter current password for root (enter for none):\"
-send \"$PASSWORD\r\"
-
-expect \"Change the root password?\"
-send \"n\r\"
-
-expect \"Remove anonymous users?\"
-send \"y\r\"
-
-expect \"Disallow root login remotely?\"
-send \"y\r\"
-
-expect \"Remove test database and access to it?\"
-send \"y\r\"
-
-expect \"Reload privilege tables now?\"
-send \"y\r\"
-
-expect eof"
 
 mysqladmin -uroot -p$PASSWORD create mailserver	
 mysql -uroot -p$PASSWORD << EOF
