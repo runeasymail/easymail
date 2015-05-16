@@ -11,11 +11,12 @@ export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # docker run -it -p=110:110 -p=25:25 -p=995:995 -p=8080:80 -p=587:587 -p=993:993 -p=143:143 -h <HOSTNAME>  --name="email_server"  ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
 ###################
 
+
 export HOSTNAME
-read HOSTNAME
+read -p "Type hostname: " HOSTNAME
 
 export PASSWORD
-read PASSWORD
+read -s -p "Type password: " PASSWORD
 
 function set_password {
 	sed -i "s/__EASYMAIL_PASSWORD__/$PASSWORD/g" $1
