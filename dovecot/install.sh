@@ -63,4 +63,10 @@ chmod -R o-rwx /etc/dovecot
 
 cp $CURRENT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
-service dovecot restart
+if [ $IS_ON_DOCKER == true ]; then
+	/usr/sbin/dovecot
+	postfix reload
+else 
+	service dovecot reload
+	service postfix reload
+fi

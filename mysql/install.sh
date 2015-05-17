@@ -3,6 +3,10 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password_again passwo
 
 apt-get install expect mysql-server -y
 
+if [ $IS_ON_DOCKER == true ]; then
+	service mysql start
+fi
+
 mysql_install_db
 expect -c "
 

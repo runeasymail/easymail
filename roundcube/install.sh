@@ -1,6 +1,10 @@
 # INSTALL Roundcube and all its dependences
 apt-get install nginx php5-fpm php5-mcrypt php5-intl php5-mysql -y
 
+if [ $IS_ON_DOCKER == true ]; then
+	apt-get install  wget -y
+fi
+
 rm -r /etc/nginx/sites-enabled/*
 cp $CURRENT_DIR/nginx_config_for_roundcube /etc/nginx/sites-enabled/roundcube
 set_hostname /etc/nginx/sites-enabled/roundcube
@@ -37,4 +41,4 @@ cat $CURRENT_DIR/roundcube_password_plugin_config >> /usr/share/nginx/roundcubem
 set_password /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
 
 service php5-fpm restart
-service nginx reload
+service nginx restart

@@ -21,7 +21,14 @@ spamassassin unix -     n       n       -       -       pipe
  user=spamd argv=/usr/bin/spamc -f -e
  /usr/sbin/sendmail -oi -f \${sender} \${recipient}
 "  >> /etc/postfix/master.cf
-service postfix restart
+
+if [ $IS_ON_DOCKER == true ]; then
+	chown -R postfix:maildrop /var/spool/postfix/maildrop/
+	chmod -R 0770 /var/spool/postfix/maildrop/ 
+	postfix reload
+else 
+	service postfix restart
+fi
 service spamassassin restart
  
 #Move spam message to spam folder
@@ -44,7 +51,7 @@ plugin {
 }
 " > /etc/dovecot/conf.d/90-sieve.conf
  
-service dovecot restart
+
 mkdir /var/lib/dovecot/sieve/
 echo "
 require \"fileinto\";
@@ -54,3 +61,10 @@ if header :contains \"X-Spam-Flag\" \"YES\" {
 " > /var/lib/dovecot/sieve/default.sieve
 chown -R vmail:vmail /var/lib/dovecot
 sievec /var/lib/dovecot/sieve/default.sieve
+
+if [ $IS_ON_DOCKER == true ]; then
+	/usr/sbin/dovecot
+	postfix reload
+else 
+	service dovecot restart
+fi
