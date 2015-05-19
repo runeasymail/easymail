@@ -65,7 +65,7 @@ cp $CURRENT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
-	postfix reload
+	/etc/init.d/postfix restart
 else 
 	service dovecot reload
 	service postfix reload

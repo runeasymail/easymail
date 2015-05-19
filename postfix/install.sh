@@ -78,7 +78,7 @@ postfix_mysql_file "query = SELECT 1 FROM virtual_users WHERE email='%s'" mysql-
 postfix_mysql_file "query = SELECT destination FROM virtual_aliases WHERE source='%s'" mysql-virtual-alias-maps.cf
 
 if [ $IS_ON_DOCKER == true ]; then 
-	postfix start
+	/etc/init.d/postfix start
 else 
 	service postfix start
 fi
