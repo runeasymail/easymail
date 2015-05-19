@@ -7,7 +7,7 @@ export PASSWORD
 read -s -p "Type password: " PASSWORD
 
 export IS_ON_DOCKER
-echo "\nIs this installation is on Docker:"
+echo -e "\nIs this installation is on Docker:"
 
 select opt in "no" "yes" ; do
 	if [ "$opt" = "yes" ]; then
