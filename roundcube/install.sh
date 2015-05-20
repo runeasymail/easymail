@@ -1,4 +1,7 @@
 # INSTALL Roundcube and all its dependences
+
+ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
+
 apt-get install nginx php5-fpm php5-mcrypt php5-intl php5-mysql -y
 
 if [ $IS_ON_DOCKER == true ]; then
@@ -6,7 +9,7 @@ if [ $IS_ON_DOCKER == true ]; then
 fi
 
 rm -r /etc/nginx/sites-enabled/*
-cp $CURRENT_DIR/nginx_config_for_roundcube /etc/nginx/sites-enabled/roundcube
+cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
 set_hostname /etc/nginx/sites-enabled/roundcube
 
 cd /tmp && wget http://netcologne.dl.sourceforge.net/project/roundcubemail/roundcubemail/1.1.1/roundcubemail-1.1.1-complete.tar.gz
@@ -27,7 +30,7 @@ USE roundcube;
 EOF
 
 chmod -R 644 /usr/share/nginx/roundcubemail/temp /usr/share/nginx/roundcubemail/logs
-cp $CURRENT_DIR/roundcube_config /usr/share/nginx/roundcubemail/config/config.inc.php
+cp $ROUNDCUBE_DIR/config /usr/share/nginx/roundcubemail/config/config.inc.php
 set_password /usr/share/nginx/roundcubemail/config/config.inc.php
 
 mysql -uroot -p$PASSWORD roundcube < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
@@ -37,7 +40,7 @@ cd /usr/share/nginx/roundcubemail/plugins/password/
 cp config.inc.php.dist config.inc.php 
 
 sed -i "s/<?php/<?php \n # PLEASE READ ME \n #Some array values are overwritten in the end of this file!/" config.inc.php
-cat $CURRENT_DIR/roundcube_password_plugin_config >> /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
+cat $ROUNDCUBE_DIR/password_plugin_config >> /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
 set_password /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
 
 service php5-fpm restart
