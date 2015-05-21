@@ -1,3 +1,5 @@
+DOVECOT_DIR="$CURRENT_DIR/dovecot"
+
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-exists string error"
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-name string localhost"
 debconf-set-selections <<< "dovecot-core dovecot-core/create-ssl-cert boolean true"
@@ -61,7 +63,7 @@ echo "
 chown -R vmail:dovecot /etc/dovecot
 chmod -R o-rwx /etc/dovecot
 
-cp $CURRENT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
+cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
