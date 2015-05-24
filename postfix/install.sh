@@ -33,17 +33,11 @@ CREATE TABLE \`virtual_aliases\` (
   FOREIGN KEY (domain_id) REFERENCES virtual_domains(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 INSERT INTO \`virtual_domains\` (\`id\` ,\`name\`) 
 VALUES('1', '$HOSTNAME');
   
 INSERT INTO \`virtual_users\` (\`id\`, \`domain_id\`, \`password\` , \`email\`)
-VALUES ('1', '1', '\$1\$pfhfftkU\$3/0sv66/HiM0Dn6l3qRiq/', 'admin@$HOSTNAME');
-# This password $1$pfhfftkU$3/0sv66/HiM0Dn6l3qRiq/ IS 123456 
-# note must escape \$ in that way in linux EOP  
-
-INSERT INTO \`virtual_aliases\` (\`id\`, \`domain_id\`, \`source\`, \`destination\`)
-VALUES('1', '1', 'alias@$HOSTNAME', 'admin@$HOSTNAME');
+VALUES ('1', '1', '$ADMIN_PASSWORD', '$ADMIN_EMAIL');
 EOF
 
 cp /etc/postfix/main.cf /etc/postfix/main.cf.orig

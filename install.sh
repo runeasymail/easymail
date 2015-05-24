@@ -1,9 +1,10 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
 export HOSTNAME
-read -p "Type hostname: " HOSTNAME
-
 export IS_ON_DOCKER
+
+read -p "Type hostname: " HOSTNAME
+read -s -p "Type admin's email password: " PASSWORD
+
 echo -e "\nIs this installation is on Docker:"
 
 select opt in "no" "yes" ; do
@@ -20,6 +21,9 @@ function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
 export -f set_hostname
+
+export ADMIN_EMAIL="admin@$HOSTNAME"
+export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
 
 export ROOT_MYSQL_USERNAME='root'
 export ROOT_MYSQL_PASSWORD='root_mysql_pass'
