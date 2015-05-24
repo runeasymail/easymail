@@ -55,7 +55,7 @@ userdb {
 
 echo " 
 	driver = mysql
-	connect = host=127.0.0.1 dbname=mailserver user=mailuser password=mailuserpass
+	connect = host=$MYSQL_HOSTNAME dbname=$MYSQL_DATABASE user=$MYSQL_USERNAME password=$MYSQL_PASSWORD
 	default_pass_scheme = CRYPT
 	password_query = SELECT email as user, password FROM virtual_users WHERE email='%u';
 " >> /etc/dovecot/dovecot-sql.conf.ext

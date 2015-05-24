@@ -29,6 +29,20 @@ function set_hostname {
 }
 export -f set_hostname
 
+export ROOT_MYSQL_USERNAME='root'
+export ROOT_MYSQL_PASSWORD=$PASSWORD
+
+export MYSQL_DATABASE='mailserver'
+export MYSQL_HOSTNAME='127.0.0.1'
+export MYSQL_USERNAME='mailuser'
+export MYSQL_PASSWORD='mailuserpass'
+
+export ROUNDCUBE_MYSQL_DATABASE='roundcube_dbname'
+export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
+export ROUNDCUBE_MYSQL_PASSWORD='roundcube_pass'
+
+
+
 apt-get update 
 
 bash $CURRENT_DIR/mysql/install.sh

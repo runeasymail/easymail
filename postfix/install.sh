@@ -3,11 +3,11 @@ debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Si
 
 apt-get install postfix postfix-mysql -y
 
-mysqladmin -uroot -p$PASSWORD create mailserver	
-mysql -uroot -p$PASSWORD << EOF
-GRANT SELECT ON mailserver.* TO 'mailuser'@'127.0.0.1' IDENTIFIED BY 'mailuserpass';
+mysqladmin -uroot -p$PASSWORD create $MYSQL_DATABASE	
+mysql -h $MYSQL_HOSTNAME -uroot -p$PASSWORD << EOF
+GRANT SELECT ON $MYSQL_DATABASE.* TO '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$MYSQL_PASSWORD';
 FLUSH PRIVILEGES;
-USE mailserver;
+USE $MYSQL_DATABASE;
 CREATE TABLE \`virtual_domains\` (
   \`id\` int(11) NOT NULL auto_increment,
   \`name\` varchar(50) NOT NULL,
@@ -34,15 +34,15 @@ CREATE TABLE \`virtual_aliases\` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO \`mailserver\`.\`virtual_domains\` (\`id\` ,\`name\`) 
+INSERT INTO \`virtual_domains\` (\`id\` ,\`name\`) 
 VALUES('1', '$HOSTNAME');
   
-INSERT INTO \`mailserver\`.\`virtual_users\` (\`id\`, \`domain_id\`, \`password\` , \`email\`)
+INSERT INTO \`virtual_users\` (\`id\`, \`domain_id\`, \`password\` , \`email\`)
 VALUES ('1', '1', '\$1\$pfhfftkU\$3/0sv66/HiM0Dn6l3qRiq/', 'admin@$HOSTNAME');
 # This password $1$pfhfftkU$3/0sv66/HiM0Dn6l3qRiq/ IS 123456 
 # note must escape \$ in that way in linux EOP  
 
-INSERT INTO \`mailserver\`.\`virtual_aliases\` (\`id\`, \`domain_id\`, \`source\`, \`destination\`)
+INSERT INTO \`virtual_aliases\` (\`id\`, \`domain_id\`, \`source\`, \`destination\`)
 VALUES('1', '1', 'alias@$HOSTNAME', 'admin@$HOSTNAME');
 EOF
 
@@ -65,10 +65,10 @@ postconf -e virtual_mailbox_maps=mysql:/etc/postfix/mysql-virtual-mailbox-maps.c
 postconf -e virtual_alias_maps=mysql:/etc/postfix/mysql-virtual-alias-maps.cf	
 
 function postfix_mysql_file {
-	echo "user = mailuser
-password = mailuserpass
-hosts = 127.0.0.1
-dbname = mailserver 
+	echo "user = $MYSQL_USERNAME
+password = $MYSQL_PASSWORD
+hosts = $MYSQL_HOSTNAME
+dbname = $MYSQL_DATABASE 
 $1 " > $2
 }
 
