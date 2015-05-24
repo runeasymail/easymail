@@ -29,7 +29,6 @@ EOF
 
 chmod -R 644 /usr/share/nginx/roundcubemail/temp /usr/share/nginx/roundcubemail/logs
 cp $ROUNDCUBE_DIR/config /usr/share/nginx/roundcubemail/config/config.inc.php
-set_password /usr/share/nginx/roundcubemail/config/config.inc.php
 sed -i "s/__EASYMAIL_MYSQL_HOSTNAME__/$MYSQL_HOSTNAME/g" /usr/share/nginx/roundcubemail/config/config.inc.php
 sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_DATABASE__/$ROUNDCUBE_MYSQL_DATABASE/g" /usr/share/nginx/roundcubemail/config/config.inc.php
 sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_USERNAME__/$ROUNDCUBE_MYSQL_USERNAME/g" /usr/share/nginx/roundcubemail/config/config.inc.php

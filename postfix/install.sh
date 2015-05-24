@@ -3,8 +3,8 @@ debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Si
 
 apt-get install postfix postfix-mysql -y
 
-mysqladmin -uroot -p$PASSWORD create $MYSQL_DATABASE	
-mysql -h $MYSQL_HOSTNAME -uroot -p$PASSWORD << EOF
+mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
+mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
 GRANT SELECT ON $MYSQL_DATABASE.* TO '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$MYSQL_PASSWORD';
 FLUSH PRIVILEGES;
 USE $MYSQL_DATABASE;
