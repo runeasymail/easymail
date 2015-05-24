@@ -22,20 +22,24 @@ function set_hostname {
 }
 export -f set_hostname
 
+function get_rand_password() {
+	openssl rand -base64 32
+}
+
 export ADMIN_EMAIL="admin@$HOSTNAME"
 export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
 
 export ROOT_MYSQL_USERNAME='root'
-export ROOT_MYSQL_PASSWORD='root_mysql_pass'
+export ROOT_MYSQL_PASSWORD=$(get_rand_password)
 
 export MYSQL_DATABASE='mailserver'
 export MYSQL_HOSTNAME='127.0.0.1'
 export MYSQL_USERNAME='mailuser'
-export MYSQL_PASSWORD='mailuserpass'
+export MYSQL_PASSWORD=$(get_rand_password)
 
 export ROUNDCUBE_MYSQL_DATABASE='roundcube_dbname'
 export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
-export ROUNDCUBE_MYSQL_PASSWORD='roundcube_pass'
+export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
 
 apt-get update 
 
@@ -45,3 +49,10 @@ bash $CURRENT_DIR/dovecot/install.sh
 bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
+
+echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
+echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
+echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
+
+echo "Installation has finished"
+
