@@ -2,6 +2,30 @@ export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME
 export IS_ON_DOCKER
 
+function is_installed {
+    is_installed=$(dpkg -l | grep $1 | wc -c)
+
+    if [ $is_installed != "0" ]; then
+        is_installed=1
+    fi
+
+   echo $is_installed
+}
+
+if [ $(is_installed php) == 1 ]; then
+	echo "PHP is already installed, installation aborted"; exit
+elif [ $(is_installed nginx) == 1 ]; then
+	echo "Nginx is already installed, installation aborted"; exit
+elif [ $(is_installed postfix) == 1 ]; then
+	echo "Postfix is already installed, installation aborted"; exit
+elif [ $(is_installed dovecot) == 1 ]; then
+	echo "Dovecot is already installed, installation aborted"; exit
+elif [ $(is_installed mysql) == 1 ]; then
+	echo "MySQL is already installed, installation aborted"; exit
+elif [ $(is_installed spamassassin) == 1 ]; then
+	echo "SpamAssassin is already installed, installation aborted"; exit
+fi
+
 read -p "Type hostname: " HOSTNAME
 read -s -p "Type admin's email password: " PASSWORD
 
