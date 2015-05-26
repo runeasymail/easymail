@@ -11,4 +11,5 @@ cp $AUTOCONFIG_DIR/autodiscover.php /usr/share/nginx/autoconfig_and_autodiscover
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
 
 cp $AUTOCONFIG_DIR/nginx_config /etc/nginx/sites-enabled/autoconfig_and_autodiscover
-set_hostname /etc/nginx/sites-enabled/autoconfig_and_autodiscover
+
+service nginx reload
