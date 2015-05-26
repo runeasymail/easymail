@@ -23,7 +23,7 @@ function set_hostname {
 export -f set_hostname
 
 function get_rand_password() {
-	openssl rand -base64 32
+	openssl rand  32 | md5sum | awk '{print $1;}'
 }
 
 export ADMIN_EMAIL="admin@$HOSTNAME"
