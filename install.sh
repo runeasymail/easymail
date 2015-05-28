@@ -79,4 +79,18 @@ echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password:
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
 
 echo "Installation has finished"
+if [ $IS_ON_DOCKER == true ]; then 
+	echo "After stop this docker container you must start services manually for example
+	==========
+	service mysql start
+	service nginx start
+	service php5-fpm start
+	/etc/init.d/postfix start
+	/usr/sbin/dovecot
+	service spamassassin start
+	==========
+	"	
+fi
+
+
 
