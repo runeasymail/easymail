@@ -18,11 +18,9 @@ To run installation we have to:
 - Update the package lists from the repositories ```apt-get update``` 
 - Install git if we don't have it ```apt-get install git -y ```
 - Clone the "easymail" repository ```git clone git@github.com:GyunerZeki/easymail.git /easymail```
-- Run bash script ```bash /easymail/init.sh```
+- Run bash script ```bash /easymail/install.sh```
 
 or just run:
 ```
-apt-get update && apt-get install git -y && git clone git@github.com:GyunerZeki/easymail.git /easymail && bash /easymail/init.sh
+apt-get update && apt-get install git -y && git clone git@github.com:GyunerZeki/easymail.git /easymail && bash /easymail/install.sh
 ```
-
-
