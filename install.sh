@@ -27,19 +27,14 @@ elif [ $(is_installed spamassassin) == 1 ]; then
 fi
 
 read -p "Type hostname: " HOSTNAME
-read -s -p "Type admin's email password: " PASSWORD
+read -s -p "Type admin's email password: " PASSWORD && echo "\n" 
+read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
 
-echo -e "\nIs this installation is on Docker:"
-
-select opt in "no" "yes" ; do
-	if [ "$opt" = "yes" ]; then
-        IS_ON_DOCKER=true
-        break
-	elif [ "$opt" = "no" ]; then
-        IS_ON_DOCKER=false
-        break
-	fi
-done
+if [ "$IS_ON_DOCKER" = "y"  ] || [ "$IS_ON_DOCKER" = "Y"  ] ; then
+	IS_ON_DOCKER=true
+else
+	IS_ON_DOCKER=false
+fi
 
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
