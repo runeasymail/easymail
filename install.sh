@@ -76,15 +76,15 @@ echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL
 echo "Installation has finished"
 if [ $IS_ON_DOCKER == true ]; then 
 	echo "After stop this docker container you must start this services manually:
-	==========
-	service mysql start
-	service nginx start
-	service php5-fpm start
-	/etc/init.d/postfix start
-	/usr/sbin/dovecot
-	service spamassassin start
-	==========
-	"	
+==========
+service mysql start
+service nginx start
+service php5-fpm start
+/etc/init.d/postfix start
+/usr/sbin/dovecot
+service spamassassin start
+==========
+	"
 fi
 
 
