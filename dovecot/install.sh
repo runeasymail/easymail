@@ -41,6 +41,8 @@ sed -i "s/^auth_mechanisms = .*/auth_mechanisms = plain login/g" /etc/dovecot/co
 sed -i "s/\!include auth-system.conf.ext/#\!include auth-system.conf.ext/g" /etc/dovecot/conf.d/10-auth.conf
 sed -i "s/#\!include auth-sql.conf.ext/\!include auth-sql.conf.ext/g" /etc/dovecot/conf.d/10-auth.conf
 sed -i "s/#ssl = .*/ssl = required/g" /etc/dovecot/conf.d/10-ssl.conf
+sed -i "s#ssl_cert =.*#ssl_cert = <$SSL_CA_Bundle_File#g" /etc/dovecot/conf.d/10-ssl.conf
+sed -i "s#ssl_key =.*#ssl_key = <$SSL_Private_Key_File#g" /etc/dovecot/conf.d/10-ssl.conf
 
 echo '
 passdb {

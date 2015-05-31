@@ -7,8 +7,8 @@ server {
 	error_log /var/log/nginx/error.log;
 	
 	ssl on;
-	ssl_certificate /etc/dovecot/dovecot.pem;
-	ssl_certificate_key /etc/dovecot/private/dovecot.pem;
+	ssl_certificate __EASYMAIL_SSL_CA_BUNDLE_FILE__;
+	ssl_certificate_key __EASYMAIL_SSL_PRIVATE_KEY_FILE__;
 	ssl_session_timeout 5m;
 	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # don't use SSLv3 ref: POODLE
 	ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";

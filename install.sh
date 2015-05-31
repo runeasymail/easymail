@@ -1,6 +1,8 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME
 export IS_ON_DOCKER
+export SSL_CA_Bundle_File
+export SSL_Private_Key_File
 
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
@@ -27,10 +29,26 @@ elif [ $(is_installed spamassassin) == 1 ]; then
 fi
 
 read -p "Type hostname: " HOSTNAME
-read -s -p "Type admin's email password: " PASSWORD && echo "\n" 
+read -s -p "Type admin's email password: " PASSWORD && echo -e  
+read -e -p "Do you to install your own ssl certificate? [n/Y] " SSL_INSTALL_OWN 
+
+if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
+	#by default use dovecot's self-signed certificate
+	SSL_CA_Bundle_File=/etc/dovecot/dovecot.pem
+	SSL_Private_Key_File=/etc/dovecot/private/dovecot.pem
+else
+	while [ ! -f "$SSL_CA_Bundle_File" ]; do
+		read -p "[SSL] CA Bundle file path: " SSL_CA_Bundle_File
+	done 
+
+	while [ ! -f "$SSL_Private_Key_File" ]; do
+		read -p "[SSL] Private key file path: " SSL_Private_Key_File
+	done 
+fi
+
 read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
 
-if [ "$IS_ON_DOCKER" = "y"  ] || [ "$IS_ON_DOCKER" = "Y"  ] ; then
+if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
 	IS_ON_DOCKER=true
 else
 	IS_ON_DOCKER=false

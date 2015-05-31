@@ -45,8 +45,8 @@ cp /etc/postfix/main.cf /etc/postfix/main.cf.orig
 postconf -e mydestination=localhost
 postconf -# smtpd_tls_session_cache_database
 postconf -# smtp_tls_session_cache_database
-postconf -e smtpd_tls_cert_file=/etc/dovecot/dovecot.pem
-postconf -e smtpd_tls_key_file=/etc/dovecot/private/dovecot.pem
+postconf -e smtpd_tls_cert_file=$SSL_CA_Bundle_File
+postconf -e smtpd_tls_key_file=$SSL_Private_Key_File
 postconf -e smtpd_use_tls=yes
 postconf -e smtpd_tls_auth_only=yes
 postconf -e smtpd_sasl_type=dovecot
