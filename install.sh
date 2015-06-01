@@ -30,7 +30,7 @@ fi
 
 read -p "Type hostname: " HOSTNAME
 read -s -p "Type admin's email password: " PASSWORD && echo -e  
-read -e -p "Do you to install your own ssl certificate? [n/Y] " SSL_INSTALL_OWN 
+read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
 
 if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
 	#by default use dovecot's self-signed certificate
