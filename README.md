@@ -1,4 +1,4 @@
-# easymail - easy way for installing mail server
+# Easymail - easy way for installing mail server
 This script install:
 - Dovecot
 - Postfix
@@ -7,11 +7,17 @@ This script install:
 - Nginx 
 - Mysql
 
-## Requirement
+## Requirements
 - Dedicated machine or Virtual private server (VPS) and parametres not lower than:
   - RAM 512 MB 
   - HDD/SSD 10 GB.
 - Fresh installed Debian or Ubuntu server with 14.04 or newer.
+
+## (optional) Using with Docker container
+Example configuration for Docker usage:
+```
+docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443  -p=587:587 -p=993:993 -p=143:143 -h "your-hostname.here" --name="easymail"  ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+```
 
 ## Instalation
 To run installation we have to:
