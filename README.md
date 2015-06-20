@@ -1,11 +1,11 @@
-# Easymail - easy way for installing mail server
+# EasyMail - easy way for installing mail server
 This script install:
 - Dovecot
 - Postfix
 - Roundcube
 - SpamAssassin
 - Nginx 
-- Mysql
+- MySQL
 
 ## Requirements
 - Dedicated machine or Virtual private server (VPS) and parametres not lower than:
