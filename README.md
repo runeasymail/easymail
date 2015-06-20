@@ -5,7 +5,7 @@ This script install:
 - Roundcube
 - SpamAssassin
 - Nginx 
-- Mysql
+- MySQL
 
 ## Requirements
 - Dedicated machine or Virtual private server (VPS) and parametres not lower than:
