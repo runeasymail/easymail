@@ -14,6 +14,8 @@ function is_installed {
    echo $is_installed
 }
 
+bash $CURRENT_DIR/event/before-install.sh
+
 if [ $(is_installed php) == 1 ]; then
 	echo "PHP is already installed, installation aborted"; exit
 elif [ $(is_installed nginx) == 1 ]; then
@@ -105,5 +107,5 @@ service spamassassin start
 	"
 fi
 
-
+bash $CURRENT_DIR/event/after-install.sh
 
