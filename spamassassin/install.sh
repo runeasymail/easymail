@@ -41,13 +41,12 @@ protocol lmtp {
 }
 " >> /etc/dovecot/conf.d/20-lmtp.conf
  
- 
 echo "
 plugin {
- sieve = ~/.dovecot.sieve
- sieve_global_path = /var/lib/dovecot/sieve/default.sieve
- sieve_dir = ~/sieve
- sieve_global_dir = /var/lib/dovecot/sieve/
+	sieve = ~/.dovecot.sieve
+	sieve_global_path = /var/lib/dovecot/sieve/default.sieve
+	sieve_dir = ~/sieve
+	sieve_global_dir = /var/lib/dovecot/sieve/
 }
 " > /etc/dovecot/conf.d/90-sieve.conf
  
@@ -56,7 +55,7 @@ mkdir /var/lib/dovecot/sieve/
 echo "
 require \"fileinto\";
 if header :contains \"X-Spam-Flag\" \"YES\" {
-  fileinto \"Junk\";
+	fileinto \"Junk\";
 }
 " > /var/lib/dovecot/sieve/default.sieve
 chown -R vmail:vmail /var/lib/dovecot
