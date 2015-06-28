@@ -33,7 +33,7 @@ CREATE TABLE \`virtual_aliases\` (
   FOREIGN KEY (domain_id) REFERENCES virtual_domains(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
-CREATE TABLE IF NOT EXISTS \`recipient_bcc\` (
+CREATE TABLE \`recipient_bcc\` (
  \`from_address\` varchar(100) NOT NULL,
  \`to_address\` varchar(100) NOT NULL,
  KEY \`from_address\` (\`from_address\`)
