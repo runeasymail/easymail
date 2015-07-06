@@ -1,8 +1,8 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME
 export IS_ON_DOCKER
-export SSL_CA_Bundle_File
-export SSL_Private_Key_File
+export SSL_CA_BUNDLE_FILE
+export SSL_PRIVATE_KEY_FILE
 
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
@@ -36,15 +36,15 @@ read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTAL
 
 if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
 	#by default use dovecot's self-signed certificate
-	SSL_CA_Bundle_File=/etc/dovecot/dovecot.pem
-	SSL_Private_Key_File=/etc/dovecot/private/dovecot.pem
+	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
+	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
 else
-	while [ ! -f "$SSL_CA_Bundle_File" ]; do
-		read -p "[SSL] CA Bundle file path: " SSL_CA_Bundle_File
+	while [ ! -f "$SSL_CA_BUNDLE_FILE" ]; do
+		read -p "[SSL] CA Bundle file path: " SSL_CA_BUNDLE_FILE
 	done 
 
-	while [ ! -f "$SSL_Private_Key_File" ]; do
-		read -p "[SSL] Private key file path: " SSL_Private_Key_File
+	while [ ! -f "$SSL_PRIVATE_KEY_FILE" ]; do
+		read -p "[SSL] Private key file path: " SSL_PRIVATE_KEY_FILE
 	done 
 fi
 
