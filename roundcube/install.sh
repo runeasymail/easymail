@@ -19,7 +19,10 @@ tar -xvzf roundcubemail-1.1.1-complete.tar.gz
 mkdir /usr/share/roundcubemail
 cp -r roundcubemail-1.1.1/ /usr/share/nginx/roundcubemail
 cd /usr/share/nginx/roundcubemail/
+cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.orig
 sed -i "s/;cgi.fix_pathinfo=.*/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
+sed -i "s/post_max_size =.*/post_max_size = 16M/" /etc/php5/fpm/php.ini
+sed -i "s/upload_max_filesize =.*/upload_max_filesize = 15M/" /etc/php5/fpm/php.ini
 
 mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $ROUNDCUBE_MYSQL_DATABASE	
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
