@@ -13,8 +13,8 @@ sed -i "s/CRON=0/CRON=1/" /etc/default/spamassassin
 # OPTIONS="--create-prefs --max-children 2 --username spamd -H ${SAHOME} -s ${SAHOME}spamd.log"
 sed -i "s/OPTIONS=.*/SAHOME=\"\/var\/log\/spamassassin\/\"\nOPTIONS=\"--create-prefs --max-children 2 --username spamd -H \${SAHOME} -s \${SAHOME}spamd.log\"/" /etc/default/spamassassin
 
-# ADD "-o content_filter=spamassassin" AFTER smtp      inet  n       -       -       -       -       smtpd
-sed -i "s/smtp .* smtpd/smtp      inet  n       -       -       -       -       smtpd\n -o content_filter=spamassassin/" /etc/postfix/master.cf
+# ADD "-o content_filter=spamassassin\n-o receive_override_options=no_address_mappings" AFTER smtp      inet  n       -       -       -       -       smtpd
+sed -i "s/smtp .* smtpd/smtp      inet  n       -       -       -       -       smtpd\n -o content_filter=spamassassin\n -o receive_override_options=no_address_mappings/" /etc/postfix/master.cf
 
 echo "
 spamassassin unix -     n       n       -       -       pipe
@@ -41,13 +41,12 @@ protocol lmtp {
 }
 " >> /etc/dovecot/conf.d/20-lmtp.conf
  
- 
 echo "
 plugin {
- sieve = ~/.dovecot.sieve
- sieve_global_path = /var/lib/dovecot/sieve/default.sieve
- sieve_dir = ~/sieve
- sieve_global_dir = /var/lib/dovecot/sieve/
+	sieve = ~/.dovecot.sieve
+	sieve_global_path = /var/lib/dovecot/sieve/default.sieve
+	sieve_dir = ~/sieve
+	sieve_global_dir = /var/lib/dovecot/sieve/
 }
 " > /etc/dovecot/conf.d/90-sieve.conf
  
@@ -56,7 +55,7 @@ mkdir /var/lib/dovecot/sieve/
 echo "
 require \"fileinto\";
 if header :contains \"X-Spam-Flag\" \"YES\" {
-  fileinto \"Junk\";
+	fileinto \"Junk\";
 }
 " > /var/lib/dovecot/sieve/default.sieve
 chown -R vmail:vmail /var/lib/dovecot

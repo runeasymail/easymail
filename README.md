@@ -7,7 +7,7 @@ This script install:
 - Nginx 
 - MySQL
 
-## Requirements
+## Configuration
 - Dedicated machine or Virtual private server (VPS) and parametres not lower than:
   - RAM 512 MB 
   - HDD/SSD 10 GB.

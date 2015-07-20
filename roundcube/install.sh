@@ -11,15 +11,19 @@ fi
 rm -r /etc/nginx/sites-enabled/*
 cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
 set_hostname /etc/nginx/sites-enabled/roundcube
-sed -i "s#__EASYMAIL_SSL_CA_BUNDLE_FILE__#$SSL_CA_Bundle_File#g" /etc/nginx/sites-enabled/roundcube
-sed -i "s#__EASYMAIL_SSL_PRIVATE_KEY_FILE__#$SSL_Private_Key_File#g" /etc/nginx/sites-enabled/roundcube
+sed -i "s#__EASYMAIL_SSL_CA_BUNDLE_FILE__#$SSL_CA_BUNDLE_FILE#g" /etc/nginx/sites-enabled/roundcube
+sed -i "s#__EASYMAIL_SSL_PRIVATE_KEY_FILE__#$SSL_PRIVATE_KEY_FILE#g" /etc/nginx/sites-enabled/roundcube
 
-cd /tmp && wget http://netcologne.dl.sourceforge.net/project/roundcubemail/roundcubemail/1.1.1/roundcubemail-1.1.1-complete.tar.gz
-tar -xvzf roundcubemail-1.1.1-complete.tar.gz
+cd /tmp && wget https://downloads.sourceforge.net/project/roundcubemail/roundcubemail/$ROUNDCUBE_VERSION/roundcubemail-$ROUNDCUBE_VERSION-complete.tar.gz -O roundcubemail.tar.gz
+tar -xvzf roundcubemail.tar.gz
 mkdir /usr/share/roundcubemail
-cp -r roundcubemail-1.1.1/ /usr/share/nginx/roundcubemail
+cp -r roundcubemail-$ROUNDCUBE_VERSION/ /usr/share/nginx/roundcubemail
+
 cd /usr/share/nginx/roundcubemail/
+cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.orig
 sed -i "s/;cgi.fix_pathinfo=.*/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
+sed -i "s/post_max_size =.*/post_max_size = 16M/" /etc/php5/fpm/php.ini
+sed -i "s/upload_max_filesize =.*/upload_max_filesize = 15M/" /etc/php5/fpm/php.ini
 
 mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $ROUNDCUBE_MYSQL_DATABASE	
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF

@@ -17,7 +17,7 @@ CREATE TABLE \`virtual_domains\` (
 CREATE TABLE \`virtual_users\` (
   \`id\` int(11) NOT NULL auto_increment,
   \`domain_id\` int(11) NOT NULL,
-  \`password\` varchar(106) NOT NULL,
+  \`password\` char(36) NOT NULL,
   \`email\` varchar(100) NOT NULL,
   PRIMARY KEY (\`id\`),
   UNIQUE KEY \`email\` (\`email\`),
@@ -26,11 +26,15 @@ CREATE TABLE \`virtual_users\` (
 
 CREATE TABLE \`virtual_aliases\` (
   \`id\` int(11) NOT NULL auto_increment,
-  \`domain_id\` int(11) NOT NULL,
   \`source\` varchar(100) NOT NULL,
   \`destination\` varchar(100) NOT NULL,
-  PRIMARY KEY (\`id\`),
-  FOREIGN KEY (domain_id) REFERENCES virtual_domains(id) ON DELETE CASCADE
+  PRIMARY KEY (\`id\`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
+CREATE TABLE \`recipient_bcc\` (
+ \`from_address\` varchar(100) NOT NULL,
+ \`to_address\` varchar(100) NOT NULL,
+ KEY \`from_address\` (\`from_address\`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO \`virtual_domains\` (\`id\` ,\`name\`) 
@@ -45,8 +49,8 @@ cp /etc/postfix/main.cf /etc/postfix/main.cf.orig
 postconf -e mydestination=localhost
 postconf -# smtpd_tls_session_cache_database
 postconf -# smtp_tls_session_cache_database
-postconf -e smtpd_tls_cert_file=$SSL_CA_Bundle_File
-postconf -e smtpd_tls_key_file=$SSL_Private_Key_File
+postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
+postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
 postconf -e smtpd_use_tls=yes
 postconf -e smtpd_tls_auth_only=yes
 postconf -e smtpd_sasl_type=dovecot
@@ -57,6 +61,7 @@ postconf -e virtual_transport=lmtp:unix:private/dovecot-lmtp
 postconf -e virtual_mailbox_domains=mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
 postconf -e virtual_mailbox_maps=mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
 postconf -e virtual_alias_maps=mysql:/etc/postfix/mysql-virtual-alias-maps.cf	
+postconf -e recipient_bcc_maps=mysql:/etc/postfix/mysql-recipient-bcc-maps.cf	
 
 # increase message limit to 25 MB
 postconf -e message_size_limit=26214400
@@ -73,6 +78,7 @@ cd /etc/postfix/
 postfix_mysql_file "query = SELECT 1 FROM virtual_domains WHERE name='%s'" mysql-virtual-mailbox-domains.cf
 postfix_mysql_file "query = SELECT 1 FROM virtual_users WHERE email='%s'" mysql-virtual-mailbox-maps.cf
 postfix_mysql_file "query = SELECT destination FROM virtual_aliases WHERE source='%s'" mysql-virtual-alias-maps.cf
+postfix_mysql_file "query = SELECT to_address FROM recipient_bcc WHERE from_address='%s'" mysql-recipient-bcc-maps.cf
 
 if [ $IS_ON_DOCKER == true ]; then 
 	/etc/init.d/postfix start
