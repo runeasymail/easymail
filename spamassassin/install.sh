@@ -13,8 +13,8 @@ sed -i "s/CRON=0/CRON=1/" /etc/default/spamassassin
 # OPTIONS="--create-prefs --max-children 2 --username spamd -H ${SAHOME} -s ${SAHOME}spamd.log"
 sed -i "s/OPTIONS=.*/SAHOME=\"\/var\/log\/spamassassin\/\"\nOPTIONS=\"--create-prefs --max-children 2 --username spamd -H \${SAHOME} -s \${SAHOME}spamd.log\"/" /etc/default/spamassassin
 
-# ADD "-o content_filter=spamassassin" AFTER smtp      inet  n       -       -       -       -       smtpd
-sed -i "s/smtp .* smtpd/smtp      inet  n       -       -       -       -       smtpd\n -o content_filter=spamassassin/" /etc/postfix/master.cf
+# ADD "-o content_filter=spamassassin\n-o receive_override_options=no_address_mappings" AFTER smtp      inet  n       -       -       -       -       smtpd
+sed -i "s/smtp .* smtpd/smtp      inet  n       -       -       -       -       smtpd\n -o content_filter=spamassassin\n -o receive_override_options=no_address_mappings/" /etc/postfix/master.cf
 
 echo "
 spamassassin unix -     n       n       -       -       pipe
