@@ -1,5 +1,7 @@
 # EasyMail - easy way for installing mail server
-This script install:
+![Logo](https://raw.githubusercontent.com/GyunerZeki/EasyMail/master/resources/easymail-logo.png)
+
+This script will install:
 - Dovecot
 - Postfix
 - Roundcube
