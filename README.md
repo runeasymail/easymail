@@ -18,7 +18,7 @@
 ## (optional) Using with Docker container
 Example configuration for Docker usage:
 ```
-docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443  -p=587:587 -p=993:993 -p=143:143 -h "your-hostname.here" --name="easymail"  ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443  -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "your-hostname.here" --name="easymail"  ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
 ```
 
 ## Instalation
