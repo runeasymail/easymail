@@ -230,6 +230,14 @@ mysql> select * from mailserver.virtual_users;
 or we can add a new record. Please bear in mind that the password field is encrypted with openssl_encrypt enctyption.
 
 ## Addtional
+### Forward emails
+If you want to forward all incomming emails to another email:
+- Go to the terminal.
+- Access mysql database.
+- Add a new record to table “recipient_bcc”.
+
+If you want to forward emails to Gmail, another option is to use Gmail SMTP client.
+
 ### Transactional emails
 The good thing about the current mail server is that it can be used to send transactional emails. For the configuration with an external client we can use:
 
