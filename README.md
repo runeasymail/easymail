@@ -130,6 +130,30 @@ service php5-fpm start
 service spamassassin start
 ```
 
+In additional you can configure the service to autostart in case of reboot:
+- Go to:
+```
+cd /
+```
+- Create the file run.sh:
+```
+touch run.sh
+```
+- Change the rights:
+```
+chmod +x run.sh
+```
+- Open the file and add inside the following content (these are the services you want to start):
+```
+service mysql start
+service nginx start
+service php5-fpm start
+/etc/init.d/postfix start
+/usr/sbin/dovecot
+service spamassassin start
+```
+- Save and close. From now on if the machines reboots, run.sh will be executed with all commands inside.
+
 ## Configuration
 The next important step is to add MX, CNAME and SPF records and to install and configure DKIM for the domain name used for the emails accounts. The SPF record and DKIM are optional but advisable.
 
