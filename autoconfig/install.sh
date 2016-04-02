@@ -18,3 +18,4 @@ service nginx reload
 
 # Set up the bash script for autostarting the services in case of reboot
 cp $AUTOCONFIG_DIR/run.sh /run.sh
+chmod +x /run.sh
