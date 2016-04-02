@@ -15,3 +15,6 @@ sed -i "s#__EASYMAIL_SSL_CA_BUNDLE_FILE__#$SSL_CA_BUNDLE_FILE#g" /etc/nginx/site
 sed -i "s#__EASYMAIL_SSL_PRIVATE_KEY_FILE__#$SSL_PRIVATE_KEY_FILE#g" /etc/nginx/sites-enabled/autoconfig_and_autodiscover
 
 service nginx reload
+
+# Set up the bash script for autostarting the services in case of reboot
+cp $AUTOCONFIG_DIR/run.sh /run.sh
