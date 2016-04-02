@@ -95,6 +95,7 @@ echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password:
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
 
 echo "Installation has finished"
+echo "All services have been started automatically"
 
 bash $CURRENT_DIR/event/after-install.sh
 
