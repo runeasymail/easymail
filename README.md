@@ -65,7 +65,7 @@ apt-get install nano
 apt-get update && apt-get install git -y
 ```
 
-You have to install git because this docker image does not have it.
+If you use Docker, you have to install git because the docker image above does not have it.
 
 Clone the project “EasyMail” and start the script install.sh:
 ```
@@ -120,39 +120,7 @@ sudo /etc/init.d/mysql stop
 sudo /etc/init.d/mysql start
 ```
 
-When you finish the installation, execute the following commands:
-```
-service mysql start
-service nginx start
-service php5-fpm start
-/etc/init.d/postfix start
-/usr/sbin/dovecot
-service spamassassin start
-```
-
-In additional you can configure the service to autostart in case of reboot:
-- Go to:
-```
-cd /
-```
-- Create the file run.sh:
-```
-touch run.sh
-```
-- Change the rights:
-```
-chmod +x run.sh
-```
-- Open the file and add inside the following content (these are the services you want to start):
-```
-service mysql start
-service nginx start
-service php5-fpm start
-/etc/init.d/postfix start
-/usr/sbin/dovecot
-service spamassassin start
-```
-- Save and close. From now on if the machines reboots, run.sh will be executed with all commands inside.
+When you finish the installation "EasyMail" will automatically start all services _(MySQL, Nginx, php5-fpm, Postfix, Dovecot and Spamassassin)_.
 
 ## Configuration
 The next important step is to add MX, CNAME and SPF records and to install and configure DKIM for the domain name used for the emails accounts. The SPF record and DKIM are optional but advisable.
@@ -253,7 +221,33 @@ mysql> select * from mailserver.virtual_users;
 
 or we can add a new record. Please bear in mind that the password field is encrypted with openssl_encrypt enctyption.
 
-## Addtional
+## Additional
+### Autostart the service after reboot
+"EasyMail" is configured to start all required services automatically if the machine reboots. This will save you some time because you don't have to start the services by yourself. We will review how this works.
+
+- Go to:
+```
+cd /
+```
+- List all files in the directory:
+```
+ln -ls
+```
+- You will see the file "run.sh". Open it:
+```
+nano run.sh
+```
+The file contains the following code:
+```
+service mysql start
+service nginx start
+service php5-fpm start
+/etc/init.d/postfix start
+/usr/sbin/dovecot
+service spamassassin start
+```
+These are the services which will be starter automatically if the machine reboots. That's all you need to know, "EasyMail" takes care for the rest.
+
 ### Forward emails
 If you want to forward all incomming emails to another email:
 - Go to the terminal.
