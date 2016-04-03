@@ -65,7 +65,7 @@ apt-get install nano
 apt-get update && apt-get install git -y
 ```
 
-You have to install git because this docker image does not have it.
+If you use Docker, you have to install git because the docker image above does not have it.
 
 Clone the project “EasyMail” and start the script install.sh:
 ```
