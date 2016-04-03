@@ -89,24 +89,14 @@ bash $CURRENT_DIR/dovecot/install.sh
 bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
+bash $CURRENT_DIR/autostart/install.sh
 
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
 
 echo "Installation has finished"
-if [ $IS_ON_DOCKER == true ]; then 
-	echo "After stop this docker container you must start this services manually:
-==========
-service mysql start
-service nginx start
-service php5-fpm start
-/etc/init.d/postfix start
-/usr/sbin/dovecot
-service spamassassin start
-==========
-	"
-fi
+echo "All services have been started automatically"
 
 bash $CURRENT_DIR/event/after-install.sh
 
