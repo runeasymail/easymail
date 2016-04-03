@@ -87,8 +87,9 @@ bash $CURRENT_DIR/mysql/install.sh
 bash $CURRENT_DIR/postfix/install.sh
 bash $CURRENT_DIR/dovecot/install.sh
 bash $CURRENT_DIR/roundcube/install.sh
-bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
+bash $CURRENT_DIR/spamassassin/install.sh
+bash $CURRENT_DIR/autostart/install.sh
 
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
