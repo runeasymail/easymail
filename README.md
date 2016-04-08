@@ -48,7 +48,7 @@ For the proper work of the mail server, it is important each of those ports to b
     587 - SMTP (StartTLS)
     993 - IMAP (SSL)
     143 - IMAP (StartTLS)
-    465 - SMTP with SSL
+    465 - SMTP (SSL)
   
 If any of the ports above is already occupied you will have to use another one or to free them. For example, if you have a web services installed on your physical machine, you most probably use ports 80 and 443, so you will have to use different ports in order to finish the installation above. For example you can use 8080 instead of 80 and 44380 instead of 443. The command above will change: 
 ```
