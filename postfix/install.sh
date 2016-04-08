@@ -66,6 +66,10 @@ postconf -e recipient_bcc_maps=mysql:/etc/postfix/mysql-recipient-bcc-maps.cf
 # increase message limit to 25 MB
 postconf -e message_size_limit=26214400
 
+# encrypted when sending emails to 3rd-party email servers
+postconf -e smtp_tls_security_level=may
+postconf -e smtpd_tls_security_level=may
+
 function postfix_mysql_file {
 	echo "user = $MYSQL_USERNAME
 password = $MYSQL_PASSWORD
