@@ -31,9 +31,9 @@ There are cases when we may want to build the mail server on Docker. To do so, f
 
 Install docker if you still don't have it on your machine. For further information check <a href="https://docs.docker.com/engine/installation/" target="_blank">Docker installation</a>.
 
-For this tutorial we will use a docker image of Ubuntu 14.04. Go to the terminal of your machine and execute the following command:
+For this tutorial we will use a docker image of Ubuntu 14.04. Go to the terminal of your machine and execute the following command (read below first):
 ```
-docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443  -p=587:587 -p=993:993 -p=143:143 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
 ```
 
 Further explanations are required. The command above will build a new container _(named “easymail”)_ with a new fresh installation of Ubuntu 14.04 and mapping for the following ports: 110, 25, 995, 80, 443, 587, 993 and 143.
@@ -48,10 +48,11 @@ For the proper work of the mail server, it is important each of those ports to b
     587 - SMTP (StartTLS)
     993 - IMAP (SSL)
     143 - IMAP (StartTLS)
+    465 - SMTP with SSL
   
 If any of the ports above is already occupied you will have to use another one or to free them. For example, if you have a web services installed on your physical machine, you most probably use ports 80 and 443, so you will have to use different ports in order to finish the installation above. For example you can use 8080 instead of 80 and 44380 instead of 443. The command above will change: 
 ```
-docker run -it -p=110:110 -p=25:25 -p=995:995 -p=8080:80 -p=44380:443  -p=587:587 -p=993:993 -p=143:143 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+docker run -it -p=110:110 -p=25:25 -p=995:995 -p=8080:80 -p=44380:443  -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
 ```
 
 As you may have noticed, during the installation of the container we have mapped the directory: /etc/ssl/certs/. This is the directory which contains the SSL certificates for the domain name of the mail server - mail.example.com. We can use the SSL certificates to encrypt the communication with the mail server or we can skip this option. This is entirely an optional step.
