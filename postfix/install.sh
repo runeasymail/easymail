@@ -82,7 +82,7 @@ cd /etc/postfix/
 postfix_mysql_file "query = SELECT 1 FROM virtual_domains WHERE name='%s'" mysql-virtual-mailbox-domains.cf
 postfix_mysql_file "query = SELECT 1 FROM virtual_users WHERE email='%s'" mysql-virtual-mailbox-maps.cf
 postfix_mysql_file "query = SELECT destination FROM virtual_aliases WHERE source='%s'" mysql-virtual-alias-maps.cf
-postfix_mysql_file "query = SELECT to_address FROM recipient_bcc WHERE from_address='%s'" mysql-recipient-bcc-maps.cf
+postfix_mysql_file "query = SELECT GROUP_CONCAT(to_address) FROM recipient_bcc WHERE from_address='%s'" mysql-recipient-bcc-maps.cf
 
 if [ $IS_ON_DOCKER == true ]; then 
 	/etc/init.d/postfix start
