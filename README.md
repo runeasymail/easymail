@@ -22,7 +22,7 @@ Below are listed dependencies which will be installed automatically during the i
 
 ## Requirements
 - Dedicated machine or Virtual private server _(VPS)_ and parametres not lower than:
-  - RAM 512 MB 
+  - RAM (or RAM + SWAP) >= 1GB 
   - HDD/SSD 10 GB.
 - Fresh installed Debian or Ubuntu server with 14.04 or newer.
 
