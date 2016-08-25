@@ -30,7 +30,7 @@ submission inet n       -       -       -       -       smtpd
 
 echo "
 #Automatic added by script for auto install mail server.
-protocols = imap pop3 lmtp	
+protocols = imap pop3 lmtp sieve	
 " >> /etc/dovecot/dovecot.conf
 
 sed -i "s/mail_location = .*/mail_location = maildir:\/var\/mail\/vhosts\/%d\/\%n/g" /etc/dovecot/conf.d/10-mail.conf
@@ -71,6 +71,34 @@ chown -R vmail:dovecot /etc/dovecot
 chmod -R o-rwx /etc/dovecot
 
 cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
+
+# Configure Sieve
+apt-get install dovecot-sieve dovecot-managesieved php-net-sieve -y
+echo "
+plugin {
+	sieve = ~/.dovecot.sieve 
+ 	sieve_global_path = /var/lib/dovecot/sieve/default.sieve 
+ 	sieve_dir = ~/sieve 
+ 	sieve_global_dir = /var/lib/dovecot/sieve/ 
+}
+service managesieve-login {
+ 	inet_listener sieve { 
+ 		port = 4190 
+ 		address = 127.0.0.1
+ 	}
+ 
+ 	service_count = 1 
+ 	process_min_avail = 1 
+ 	vsz_limit = 64M 
+}
+service managesieve {
+ 	process_limit = 10 
+}
+protocol lda {
+	mail_plugins = "sieve"
+	postmaster_address = postmaster@yourdomain.com
+} 	
+" >> /etc/dovecot/dovecot.conf
 
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
