@@ -41,4 +41,4 @@ $config['autoexpand_threads'] = 2;
 $config['check_all_folders'] = true;
 
 // PLUGINS
-$config['plugins'] = array('password');
+$config['plugins'] = array('password','jqueryui','managesieve');
