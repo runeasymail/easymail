@@ -62,8 +62,7 @@ When the creation of the container completes, you will be let inside the Docker 
 ## Instalation
 Execute the following commands:
 ```
-apt-get install nano
-apt-get update && apt-get install git -y
+apt-get update && apt-get install git nano -y
 ```
 
 If you use Docker, you have to install git because the docker image above does not have it.
