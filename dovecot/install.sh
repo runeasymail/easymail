@@ -96,7 +96,7 @@ service managesieve {
 }
 protocol lda {
 	mail_plugins = "sieve"
-	postmaster_address = postmaster@yourdomain.com
+	postmaster_address = $ADMIN_EMAIL
 } 	
 " >> /etc/dovecot/dovecot.conf
 
