@@ -79,7 +79,7 @@ export MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_MYSQL_DATABASE='roundcube_dbname'
 export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
-export ROUNDCUBE_VERSION=1.1.2
+export ROUNDCUBE_VERSION=1.2.1
 
 apt-get update 
 
