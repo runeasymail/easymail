@@ -1,5 +1,6 @@
-# EasyMail - easy way to install a mail server
 <p align="center"><a href="http://www.runeasymail.com/" target="_blank"><img src="https://raw.githubusercontent.com/runeasymail/easymail/master/resources/easymail-logo.png"></a></p>
+
+# Easy way to install a mail server
 
 ## About EasyMail
 EasyMail is an open-sourced software which will help you to build your own mail server.
