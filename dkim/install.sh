@@ -33,8 +33,7 @@ smtpd_milters = unix:/spamass/spamass.sock, inet:localhost:12301
 non_smtpd_milters = unix:/spamass/spamass.sock, inet:localhost:12301
 " >>  /etc/postfix/main.cf
 
-
-mkdir /etc/opendkim -p
+mkdir /etc/opendkim/keys -p
 
 echo "
 127.0.0.1
