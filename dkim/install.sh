@@ -66,5 +66,9 @@ chown opendkim:opendkim mail.private
 service postfix restart
 service opendkim restart
 
-cat mail.txt
+echo "Create mail._domainkey.$HOSTNAME TXT record with following content"
+echo ""
+tail mail.txt  -n 1 | awk '{ print $1 }' | sed 's/p=/v=DKIM1; k=rsa; p=/g'
+echo ""
+
 
