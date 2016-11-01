@@ -15,7 +15,7 @@ For the installation instructions, please read [the documentation of EasyMail](h
 ## Contributing
 Thank you for considering contributing to EasyMail! The contribution guide can be found in the [EasyMail documentation](http://www.runeasymail.com/master/contribution-guide).
 
+Every individual, company or organization who uses and likes EasyMail can support it by providing their names, logos and other initials in order to be used on the website, the Github repository and advertisement materials whose purpose is to popularize EasyMail.
+
 ## License
 EasyMail is open-sourced software licensed under the [MIT license](https://github.com/runeasymail/easymail/blob/master/LICENSE).
-
-In additional to the license, every individual, company or organization who uses EasyMail with this act, agrees their names, logos and other initials to be used on the website, the Github repository and advertisement materials whose purpose is to popularize EasyMail.
