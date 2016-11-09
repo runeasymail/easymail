@@ -65,6 +65,17 @@ function get_rand_password() {
 	openssl rand  32 | md5sum | awk '{print $1;}'
 }
 
+echo "
+# EASY MAIL INSTALL CONFIGURATION
+
+HOSTNAME: $HOSTNAME
+PASSWORD: $PASSWORD
+IS_ON_DOCKER: $IS_ON_DOCKER
+SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
+SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
+
+" > easy-mail-install.config
+
 export ADMIN_EMAIL="admin@$HOSTNAME"
 export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
 
