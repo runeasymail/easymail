@@ -34,6 +34,7 @@ if [  "$useConfig" != "" ]; then
                 export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')
                 export PASSWORD=$(cat $useConfig | grep PASSWORD: | awk '{ print $2 }')
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
+		export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
                 export SSL_CA_BUNDLE_FILE=$(cat $useConfig | grep SSL_CA_BUNDLE_FILE: | awk '{ print $2 }')
                 export SSL_PRIVATE_KEY_FILE=$(cat $useConfig | grep SSL_PRIVATE_KEY_FILE: | awk '{ print $2 }')
         else
