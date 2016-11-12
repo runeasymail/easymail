@@ -14,6 +14,33 @@ function is_installed {
    echo $is_installed
 }
 
+# Use config.
+while [[ "$#" > 1 ]]; do case $1 in
+    --config) useConfig="$2";;
+    -c) useConfig="$2";;
+    *) break;;
+  esac; shift; shift
+done
+
+while [[ "$#" > 1 ]]; do case $1 in
+    --config) useConfig="$2";;
+    -c) useConfig="$2";;
+    *) break;;
+  esac; shift; shift
+done
+
+if [  "$useConfig" != "" ]; then
+        if [ -f "$useConfig" ]; then
+                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')
+                export PASSWORD=$(cat $useConfig | grep PASSWORD: | awk '{ print $2 }')
+                export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
+                export SSL_CA_BUNDLE_FILE=$(cat $useConfig | grep SSL_CA_BUNDLE_FILE: | awk '{ print $2 }')
+                export SSL_PRIVATE_KEY_FILE=$(cat $useConfig | grep SSL_PRIVATE_KEY_FILE: | awk '{ print $2 }')
+        else
+                echo "The config file is not exit!"; exit;
+        fi
+fi
+
 bash $CURRENT_DIR/event/before-install.sh
 
 if [ $(is_installed php) == 1 ]; then
