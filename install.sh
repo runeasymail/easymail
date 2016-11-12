@@ -1,8 +1,8 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export HOSTNAME
-export IS_ON_DOCKER
-export SSL_CA_BUNDLE_FILE
-export SSL_PRIVATE_KEY_FILE
+export HOSTNAME=""
+export IS_ON_DOCKER=""
+export SSL_CA_BUNDLE_FILE=""
+export SSL_PRIVATE_KEY_FILE=""
 
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
