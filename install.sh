@@ -57,15 +57,15 @@ elif [ $(is_installed spamassassin) == 1 ]; then
 	echo "SpamAssassin is already installed, installation aborted"; exit
 fi
 
-if [ "$HOSTNAME" != "" ]; then
+if [ "$HOSTNAME" == "" ]; then
 	read -p "Type hostname: " HOSTNAME
 fi
 
-if [ "$PASSWORD" != "" ]; then
+if [ "$PASSWORD" == "" ]; then
 	read -s -p "Type admin's email password: " PASSWORD && echo -e  
 fi
 
-if [ "$SSL_INSTALL_OWN" != "" ]; then
+if [ "$SSL_INSTALL_OWN" == "" ]; then
 	read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
 fi
 
@@ -74,13 +74,13 @@ if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
 	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
 	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
 else
-	if [ "$SSL_CA_BUNDLE_FILE" != "" ]; then
+	if [ "$SSL_CA_BUNDLE_FILE" == "" ]; then
 		while [ ! -f "$SSL_CA_BUNDLE_FILE" ]; do
 			read -p "[SSL] CA Bundle file path: " SSL_CA_BUNDLE_FILE
 		done
 	fi
  
-	if [ "$SSL_PRIVATE_KEY_FILE" != "" ]; then
+	if [ "$SSL_PRIVATE_KEY_FILE" == "" ]; then
 		while [ ! -f "$SSL_PRIVATE_KEY_FILE" ]; do
 			read -p "[SSL] Private key file path: " SSL_PRIVATE_KEY_FILE
 		done 
@@ -88,7 +88,7 @@ else
 fi
 
 
-if [ "$IS_ON_DOCKER" != "" ]; then
+if [ "$IS_ON_DOCKER" == "" ]; then
 	read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
 fi
 
