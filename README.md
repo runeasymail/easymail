@@ -5,7 +5,7 @@
 ## About EasyMail
 EasyMail is an open-sourced software which will help you to build your own mail server.
 
-It is accessible and powerful tool which can be used for your personal projects and as a mail server in your company.
+It is accessible and powerful tool which can be used for your personal projects and as a mail server in your company (SMTP server solution).
 
 ## Learn EasyMail
 More detail information can be found on the website [www.runeasymail.com](http://www.runeasymail.com/).
