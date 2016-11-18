@@ -1,5 +1,10 @@
 <p align="center"><a href="http://www.runeasymail.com/" target="_blank"><img src="https://raw.githubusercontent.com/runeasymail/easymail/master/resources/easymail-logo.png"></a></p>
 
+<p align="center">
+<a href="https://travis-ci.org/runeasymail/easymail"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://github.com/runeasymail/easymail/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+</p>
+
 # Easy way to install a mail server
 
 ## About EasyMail
