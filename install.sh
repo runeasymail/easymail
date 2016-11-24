@@ -1,8 +1,8 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export HOSTNAME
-export IS_ON_DOCKER
-export SSL_CA_BUNDLE_FILE
-export SSL_PRIVATE_KEY_FILE
+export HOSTNAME=""
+export IS_ON_DOCKER=""
+export SSL_CA_BUNDLE_FILE=""
+export SSL_PRIVATE_KEY_FILE=""
 
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
@@ -13,6 +13,34 @@ function is_installed {
 
    echo $is_installed
 }
+
+# Use config.
+while [[ "$#" > 1 ]]; do case $1 in
+    --config) useConfig="$2";;
+    -c) useConfig="$2";;
+    *) break;;
+  esac; shift; shift
+done
+
+while [[ "$#" > 1 ]]; do case $1 in
+    --config) useConfig="$2";;
+    -c) useConfig="$2";;
+    *) break;;
+  esac; shift; shift
+done
+
+if [  "$useConfig" != "" ]; then
+        if [ -f "$useConfig" ]; then
+                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')
+                export PASSWORD=$(cat $useConfig | grep PASSWORD: | awk '{ print $2 }')
+                export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
+		export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
+                export SSL_CA_BUNDLE_FILE=$(cat $useConfig | grep SSL_CA_BUNDLE_FILE: | awk '{ print $2 }')
+                export SSL_PRIVATE_KEY_FILE=$(cat $useConfig | grep SSL_PRIVATE_KEY_FILE: | awk '{ print $2 }')
+        else
+                echo "The config file is not exit!"; exit;
+        fi
+fi
 
 bash $CURRENT_DIR/event/before-install.sh
 
@@ -30,25 +58,41 @@ elif [ $(is_installed spamassassin) == 1 ]; then
 	echo "SpamAssassin is already installed, installation aborted"; exit
 fi
 
-read -p "Type hostname: " HOSTNAME
-read -s -p "Type admin's email password: " PASSWORD && echo -e  
-read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
+if [ "$HOSTNAME" == "" ]; then
+	read -p "Type hostname: " HOSTNAME
+fi
+
+if [ "$PASSWORD" == "" ]; then
+	read -s -p "Type admin's email password: " PASSWORD && echo -e  
+fi
+
+if [ "$SSL_INSTALL_OWN" == "" ]; then
+	read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
+fi
 
 if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
 	#by default use dovecot's self-signed certificate
 	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
 	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
 else
-	while [ ! -f "$SSL_CA_BUNDLE_FILE" ]; do
-		read -p "[SSL] CA Bundle file path: " SSL_CA_BUNDLE_FILE
-	done 
-
-	while [ ! -f "$SSL_PRIVATE_KEY_FILE" ]; do
-		read -p "[SSL] Private key file path: " SSL_PRIVATE_KEY_FILE
-	done 
+	if [ "$SSL_CA_BUNDLE_FILE" == "" ]; then
+		while [ ! -f "$SSL_CA_BUNDLE_FILE" ]; do
+			read -p "[SSL] CA Bundle file path: " SSL_CA_BUNDLE_FILE
+		done
+	fi
+ 
+	if [ "$SSL_PRIVATE_KEY_FILE" == "" ]; then
+		while [ ! -f "$SSL_PRIVATE_KEY_FILE" ]; do
+			read -p "[SSL] Private key file path: " SSL_PRIVATE_KEY_FILE
+		done 
+	fi
 fi
 
-read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
+
+if [ "$IS_ON_DOCKER" == "" ]; then
+	read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
+fi
+
 
 if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
 	IS_ON_DOCKER=true
@@ -71,6 +115,7 @@ echo "
 HOSTNAME: $HOSTNAME
 PASSWORD: $PASSWORD
 IS_ON_DOCKER: $IS_ON_DOCKER
+SSL_INSTALL_OWN: $SSL_INSTALL_OWN
 SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
 SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
 
