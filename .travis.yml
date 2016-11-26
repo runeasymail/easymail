@@ -8,15 +8,13 @@ before_install: >
   docker exec easymail apt-get update &&
   docker exec easymail apt-get install git -y &&
   docker exec easymail git clone https://github.com/runeasymail/easymail.git /easymail &&
-  docker exec easymail echo 'HOSTNAME: test.exmaple.com' > /easymail/easy-mail-install.config &&
-  docker exec easymail echo 'PASSWORD: testpassword' >> /easymail/easy-mail-install.config &&
-  docker exec easymail echo 'IS_ON_DOCKER: true' >> /easymail/easy-mail-install.config &&
-  docker exec easymail echo 'SSL_INSTALL_OWN: n' >> /easymail/easy-mail-install.config &&
-  docker exec easymail echo 'SSL_CA_BUNDLE_FILE: /etc/dovecot/dovecot.pem' >> /easymail/easy-mail-install.config &&
-  docker exec easymail echo 'SSL_PRIVATE_KEY_FILE: /etc/dovecot/private/dovecot.pem' >> /easymail/easy-mail-install.config &&
+  docker exec easymail /bin/sh -c "echo 'HOSTNAME: test.exmaple.com' > /easymail/easy-mail-install.config" &&
+  docker exec easymail /bin/sh -c "echo 'PASSWORD: testpassword' >> /easymail/easy-mail-install.config" &&
+  docker exec easymail /bin/sh -c "echo 'IS_ON_DOCKER: true' >> /easymail/easy-mail-install.config" &&
+  docker exec easymail /bin/sh -c "echo 'SSL_INSTALL_OWN: n' >> /easymail/easy-mail-install.config" &&
+  docker exec easymail /bin/sh -c "echo 'SSL_CA_BUNDLE_FILE: /etc/dovecot/dovecot.pem' >> /easymail/easy-mail-install.config" &&
+  docker exec easymail /bin/sh -c "echo 'SSL_PRIVATE_KEY_FILE: /etc/dovecot/private/dovecot.pem' >> /easymail/easy-mail-install.config" &&
   docker exec easymail bash /easymail/install.sh -c /easymail/easy-mail-install.config
-
-
 
 script:
     - bash install.sh
