@@ -1,4 +1,7 @@
 language: bash
 
+services:
+  - docker
+
 script:
     - bash install.sh
