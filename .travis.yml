@@ -3,5 +3,8 @@ language: bash
 services:
   - docker
 
+before_install:
+  - docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:14.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+
 script:
     - bash install.sh
