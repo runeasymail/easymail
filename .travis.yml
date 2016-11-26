@@ -1,5 +1,3 @@
-set -e
-
 language: bash
 
 services:
@@ -16,7 +14,7 @@ before_install:
   - docker exec easymail echo "IS_ON_DOCKER: true" > /easymail/easy-mail-install.config
   - docker exec easymail echo "SSL_INSTALL_OWN: n" > /easymail/easy-mail-install.config
   - docker exec easymail echo "SSL_CA_BUNDLE_FILE: /etc/dovecot/dovecot.pem" > /easymail/easy-mail-install.config
-  - docker exec easymail echo SSL_PRIVATE_KEY_FILE: /etc/dovecot/private/dovecot.pem" > /easymail/easy-mail-install.config  
+  - docker exec easymail echo "SSL_PRIVATE_KEY_FILE: /etc/dovecot/private/dovecot.pem" > /easymail/easy-mail-install.config  
   
 script:
     - bash install.sh
