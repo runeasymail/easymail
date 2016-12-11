@@ -94,15 +94,16 @@ export ROUNDCUBE_VERSION=1.2.1
 
 apt-get update 
 
-# Kill all processes listening on port 80 because this may prevent the start of NGINX
-fuser -k 80/tcp
-
 bash $CURRENT_DIR/mysql/install.sh
 bash $CURRENT_DIR/postfix/install.sh
 bash $CURRENT_DIR/dovecot/install.sh
 bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
+
+# Kill all processes listening on port 80 because this may prevent the start of NGINX
+fuser -k 80/tcp
+
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/dkim/install.sh
 
