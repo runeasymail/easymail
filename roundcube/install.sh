@@ -27,6 +27,8 @@ apt-get install --assume-yes \
   php-mime-type \
   php-mail-mime
 
+phpenmod intl zip
+
 if [ $IS_ON_DOCKER == true ]; then
 	apt-get install  wget -y
 fi
