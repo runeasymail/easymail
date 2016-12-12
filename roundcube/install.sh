@@ -5,7 +5,27 @@ ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
 apt-get install -y language-pack-en-base
 LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
 apt-get update
-apt-get install nginx php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-mbstring -y
+apt-get install --assume-yes \
+  nginx \
+  php7.0-fpm \ 
+  mcrypt \ 
+  php7.0-mcrypt \ 
+  php7.0-intl \ 
+  php7.0-mysql \ 
+  php7.0-mbstring \ 
+  php-curl \
+  php7.0-zip \
+  php7.0-xml \
+  php-xml \
+  php-xml-parser \
+  php7.0-cli \
+  php7.0-gd \
+  php-apcu \
+  php7.0-imap \
+  php-mail \
+  php-mail-mimedecode \
+  php-mime-type \
+  php-mail-mime
 
 if [ $IS_ON_DOCKER == true ]; then
 	apt-get install  wget -y
