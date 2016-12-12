@@ -13,7 +13,7 @@ apt-get install --assume-yes \
   php7.0-intl \ 
   php7.0-mysql \ 
   php7.0-mbstring \ 
-  php-curl \
+  php7.0-curl \
   php7.0-zip \
   php7.0-xml \
   php-xml \
