@@ -2,8 +2,8 @@ debconf-set-selections <<< "mysql-community-server mysql-community-server/data-d
 debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password ${ROOT_MYSQL_PASSWORD}"
 debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password ${ROOT_MYSQL_PASSWORD}"
 
-apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 5072E1F5
-echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" | tee /etc/apt/sources.list.d/mysql57.list
+apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5
+echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" | tee -a /etc/apt/sources.list.d/mysql.list
 apt-get update
 
 apt-get install mysql-server -y
