@@ -73,7 +73,7 @@ chmod -R o-rwx /etc/dovecot
 cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
 # Configure Sieve
-apt-get install dovecot-sieve dovecot-managesieved php-net-sieve -y
+apt-get install dovecot-sieve dovecot-managesieved php-net-sieve apache2- -y
 echo "
 plugin {
 	sieve = ~/.dovecot.sieve 
@@ -99,9 +99,6 @@ protocol lda {
 	postmaster_address = $ADMIN_EMAIL
 } 	
 " >> /etc/dovecot/dovecot.conf
-
-# Kill all processes (Apache) listening on port 80 because this may prevent the start of NGINX
-fuser -k 80/tcp
 
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
