@@ -73,7 +73,7 @@ chmod -R o-rwx /etc/dovecot
 cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
 # Configure Sieve
-apt-get install dovecot-sieve dovecot-managesieved php-net-sieve -y
+apt-get install dovecot-sieve dovecot-managesieved php-net-sieve apache2- -y
 echo "
 plugin {
 	sieve = ~/.dovecot.sieve 
