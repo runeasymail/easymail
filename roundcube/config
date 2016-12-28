@@ -12,6 +12,12 @@ $config['default_host'] = '127.0.0.1';
 $config['default_port'] = 143;
 $config['imap_auth_type'] = 'LOGIN';
 $config['imap_delimiter'] = '/';
+$config['imap_conn_options'] = array(
+  'ssl' => array(
+    'verify_peer' => false,
+    'verfify_peer_name' => false,
+  )
+);
 
 // SMTP
 $config['smtp_server'] = 'tls://127.0.0.1';
@@ -19,6 +25,12 @@ $config['smtp_port'] = 587;
 $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
 $config['smtp_auth_type'] = 'LOGIN';
+$config['smtp_conn_options'] = array(
+  'ssl' => array(
+    'verify_peer' => false,
+    'verify_peer_name' => false,
+  )
+);
 
 // SYSTEM
 $config['force_https'] = true;

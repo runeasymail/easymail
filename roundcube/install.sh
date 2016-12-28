@@ -2,7 +2,12 @@
 
 ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
 
-apt-get install nginx php5-fpm php5-mcrypt php5-intl php5-mysql -y
+apt-get install -y language-pack-en-base
+LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
+apt-get update
+apt-get install nginx php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-mbstring php7.0-curl php7.0-zip php7.0-xml php-xml php-xml-parser php7.0-cli php7.0-gd php-apcu php7.0-imap php-mail php-mail-mimedecode php-mime-type php-mail-mime -y
+
+phpenmod intl zip
 
 if [ $IS_ON_DOCKER == true ]; then
 	apt-get install  wget -y
@@ -20,10 +25,10 @@ mkdir /usr/share/roundcubemail
 cp -r roundcubemail-$ROUNDCUBE_VERSION/ /usr/share/nginx/roundcubemail
 
 cd /usr/share/nginx/roundcubemail/
-cp /etc/php5/fpm/php.ini /etc/php5/fpm/php.ini.orig
-sed -i "s/;cgi.fix_pathinfo=.*/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
-sed -i "s/post_max_size =.*/post_max_size = 16M/" /etc/php5/fpm/php.ini
-sed -i "s/upload_max_filesize =.*/upload_max_filesize = 15M/" /etc/php5/fpm/php.ini
+cp /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.orig
+sed -i "s/;cgi.fix_pathinfo=.*/cgi.fix_pathinfo=0/" /etc/php/7.0/fpm/php.ini
+sed -i "s/post_max_size =.*/post_max_size = 16M/" /etc/php/7.0/fpm/php.ini
+sed -i "s/upload_max_filesize =.*/upload_max_filesize = 15M/" /etc/php/7.0/fpm/php.ini
 
 mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $ROUNDCUBE_MYSQL_DATABASE	
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
@@ -53,5 +58,5 @@ sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_USERNAME__/$ROUNDCUBE_MYSQL_USERNAME/g" con
 sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__/$ROUNDCUBE_MYSQL_PASSWORD/g" config.inc.php
 sed -i "s/__EASYMAIL_MYSQL_DATABASE__/$MYSQL_DATABASE/g" config.inc.php
 
-service php5-fpm restart
+service php7.0-fpm restart
 service nginx restart
