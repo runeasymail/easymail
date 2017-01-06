@@ -137,7 +137,7 @@ export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_VERSION=1.2.3
 
-apt-get update 
+apt-get update && apt-get install dialog
 
 bash $CURRENT_DIR/mysql/install.sh
 bash $CURRENT_DIR/postfix/install.sh
