@@ -7,8 +7,8 @@ echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" | tee -a /etc/apt/
 apt-get update
 
 apt-get install mysql-server -y
-sudo update-alternatives --remove my.cnf /etc/mysql/my.cnf.migrated
-sudo service mysql start
+update-alternatives --remove my.cnf /etc/mysql/my.cnf.migrated
+service mysql start
 
 apt-get install expect -y
 
