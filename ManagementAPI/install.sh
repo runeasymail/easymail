@@ -20,5 +20,5 @@ cp $CURRENT_DIR/ManagementAPI/ManagementAPI-nginx.conf $MANAGEMENT_API_DIR/Manag
 
 sed -i "s|# __EASY_MAIL_INCLUDE__|include $MANAGEMENT_API_DIR/ManagementAPI-nginx.conf;|g" /etc/nginx/sites-enabled/roundcube
 
-
+service nginx reload
  
