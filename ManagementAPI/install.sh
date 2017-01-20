@@ -12,8 +12,6 @@ port=7080
 dsn=$MYSQL_USERNAME:$MYSQL_PASSWORD@tcp($MYSQL_HOSTNAME:3306)/$MYSQL_DATABASE
 " > config.ini
 
-./ManagementAPI
-
 apt-get install apache2-utils -y
 
 htpasswd -cb $ManagementAPI_DIR/.htpasswd $MANAGEMENT_API_USERNAME $MANAGEMENT_API_PASSWORD
