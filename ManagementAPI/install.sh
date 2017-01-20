@@ -20,7 +20,7 @@ htpasswd -cb $ManagementAPI_DIR/.htpasswd $MANAGEMENT_API_USERNAME $MANAGEMENT_A
 
 cp $CURRENT_DIR/ManagementAPI/ManagementAPI-nginx.conf $MANAGEMENT_API_DIR/ManagementAPI-nginx.conf
 
-sed -i "s|#__EASY_MAIL_INCLUDE__|include $MANAGEMENT_API_DIR/ManagementAPI-nginx.conf;|g" /etc/nginx/sites-enabled/roundcube
+sed -i "s|# __EASY_MAIL_INCLUDE__|include $MANAGEMENT_API_DIR/ManagementAPI-nginx.conf;|g" /etc/nginx/sites-enabled/roundcube
 
 
  
