@@ -137,6 +137,11 @@ export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_VERSION=1.2.3
 
+export MANAGEMENT_API_USERNAME='easyadmin'
+export MANAGEMENT_API_PASSWORD=$(get_rand_password)
+
+export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
+
 apt-get update
 
 bash $CURRENT_DIR/mysql/install.sh
@@ -146,11 +151,13 @@ bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
+bash $CURRENT_DIR/ManagementAPI/install.sh
 bash $CURRENT_DIR/dkim/install.sh
 
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
+echo "API username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
 
 echo "Installation has finished"
 echo "All services have been started automatically"
