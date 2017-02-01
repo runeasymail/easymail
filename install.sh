@@ -14,6 +14,12 @@ function is_installed {
    echo $is_installed
 }
 
+# Make sure only root can run our script
+if [ "$(id -u)" != "0" ]; then
+   echo "Please log in as root"
+   exit
+fi
+
 # Use config.
 while [[ "$#" > 1 ]]; do case $1 in
     --config) useConfig="$2";;
