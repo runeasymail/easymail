@@ -1,0 +1,38 @@
+server {
+	listen 80;
+	server_name __EASYMAIL_HOSTNAME__;
+	return 302 https://__EASYMAIL_HOSTNAME__$request_uri;
+}
+
+server {
+	listen 443;
+	server_name __EASYMAIL_HOSTNAME__;
+	
+	ssl on;
+	ssl_certificate __EASYMAIL_SSL_CA_BUNDLE_FILE__;
+	ssl_certificate_key __EASYMAIL_SSL_PRIVATE_KEY_FILE__;
+	ssl_session_timeout 5m;
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # don't use SSLv3 ref: POODLE
+	ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
+	ssl_prefer_server_ciphers on;
+	
+	client_max_body_size 16M;
+	
+	# __EASY_MAIL_INCLUDE__
+
+	root /usr/share/nginx/roundcubemail;
+	index index.php index.html index.htm;
+	error_log /var/log/nginx/error.log;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	location ~ \.php$ {
+		try_files $uri =404;
+		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock; 
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		include fastcgi_params;
+	}
+}
