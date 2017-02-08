@@ -4,8 +4,7 @@ ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
 
 apt-get install -y language-pack-en-base software-properties-common
 LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
-apt-get update
-apt-get install nginx php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-mbstring php7.0-curl php7.0-zip php-xml php-xml-parser php7.0-cli php7.0-gd php-apcu php7.0-imap php-mail php-mail-mimedecode php-mime-type php-mail-mime -y
+apt-get install php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-mbstring php7.0-curl php7.0-zip php-xml php-xml-parser php7.0-cli php7.0-gd php-apcu php7.0-imap php-mail php-mail-mimedecode php-mime-type php-mail-mime -y
 
 phpenmod intl zip
 
@@ -13,7 +12,6 @@ if [ $IS_ON_DOCKER == true ]; then
 	apt-get install  wget -y
 fi
 
-rm -r /etc/nginx/sites-enabled/*
 cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
 set_hostname /etc/nginx/sites-enabled/roundcube
 sed -i "s#__EASYMAIL_SSL_CA_BUNDLE_FILE__#$SSL_CA_BUNDLE_FILE#g" /etc/nginx/sites-enabled/roundcube
