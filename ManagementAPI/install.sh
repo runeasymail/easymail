@@ -2,6 +2,9 @@
 export MANAGEMENT_API_DIR=$EASY_MAIL_DIR/ManagementAPI
 
 mkdir $MANAGEMENT_API_DIR && cd $MANAGEMENT_API_DIR
+
+apt-get install wget -y
+
 wget https://github.com/runeasymail/ManagementAPI/releases/download/0.2-RC1/ManagementAPI
 chmod +x ManagementAPI
 
