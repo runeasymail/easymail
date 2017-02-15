@@ -145,7 +145,7 @@ export ROUNDCUBE_VERSION=1.2.3
 
 export MANAGEMENT_API_USERNAME='easyadmin'
 export MANAGEMENT_API_PASSWORD=$(get_rand_password)
-export MANAGEMENT_API_SECURITYKEY=$(get_rand_password)
+export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
 export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
 
