@@ -164,7 +164,7 @@ bash $CURRENT_DIR/dkim/install.sh
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
-echo "API username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
+echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
 
 echo "Installation has finished"
 echo "All services have been started automatically"
