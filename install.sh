@@ -1,6 +1,7 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export IS_ON_DOCKER=""
+export USE_LETSENCRYPT=""
 export SSL_CA_BUNDLE_FILE=""
 export SSL_PRIVATE_KEY_FILE=""
 
@@ -95,6 +96,10 @@ else
 fi
 
 
+if [ "$USE_LETSENCRYPT" == "" ]; then
+	read -e -p "Use Let's encrypt SSL [n/Y] " USE_LETSENCRYPT
+fi
+
 if [ "$IS_ON_DOCKER" == "" ]; then
 	read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
 fi
@@ -105,6 +110,7 @@ if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
 else
 	IS_ON_DOCKER=false
 fi
+
 
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
@@ -161,6 +167,11 @@ bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 bash $CURRENT_DIR/dkim/install.sh
+
+if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
+	bash $CURRENT_DIR/letsencrypt/install.sh
+fi
+
 
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
