@@ -170,8 +170,6 @@ bash $CURRENT_DIR/dkim/install.sh
 
 if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
-else
-	echo ""
 fi
 
 
