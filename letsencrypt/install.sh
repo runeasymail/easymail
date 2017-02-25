@@ -14,3 +14,9 @@ service nginx reload
 python acme_tiny.py --account-key ./account.key --csr ./domain.csr --acme-dir /var/www/challenges/ > ./signed.crt
 wget -O - https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem > intermediate.pem
 cat signed.crt intermediate.pem > chained.pem
+
+cp /ssl/chained.pem $SSL_CA_BUNDLE_FILE
+cp /ssl/domain.key $SSL_PRIVATE_KEY_FILE
+
+doveadm reload 
+service nginx reload
