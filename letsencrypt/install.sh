@@ -18,5 +18,11 @@ cat signed.crt intermediate.pem > chained.pem
 cp /ssl/chained.pem $SSL_CA_BUNDLE_FILE
 cp /ssl/domain.key $SSL_PRIVATE_KEY_FILE
 
-doveadm reload 
+if [ $IS_ON_DOCKER == true ]; then
+	/usr/sbin/dovecot
+	/etc/init.d/postfix restart
+else 
+	service dovecot restart
+fi
+
 service nginx reload
