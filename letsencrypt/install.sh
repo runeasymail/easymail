@@ -4,7 +4,7 @@ cd /
 mkdir -p /ssl
 cd /ssl
 #wget https://raw.githubusercontent.com/diafygi/acme-tiny/master/acme_tiny.py
-cp $CURRENT_DIR/letsencrpt/acme-tiny.py /ssl/acme_tiny.py
+cp $CURRENT_DIR/letsencrypt/acme-tiny.py /ssl/acme_tiny.py
 openssl genrsa 4096 > account.key
 openssl genrsa 4096 > domain.key
 openssl req -new -sha256 -key domain.key -subj "/CN=${HOSTNAME}" > domain.csr
