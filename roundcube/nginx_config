@@ -1,7 +1,12 @@
 server {
 	listen 80;
 	server_name __EASYMAIL_HOSTNAME__;
-	return 302 https://__EASYMAIL_HOSTNAME__$request_uri;
+	
+	# __EASY_MAIL_INCLUDE_LETSENCRYPT__
+
+	location / {
+		rewrite ^ https://$host$request_uri;
+	}
 }
 
 server {
