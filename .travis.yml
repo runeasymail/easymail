@@ -10,7 +10,7 @@ before_install: >
   docker cp . easymail:/easymail &&
   docker exec easymail /bin/sh -c "echo 'HOSTNAME: test.exmaple.com' > /easymail/easy-mail-install.config" &&
   docker exec easymail /bin/sh -c "echo 'PASSWORD: testpassword' >> /easymail/easy-mail-install.config" &&
-  docker exec easymail /bin/sh -c "echo 'IS_ON_DOCKER: true' >> /easymail/easy-mail-install.config" &&
+  docker exec easymail /bin/sh -c "echo 'IS_ON_DOCKER: y' >> /easymail/easy-mail-install.config" &&
   docker exec easymail /bin/sh -c "echo 'SSL_INSTALL_OWN: n' >> /easymail/easy-mail-install.config" &&
   docker exec easymail /bin/sh -c "echo 'USE_LETSENCRYPT: n' >> /easymail/easy-mail-install.config" &&
   docker exec easymail /bin/sh -c "echo 'SSL_CA_BUNDLE_FILE: /etc/dovecot/dovecot.pem' >> /easymail/easy-mail-install.config" && 
