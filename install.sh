@@ -46,7 +46,7 @@ if [  "$useConfig" != "" ]; then
                 export SSL_CA_BUNDLE_FILE=$(cat $useConfig | grep SSL_CA_BUNDLE_FILE: | awk '{ print $2 }')
                 export SSL_PRIVATE_KEY_FILE=$(cat $useConfig | grep SSL_PRIVATE_KEY_FILE: | awk '{ print $2 }')
         else
-                echo "The config file is not exit!"; exit;
+                echo "The config file does not exist!"; exit;
         fi
 fi
 
@@ -71,7 +71,10 @@ if [ "$HOSTNAME" == "" ]; then
 fi
 
 if [ "$PASSWORD" == "" ]; then
-	read -s -p "Type admin's email password: " PASSWORD && echo -e  
+	export PASSWORD=$(get_rand_password) 
+	export PASSWORD_RANDOMLY_GENERATED=true
+else
+	export PASSWORD_RANDOMLY_GENERATED=false
 fi
 
 if [ "$SSL_INSTALL_OWN" == "" ]; then
@@ -173,6 +176,21 @@ if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
 fi
 
+# Final questions to the user
+if [ $PASSWORD_RANDOMLY_GENERATED == true ]; then
+	read -s -p "Type admin's email password: " PASSWORD && echo -e  
+	export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
+	
+	# Set the new password
+	mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
+	mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+	
+	UPDATE \`virtual_users\`
+	SET \`password\`='$ADMIN_PASSWORD'
+	WHERE \`id\`='1' 
+
+	EOF
+fi
 
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
