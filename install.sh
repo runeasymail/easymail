@@ -181,12 +181,12 @@ if [ $PASSWORD_RANDOMLY_GENERATED == true ]; then
 	read -s -p "Type admin's email password: " PASSWORD && echo -e  
 	export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
 	
-	# Set the new password
-	mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE
-	mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD <<EOF
-	USE $MYSQL_DATABASE;
-	UPDATE \`virtual_users\` SET \`password\`='$ADMIN_PASSWORD' WHERE \`id\`='1';
-	EOF
+# Set the new password
+mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
+mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+USE $MYSQL_DATABASE;
+UPDATE \`virtual_users\` SET \`password\`='$ADMIN_PASSWORD' WHERE \`id\`='1';
+EOF
 fi
 
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
