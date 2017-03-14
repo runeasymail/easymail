@@ -185,9 +185,7 @@ if [ $PASSWORD_RANDOMLY_GENERATED == true ]; then
 	mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
 	mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
 	
-	UPDATE \`virtual_users\`
-	SET \`password\`='$ADMIN_PASSWORD'
-	WHERE \`id\`='1' 
+	UPDATE \`virtual_users\` SET \`password\`='$ADMIN_PASSWORD' WHERE \`id\`='1'; 
 
 	EOF
 fi
