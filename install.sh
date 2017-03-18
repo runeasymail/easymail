@@ -38,8 +38,7 @@ done
 
 if [  "$useConfig" != "" ]; then
         if [ -f "$useConfig" ]; then
-                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')
-                export PASSWORD=$(cat $useConfig | grep PASSWORD: | awk '{ print $2 }')
+                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')                
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
 		export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
 		export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
@@ -68,13 +67,6 @@ fi
 
 if [ "$HOSTNAME" == "" ]; then
 	read -p "Type hostname: " HOSTNAME
-fi
-
-if [ "$PASSWORD" == "" ]; then
-	export PASSWORD=$(get_rand_password) 
-	export PASSWORD_RANDOMLY_GENERATED=true
-else
-	export PASSWORD_RANDOMLY_GENERATED=false
 fi
 
 if [ "$SSL_INSTALL_OWN" == "" ]; then
@@ -124,6 +116,8 @@ export -f set_hostname
 function get_rand_password() {
 	openssl rand  32 | md5sum | awk '{print $1;}'
 }
+
+export PASSWORD=$(get_rand_password)
 
 echo "
 # EASY MAIL INSTALL CONFIGURATION
@@ -176,19 +170,8 @@ if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
 fi
 
-# Final questions to the user
-if [ $PASSWORD_RANDOMLY_GENERATED == true ]; then
-	read -s -p "Type admin's email password: " PASSWORD && echo -e  
-	export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
-	
-# Set the new password
-mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
-mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
-USE $MYSQL_DATABASE;
-UPDATE \`virtual_users\` SET \`password\`='$ADMIN_PASSWORD' WHERE \`id\`='1';
-EOF
-fi
 
+echo "Admin username: $ADMIN_EMAIL | password: $PASSWORD"
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
