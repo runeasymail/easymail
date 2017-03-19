@@ -15,6 +15,10 @@ function is_installed {
    echo $is_installed
 }
 
+function get_rand_password() {
+	openssl rand  32 | md5sum | awk '{print $1;}'
+}
+
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
    echo "Please log in as root"
@@ -40,8 +44,8 @@ if [  "$useConfig" != "" ]; then
         if [ -f "$useConfig" ]; then
                 export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')                
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
-		export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
-		export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
+                export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
+                export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
                 export SSL_CA_BUNDLE_FILE=$(cat $useConfig | grep SSL_CA_BUNDLE_FILE: | awk '{ print $2 }')
                 export SSL_PRIVATE_KEY_FILE=$(cat $useConfig | grep SSL_PRIVATE_KEY_FILE: | awk '{ print $2 }')
         else
@@ -112,10 +116,6 @@ function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
 export -f set_hostname
-
-function get_rand_password() {
-	openssl rand  32 | md5sum | awk '{print $1;}'
-}
 
 export PASSWORD=$(get_rand_password)
 
