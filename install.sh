@@ -15,6 +15,10 @@ function is_installed {
    echo $is_installed
 }
 
+function get_rand_password() {
+	openssl rand  32 | md5sum | awk '{print $1;}'
+}
+
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
    echo "Please log in as root"
@@ -120,10 +124,6 @@ function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
 export -f set_hostname
-
-function get_rand_password() {
-	openssl rand  32 | md5sum | awk '{print $1;}'
-}
 
 echo "
 # EASY MAIL INSTALL CONFIGURATION
