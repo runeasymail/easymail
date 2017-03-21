@@ -15,6 +15,8 @@ function is_installed {
    echo $is_installed
 }
 
+apt-get update -y && apt-get openssl -y
+
 function get_rand_password() {
 	openssl rand  32 | md5sum | awk '{print $1;}'
 }
@@ -152,8 +154,6 @@ export MANAGEMENT_API_PASSWORD=$(get_rand_password)
 export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
 export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
-
-apt-get update
 
 bash $CURRENT_DIR/mysql/install.sh
 bash $CURRENT_DIR/postfix/install.sh
