@@ -13,4 +13,5 @@ before_install: >
   echo 'USE_LETSENCRYPT: n' >> easy-mail-install.config
 
 script:
+    - docker exec easymail bash ls -all /
     - docker exec easymail bash /easymail/install.sh -c /easymail/easy-mail-install.config
