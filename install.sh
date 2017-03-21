@@ -15,7 +15,7 @@ function is_installed {
    echo $is_installed
 }
 
-apt-get update -y && apt-get openssl -y
+apt-get update -y && apt-get install openssl -y
 
 function get_rand_password() {
 	openssl rand  32 | md5sum | awk '{print $1;}'
