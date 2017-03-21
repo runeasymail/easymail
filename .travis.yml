@@ -4,10 +4,7 @@ services:
   - docker
 
 before_install: >
-  ls -all && 
-  pwd &&
-  echo 222222222222222 && 
-  docker run -dit -v ~/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:16.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash" &&
+  docker run -dit -v /home/travis/build/runeasymail/easymail/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:16.04 /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash" &&
   echo 'HOSTNAME: test.exmaple.com' > easy-mail-install.config &&
   echo 'PASSWORD: testpassword' >> easy-mail-install.config &&
   echo 'IS_ON_DOCKER: y' >> easy-mail-install.config &&
@@ -15,5 +12,9 @@ before_install: >
   echo 'USE_LETSENCRYPT: n' >> easy-mail-install.config
 
 script:
+    - echo 111111111111111111111111111
     - docker exec easymail ls -all /easymail
+    - echo 222222222222222222222222222
+    - docker exec easymail ls -all /
+    - echo 33333333333333333333333333333
     - docker exec easymail bash /easymail/install.sh -c /easymail/easy-mail-install.config
