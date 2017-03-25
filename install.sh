@@ -79,14 +79,16 @@ if [ "$SSL_INSTALL_OWN" == "" ]; then
 	read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
 fi
 
-if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
-	# By default use Dovecot's self-signed certificate
-	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
-	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
-		
+if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then		
 	# Ask for Letsencrypt SSL certificate
 	if [ "$USE_LETSENCRYPT" == "" ]; then
 		read -e -p "Use Let's encrypt SSL [n/Y] " USE_LETSENCRYPT
+	fi
+	
+	if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
+		# By default use Dovecot's self-signed certificate
+		SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
+		SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
 	fi
 else	
 	# Set you own SSL certificate
