@@ -78,10 +78,16 @@ if [ "$SSL_INSTALL_OWN" == "" ]; then
 fi
 
 if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
-	#by default use dovecot's self-signed certificate
+	# By default use Dovecot's self-signed certificate
 	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
 	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
-else
+		
+	# Ask for Letsencrypt SSL certificate
+	if [ "$USE_LETSENCRYPT" == "" ]; then
+		read -e -p "Use Let's encrypt SSL [n/Y] " USE_LETSENCRYPT
+	fi
+else	
+	# Set you own SSL certificate
 	if [ "$SSL_CA_BUNDLE_FILE" == "" ]; then
 		while [ ! -f "$SSL_CA_BUNDLE_FILE" ]; do
 			read -p "[SSL] CA Bundle file path: " SSL_CA_BUNDLE_FILE
@@ -93,11 +99,9 @@ else
 			read -p "[SSL] Private key file path: " SSL_PRIVATE_KEY_FILE
 		done 
 	fi
-fi
-
-
-if [ "$USE_LETSENCRYPT" == "" ]; then
-	read -e -p "Use Let's encrypt SSL [n/Y] " USE_LETSENCRYPT
+	
+	# Set the Letsencrypt certificate to No
+	USE_LETSENCRYPT='n';
 fi
 
 if [ "$IS_ON_DOCKER" == "" ]; then
