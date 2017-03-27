@@ -56,5 +56,5 @@ sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_USERNAME__/$ROUNDCUBE_MYSQL_USERNAME/g" con
 sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__/$ROUNDCUBE_MYSQL_PASSWORD/g" config.inc.php
 sed -i "s/__EASYMAIL_MYSQL_DATABASE__/$MYSQL_DATABASE/g" config.inc.php
 
-service php7.0-fpm restart
+service php7.0-fpm start
 service nginx restart
