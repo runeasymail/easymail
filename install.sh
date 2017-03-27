@@ -85,7 +85,7 @@ if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
 		read -e -p "Use Let's encrypt SSL [n/Y] " USE_LETSENCRYPT
 	fi
 	
-	if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
+	if [ "$USE_LETSENCRYPT" == "n"  ] || [ "$USE_LETSENCRYPT" == "N"  ]; then
 		# By default use Dovecot's self-signed certificate
 		SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
 		SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
