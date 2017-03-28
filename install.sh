@@ -2,6 +2,7 @@ export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export IS_ON_DOCKER=""
 export USE_LETSENCRYPT=""
+export SSL_INSTALL_OWN=""
 export SSL_CA_BUNDLE_FILE=""
 export SSL_PRIVATE_KEY_FILE=""
 
@@ -15,7 +16,7 @@ function is_installed {
    echo $is_installed
 }
 
-apt-get update -y && apt-get install openssl -y
+apt-get update -y && apt-get install openssl python -y
 
 function get_rand_password() {
 	openssl rand  32 | md5sum | awk '{print $1;}'
@@ -79,7 +80,7 @@ if [ "$SSL_INSTALL_OWN" == "" ]; then
 	read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
 fi
 
-if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then
+if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then	
 	# By default use Dovecot's self-signed certificate
 	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
 	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
@@ -107,9 +108,12 @@ else
 fi
 
 if [ "$IS_ON_DOCKER" == "" ]; then
-	read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
+	read -e -p "Is this installation on Docker? [N/y] " IS_ON_DOCKER
 fi
 
+IS_ON_DOCKER="${IS_ON_DOCKER:-N}"
+USE_LETSENCRYPT="${USE_LETSENCRYPT:-Y}"
+SSL_INSTALL_OWN="${SSL_INSTALL_OWN:-Y}"
 
 if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
 	IS_ON_DOCKER=true
@@ -134,6 +138,7 @@ IS_ON_DOCKER: $IS_ON_DOCKER
 SSL_INSTALL_OWN: $SSL_INSTALL_OWN
 SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
 SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
+USE_LETSENCRYPT: $USE_LETSENCRYPT
 
 " > easy-mail-install.config
 

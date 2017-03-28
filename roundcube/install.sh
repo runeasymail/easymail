@@ -2,7 +2,7 @@
 
 ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
 
-apt-get install -y language-pack-en-base software-properties-common
+apt-get install language-pack-en-base software-properties-common -y
 LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
 apt-get install php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-mbstring php7.0-curl php7.0-zip php-xml php-xml-parser php7.0-cli php7.0-gd php-apcu php7.0-imap php-mail php-mail-mimedecode php-mime-type php-mail-mime -y
 
@@ -56,5 +56,5 @@ sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_USERNAME__/$ROUNDCUBE_MYSQL_USERNAME/g" con
 sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__/$ROUNDCUBE_MYSQL_PASSWORD/g" config.inc.php
 sed -i "s/__EASYMAIL_MYSQL_DATABASE__/$MYSQL_DATABASE/g" config.inc.php
 
-service php7.0-fpm restart
+service php7.0-fpm start
 service nginx restart

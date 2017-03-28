@@ -32,7 +32,7 @@ fi
 service spamassassin restart
  
 #Move spam message to spam folder
-apt-get install dovecot-sieve dovecot-managesieved
+apt-get install dovecot-sieve dovecot-managesieved -y
 
 echo "
 protocol lmtp {
