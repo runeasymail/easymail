@@ -8,11 +8,6 @@ apt-get update -y
 
 apt-get install mysql-server -y
 update-alternatives --remove my.cnf /etc/mysql/my.cnf.migrated
-
-# Prevent MySQL failure to start because of the size of the InnoDB log files
-mv /var/lib/mysql/ib_logfile0 /var/lib/mysql/ib_logfile0_backup
-mv /var/lib/mysql/ib_logfile1 /var/lib/mysql/ib_logfile1_backup
-
 service mysql start
 
 apt-get install expect -y
