@@ -2,6 +2,7 @@ export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export IS_ON_DOCKER=""
 export USE_LETSENCRYPT=""
+export SSL_INSTALL_OWN=""
 export SSL_CA_BUNDLE_FILE=""
 export SSL_PRIVATE_KEY_FILE=""
 
@@ -110,6 +111,9 @@ if [ "$IS_ON_DOCKER" == "" ]; then
 	read -e -p "Is this installation on Docker? [N/y] " IS_ON_DOCKER
 fi
 
+IS_ON_DOCKER="${IS_ON_DOCKER:-N}"
+USE_LETSENCRYPT="${USE_LETSENCRYPT:-Y}"
+SSL_INSTALL_OWN="${SSL_INSTALL_OWN:-Y}"
 
 if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
 	IS_ON_DOCKER=true
