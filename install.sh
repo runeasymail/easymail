@@ -107,7 +107,7 @@ else
 fi
 
 if [ "$IS_ON_DOCKER" == "" ]; then
-	read -e -p "Is this installation is on Docker? [N/y] " IS_ON_DOCKER
+	read -e -p "Is this installation on Docker? [N/y] " IS_ON_DOCKER
 fi
 
 
