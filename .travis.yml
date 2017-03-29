@@ -4,8 +4,7 @@ services:
   - docker
 
 before_install: >
-  echo 'HOSTNAME: test.exmaple.com' > easy-mail-install.config &&
-  echo 'PASSWORD: testpassword' >> easy-mail-install.config &&
+  echo 'HOSTNAME: test.exmaple.com' > easy-mail-install.config &&  
   echo 'IS_ON_DOCKER: y' >> easy-mail-install.config &&
   echo 'SSL_INSTALL_OWN: n' >> easy-mail-install.config &&
   echo 'USE_LETSENCRYPT: n' >> easy-mail-install.config 
