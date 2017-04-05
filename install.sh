@@ -6,6 +6,21 @@ export SSL_INSTALL_OWN=""
 export SSL_CA_BUNDLE_FILE=""
 export SSL_PRIVATE_KEY_FILE=""
 
+# Make sure only root can run our script
+if [ "$(id -u)" != "0" ]; then
+   echo "Please log in as root"
+   exit
+fi
+
+# Check for min system requirements
+if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 1024)); then
+   echo -e "The installation of EasyMail has been stopped because of the following minimum requirements:\n";
+   echo -e "- RAM (or RAM + SWAP) >= 1GB\n\n";
+   exit;
+fi
+
+apt-get update -y && apt-get install openssl python -y
+
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
 
@@ -16,17 +31,9 @@ function is_installed {
    echo $is_installed
 }
 
-apt-get update -y && apt-get install openssl python -y
-
 function get_rand_password() {
 	openssl rand  32 | md5sum | awk '{print $1;}'
 }
-
-# Make sure only root can run our script
-if [ "$(id -u)" != "0" ]; then
-   echo "Please log in as root"
-   exit
-fi
 
 # Use config.
 while [[ "$#" > 1 ]]; do case $1 in
