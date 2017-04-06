@@ -36,7 +36,7 @@ protocols = imap pop3 lmtp sieve
 sed -i "s/mail_location = .*/mail_location = maildir:\/var\/mail\/vhosts\/%d\/\%n/g" /etc/dovecot/conf.d/10-mail.conf
 sed -i "s/#mail_privileged_group =/mail_privileged_group = mail/g" /etc/dovecot/conf.d/10-mail.conf
 
-mkdir -p /var/mail/vhosts/$HOSTNAME
+mkdir -p /var/mail/vhosts/__EASYMAIL_HOSTNAME__
 groupadd -g 5000 vmail
 useradd -g vmail -u 5000 vmail -d /var/mail
 chown -R vmail:vmail /var/mail
