@@ -166,6 +166,10 @@ bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 bash $CURRENT_DIR/dkim/install.sh
 
+if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
+	bash $CURRENT_DIR/letsencrypt/before-install.sh
+fi
+
 # Ask for input data
 if [ "$HOSTNAME" == "" ]; then
 	read -p "Type hostname: " HOSTNAME
@@ -197,7 +201,7 @@ EOF
 	# Dovecot
 mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
-	
+	# Let's encrypt
 if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
 fi
