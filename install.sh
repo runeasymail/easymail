@@ -1,6 +1,5 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export HOSTNAME="__EASYMAIL_HOSTNAME__"
-export NEW_HOSTNAME=""
+export HOSTNAME=""
 export IS_ON_DOCKER=""
 export USE_LETSENCRYPT=""
 export SSL_INSTALL_OWN=""
@@ -49,7 +48,7 @@ done
 
 if [  "$useConfig" != "" ]; then
         if [ -f "$useConfig" ]; then     
-		export NEW_HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
+		export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
                 export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
                 export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
@@ -134,7 +133,7 @@ export -f set_hostname
 
 export PASSWORD=$(get_rand_password)
 
-export ADMIN_EMAIL="admin@$HOSTNAME"
+export ADMIN_EMAIL="admin@__EASYMAIL_HOSTNAME__"
 export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
 
 export ROOT_MYSQL_USERNAME='root'
@@ -168,8 +167,8 @@ bash $CURRENT_DIR/ManagementAPI/install.sh
 bash $CURRENT_DIR/dkim/install.sh
 
 # Ask for input data
-if [ "$NEW_HOSTNAME" == "" ]; then
-	read -p "Type hostname: " NEW_HOSTNAME
+if [ "$HOSTNAME" == "" ]; then
+	read -p "Type hostname: " HOSTNAME
 fi
 
 # Change HOSTNAME with NEW_HOSTNAME
