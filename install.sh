@@ -1,5 +1,6 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export HOSTNAME="test.exmaple.com" # This is an example domain name which will be replaced in the end of the installation
+export HOSTNAME="__EASYMAIL_HOSTNAME__"
+export NEW_HOSTNAME=""
 export IS_ON_DOCKER=""
 export USE_LETSENCRYPT=""
 export SSL_INSTALL_OWN=""
@@ -47,7 +48,8 @@ while [[ "$#" > 1 ]]; do case $1 in
 done
 
 if [  "$useConfig" != "" ]; then
-        if [ -f "$useConfig" ]; then                
+        if [ -f "$useConfig" ]; then     
+		export NEW_HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
                 export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
                 export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
@@ -166,8 +168,9 @@ bash $CURRENT_DIR/ManagementAPI/install.sh
 bash $CURRENT_DIR/dkim/install.sh
 
 # Ask for input data
-export NEW_HOSTNAME=""
-read -p "Type hostname: " NEW_HOSTNAME
+if [ "$NEW_HOSTNAME" == "" ]; then
+	read -p "Type hostname: " NEW_HOSTNAME
+fi
 
 # Change HOSTNAME with NEW_HOSTNAME
 # ...
