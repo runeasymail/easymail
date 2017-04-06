@@ -1,5 +1,5 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export HOSTNAME=""
+export HOSTNAME="test.exmaple.com" # This is an example domain name which will be replaced in the end of the installation
 export IS_ON_DOCKER=""
 export USE_LETSENCRYPT=""
 export SSL_INSTALL_OWN=""
@@ -31,10 +31,6 @@ function is_installed {
    echo $is_installed
 }
 
-function get_rand_password() {
-	openssl rand  32 | md5sum | awk '{print $1;}'
-}
-
 # Use config.
 while [[ "$#" > 1 ]]; do case $1 in
     --config) useConfig="$2";;
@@ -51,8 +47,7 @@ while [[ "$#" > 1 ]]; do case $1 in
 done
 
 if [  "$useConfig" != "" ]; then
-        if [ -f "$useConfig" ]; then
-                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')                
+        if [ -f "$useConfig" ]; then                
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
                 export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
                 export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
@@ -77,10 +72,6 @@ elif [ $(is_installed mysql) == 1 ]; then
 	echo "MySQL is already installed, installation aborted"; exit
 elif [ $(is_installed spamassassin) == 1 ]; then
 	echo "SpamAssassin is already installed, installation aborted"; exit
-fi
-
-if [ "$HOSTNAME" == "" ]; then
-	read -p "Type hostname: " HOSTNAME
 fi
 
 if [ "$SSL_INSTALL_OWN" == "" ]; then
@@ -132,22 +123,14 @@ fi
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
+
+function get_rand_password() {
+	openssl rand  32 | md5sum | awk '{print $1;}'
+}
+
 export -f set_hostname
 
 export PASSWORD=$(get_rand_password)
-
-echo "
-# EASY MAIL INSTALL CONFIGURATION
-
-HOSTNAME: $HOSTNAME
-PASSWORD: $PASSWORD
-IS_ON_DOCKER: $IS_ON_DOCKER
-SSL_INSTALL_OWN: $SSL_INSTALL_OWN
-SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
-SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
-USE_LETSENCRYPT: $USE_LETSENCRYPT
-
-" > easy-mail-install.config
 
 export ADMIN_EMAIL="admin@$HOSTNAME"
 export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
@@ -182,10 +165,27 @@ bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 bash $CURRENT_DIR/dkim/install.sh
 
+# Ask for input data
+export NEW_HOSTNAME=""
+read -p "Type hostname: " NEW_HOSTNAME
+
+# Change HOSTNAME with NEW_HOSTNAME
+# ...
+
 if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
 fi
 
+echo "
+# EASY MAIL INSTALL CONFIGURATION
+HOSTNAME: $HOSTNAME
+PASSWORD: $PASSWORD
+IS_ON_DOCKER: $IS_ON_DOCKER
+SSL_INSTALL_OWN: $SSL_INSTALL_OWN
+SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
+SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
+USE_LETSENCRYPT: $USE_LETSENCRYPT
+" > easy-mail-install.config
 
 echo "Admin username: $ADMIN_EMAIL | password: $PASSWORD"
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
