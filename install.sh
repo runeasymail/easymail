@@ -171,9 +171,34 @@ if [ "$HOSTNAME" == "" ]; then
 	read -p "Type hostname: " HOSTNAME
 fi
 
-# Change HOSTNAME with NEW_HOSTNAME
-# ...
+# Set HOSTNAME
+	# Auto configurations
+set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
+set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
+	# Roundcube
+set_hostname /etc/nginx/sites-enabled/roundcube
+	# Postfix
+debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
+	# MySQL 
+export ADMIN_EMAIL="admin@$HOSTNAME"
+mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
+mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+USE $MYSQL_DATABASE;
 
+UPDATE \`virtual_domains\`
+SET \`name\`='$HOSTNAME'
+WHERE \`id\`='1';
+
+UPDATE \`virtual_users\`
+SET \`email\`='$ADMIN_EMAIL'
+WHERE \`id\`='1';
+
+EOF
+	# Dovecot
+mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
+	# Spamassassin
+# ...	
+	
 if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
 fi
