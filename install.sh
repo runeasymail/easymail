@@ -185,7 +185,6 @@ set_hostname /etc/nginx/sites-enabled/roundcube
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 	# MySQL 
 export ADMIN_EMAIL="admin@$HOSTNAME"
-mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
 USE $MYSQL_DATABASE;
 
