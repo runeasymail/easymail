@@ -216,16 +216,21 @@ SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
 USE_LETSENCRYPT: $USE_LETSENCRYPT
 " > easy-mail-install.config
 
-echo "Admin username: $ADMIN_EMAIL | password: $PASSWORD"
+echo -p "\n----------------------"
+echo "Database - access:"
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
+
+echo -p "\nApplications - access:"
 if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ] || [ "$SSL_INSTALL_OWN" == "y"  ] || [ "$SSL_INSTALL_OWN" == "Y"  ]; then
+echo "Roundcube: https://$HOSTNAME/ | username: $ADMIN_EMAIL | password: $PASSWORD"
 echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD" 
 else
+echo "Roundcube: http://$HOSTNAME/ | username: $ADMIN_EMAIL | password: $PASSWORD"
 echo "API url: http://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD" 
 fi
-
+echo -p "\n----------------------"
 echo "Installation has finished"
 echo "All services have been started automatically"
 
