@@ -36,7 +36,7 @@ apt-get install dovecot-sieve dovecot-managesieved -y
 
 echo "
 protocol lmtp {
-	postmaster_address = admin@$HOSTNAME
+	postmaster_address = admin@__EASYMAIL_HOSTNAME__
 	mail_plugins = \$mail_plugins sieve
 }
 " >> /etc/dovecot/conf.d/20-lmtp.conf

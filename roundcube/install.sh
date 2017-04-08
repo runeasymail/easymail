@@ -13,7 +13,7 @@ if [ $IS_ON_DOCKER == true ]; then
 fi
 
 cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
-set_hostname /etc/nginx/sites-enabled/roundcube
+
 sed -i "s#__EASYMAIL_SSL_CA_BUNDLE_FILE__#$SSL_CA_BUNDLE_FILE#g" /etc/nginx/sites-enabled/roundcube
 sed -i "s#__EASYMAIL_SSL_PRIVATE_KEY_FILE__#$SSL_PRIVATE_KEY_FILE#g" /etc/nginx/sites-enabled/roundcube
 

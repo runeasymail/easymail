@@ -5,6 +5,8 @@ export USE_LETSENCRYPT=""
 export SSL_INSTALL_OWN=""
 export SSL_CA_BUNDLE_FILE=""
 export SSL_PRIVATE_KEY_FILE=""
+export SSL_CA_BUNDLE_FILE_DEFAULT="/etc/dovecot/dovecot.pem"
+export SSL_PRIVATE_KEY_FILE_DEFAULT="/etc/dovecot/private/dovecot.pem"
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
@@ -31,10 +33,6 @@ function is_installed {
    echo $is_installed
 }
 
-function get_rand_password() {
-	openssl rand  32 | md5sum | awk '{print $1;}'
-}
-
 # Use config.
 while [[ "$#" > 1 ]]; do case $1 in
     --config) useConfig="$2";;
@@ -51,8 +49,8 @@ while [[ "$#" > 1 ]]; do case $1 in
 done
 
 if [  "$useConfig" != "" ]; then
-        if [ -f "$useConfig" ]; then
-                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')                
+        if [ -f "$useConfig" ]; then     
+		export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
                 export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
                 export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
@@ -79,18 +77,14 @@ elif [ $(is_installed spamassassin) == 1 ]; then
 	echo "SpamAssassin is already installed, installation aborted"; exit
 fi
 
-if [ "$HOSTNAME" == "" ]; then
-	read -p "Type hostname: " HOSTNAME
-fi
-
 if [ "$SSL_INSTALL_OWN" == "" ]; then
 	read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
 fi
 
 if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then	
 	# By default use Dovecot's self-signed certificate
-	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
-	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
+	SSL_CA_BUNDLE_FILE=$SSL_CA_BUNDLE_FILE_DEFAULT
+	SSL_PRIVATE_KEY_FILE=$SSL_PRIVATE_KEY_FILE_DEFAULT
 		
 	# Ask for Letsencrypt SSL certificate
 	if [ "$USE_LETSENCRYPT" == "" ]; then
@@ -132,24 +126,16 @@ fi
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
+
+function get_rand_password() {
+	openssl rand  32 | md5sum | awk '{print $1;}'
+}
+
 export -f set_hostname
 
 export PASSWORD=$(get_rand_password)
 
-echo "
-# EASY MAIL INSTALL CONFIGURATION
-
-HOSTNAME: $HOSTNAME
-PASSWORD: $PASSWORD
-IS_ON_DOCKER: $IS_ON_DOCKER
-SSL_INSTALL_OWN: $SSL_INSTALL_OWN
-SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
-SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
-USE_LETSENCRYPT: $USE_LETSENCRYPT
-
-" > easy-mail-install.config
-
-export ADMIN_EMAIL="admin@$HOSTNAME"
+export ADMIN_EMAIL="admin@__EASYMAIL_HOSTNAME__"
 export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
 
 export ROOT_MYSQL_USERNAME='root'
@@ -180,20 +166,79 @@ bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
-bash $CURRENT_DIR/dkim/install.sh
 
+if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
+	bash $CURRENT_DIR/letsencrypt/before-install.sh
+fi
+
+# Ask for input data
+if [ "$HOSTNAME" == "" ]; then
+	read -p "Type hostname: " HOSTNAME
+fi
+
+# Set HOSTNAME
+	# Auto configurations
+set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
+set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
+	# Roundcube
+set_hostname /etc/nginx/sites-enabled/roundcube
+	# Postfix
+debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
+	# MySQL 
+export ADMIN_EMAIL="admin@$HOSTNAME"
+mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+USE $MYSQL_DATABASE;
+
+UPDATE \`virtual_domains\`
+SET \`name\`='$HOSTNAME'
+WHERE \`id\`='1';
+
+UPDATE \`virtual_users\`
+SET \`email\`='$ADMIN_EMAIL'
+WHERE \`id\`='1';
+
+EOF
+	# Dovecot
+mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
+sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
+	# Reload services
+service nginx reload
+if [ $IS_ON_DOCKER == true ]; then
+	/usr/sbin/dovecot
+	/etc/init.d/postfix reload
+else 
+	service dovecot reload
+	service postfix reload
+fi
+	# DKIM
+bash $CURRENT_DIR/dkim/install.sh
+	# Let's encrypt
 if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
 fi
 
+echo "
+# EASY MAIL INSTALL CONFIGURATION
+HOSTNAME: $HOSTNAME
+PASSWORD: $PASSWORD
+IS_ON_DOCKER: $IS_ON_DOCKER
+SSL_INSTALL_OWN: $SSL_INSTALL_OWN
+SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
+SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
+USE_LETSENCRYPT: $USE_LETSENCRYPT
+" > easy-mail-install.config
 
-echo "Admin username: $ADMIN_EMAIL | password: $PASSWORD"
+echo -e "\n----------------------"
+echo "Database - access:"
 echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
 echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
 echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
+
+echo -e "\nApplications - access:"
+echo "Roundcube: https://$HOSTNAME/ | username: $ADMIN_EMAIL | password: $PASSWORD"
 echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
 
-echo "Installation has finished"
+echo -e "\nInstallation has finished"
 echo "All services have been started automatically"
 
 bash $CURRENT_DIR/event/after-install.sh

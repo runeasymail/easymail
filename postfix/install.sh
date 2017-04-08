@@ -1,4 +1,4 @@
-debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
+debconf-set-selections <<< "postfix postfix/mailname string __EASYMAIL_HOSTNAME__"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 
 apt-get install postfix postfix-mysql -y
@@ -38,7 +38,7 @@ CREATE TABLE \`recipient_bcc\` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO \`virtual_domains\` (\`id\` ,\`name\`) 
-VALUES('1', '$HOSTNAME');
+VALUES('1', '__EASYMAIL_HOSTNAME__');
   
 INSERT INTO \`virtual_users\` (\`id\`, \`domain_id\`, \`password\` , \`email\`)
 VALUES ('1', '1', '$ADMIN_PASSWORD', '$ADMIN_EMAIL');

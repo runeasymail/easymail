@@ -36,7 +36,7 @@ protocols = imap pop3 lmtp sieve
 sed -i "s/mail_location = .*/mail_location = maildir:\/var\/mail\/vhosts\/%d\/\%n/g" /etc/dovecot/conf.d/10-mail.conf
 sed -i "s/#mail_privileged_group =/mail_privileged_group = mail/g" /etc/dovecot/conf.d/10-mail.conf
 
-mkdir -p /var/mail/vhosts/$HOSTNAME
+mkdir -p /var/mail/vhosts/__EASYMAIL_HOSTNAME__
 groupadd -g 5000 vmail
 useradd -g vmail -u 5000 vmail -d /var/mail
 chown -R vmail:vmail /var/mail
@@ -73,7 +73,7 @@ chmod -R o-rwx /etc/dovecot
 cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
 # Generate self-signed certificate
-openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE_DEFAULT" -keyout "$SSL_PRIVATE_KEY_FILE_DEFAULT"
 
 # Configure Sieve
 apt-get install dovecot-sieve dovecot-managesieved php-net-sieve apache2- -y
