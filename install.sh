@@ -230,8 +230,8 @@ else
 echo "Roundcube: http://$HOSTNAME/ | username: $ADMIN_EMAIL | password: $PASSWORD"
 echo "API url: http://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD" 
 fi
-echo -e "\n----------------------"
-echo "Installation has finished"
+
+echo -e "\nInstallation has finished"
 echo "All services have been started automatically"
 
 bash $CURRENT_DIR/event/after-install.sh
