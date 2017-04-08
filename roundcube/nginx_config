@@ -2,27 +2,6 @@ server {
 	listen 80;
 	server_name __EASYMAIL_HOSTNAME__;
 	
-
-	location / {
-		rewrite ^ https://$host$request_uri;
-	}
-	
-	# __EASY_MAIL_INCLUDE_LETSENCRYPT__
-
-}
-
-server {
-	listen 443;
-	server_name __EASYMAIL_HOSTNAME__;
-	
-	ssl on;
-	ssl_certificate __EASYMAIL_SSL_CA_BUNDLE_FILE__;
-	ssl_certificate_key __EASYMAIL_SSL_PRIVATE_KEY_FILE__;
-	ssl_session_timeout 5m;
-	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # don't use SSLv3 ref: POODLE
-	ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
-	ssl_prefer_server_ciphers on;
-	
 	client_max_body_size 16M;
 	
 	# __EASY_MAIL_INCLUDE__
