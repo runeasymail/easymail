@@ -2,7 +2,6 @@ server {
 	listen 80;
 	server_name __EASYMAIL_HOSTNAME__;
 	
-
 	location / {
 		rewrite ^ https://$host$request_uri;
 	}
