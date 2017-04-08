@@ -181,6 +181,7 @@ set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
 	# Roundcube
 set_hostname /etc/nginx/sites-enabled/roundcube
+service nginx reload
 	# Postfix
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 	# MySQL 
@@ -200,6 +201,13 @@ EOF
 	# Dovecot
 mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
+if [ $IS_ON_DOCKER == true ]; then
+	/usr/sbin/dovecot
+	/etc/init.d/postfix reload
+else 
+	service dovecot reload
+	service postfix reload
+fi
 	# Let's encrypt
 if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
 	bash $CURRENT_DIR/letsencrypt/install.sh
