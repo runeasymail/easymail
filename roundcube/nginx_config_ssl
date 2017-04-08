@@ -7,7 +7,6 @@ server {
 	}
 	
 	# __EASY_MAIL_INCLUDE_LETSENCRYPT__
-
 }
 
 server {
