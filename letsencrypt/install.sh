@@ -1,5 +1,4 @@
-#install let's encrypt
-
+cd /ssl
 openssl req -new -sha256 -key domain.key -subj "/CN=${HOSTNAME}" > domain.csr
 python acme_tiny.py --account-key ./account.key --csr ./domain.csr --acme-dir /var/www/challenges/ > ./signed.crt
 cat signed.crt intermediate.pem > chained.pem
