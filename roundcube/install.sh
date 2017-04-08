@@ -12,7 +12,12 @@ if [ $IS_ON_DOCKER == true ]; then
 	apt-get install  wget -y
 fi
 
-cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
+if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ] || [ "$SSL_INSTALL_OWN" == "y"  ] || [ "$SSL_INSTALL_OWN" == "Y"  ]; then
+	cp $ROUNDCUBE_DIR/nginx_config_ssl /etc/nginx/sites-enabled/roundcube
+else
+	cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
+fi
+
 sed -i "s#__EASYMAIL_SSL_CA_BUNDLE_FILE__#$SSL_CA_BUNDLE_FILE#g" /etc/nginx/sites-enabled/roundcube
 sed -i "s#__EASYMAIL_SSL_PRIVATE_KEY_FILE__#$SSL_PRIVATE_KEY_FILE#g" /etc/nginx/sites-enabled/roundcube
 
