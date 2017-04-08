@@ -5,6 +5,8 @@ export USE_LETSENCRYPT=""
 export SSL_INSTALL_OWN=""
 export SSL_CA_BUNDLE_FILE=""
 export SSL_PRIVATE_KEY_FILE=""
+export SSL_CA_BUNDLE_FILE_DEFAULT="/etc/dovecot/dovecot.pem"
+export SSL_PRIVATE_KEY_FILE_DEFAULT="/etc/dovecot/private/dovecot.pem"
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
@@ -81,8 +83,8 @@ fi
 
 if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then	
 	# By default use Dovecot's self-signed certificate
-	SSL_CA_BUNDLE_FILE=/etc/dovecot/dovecot.pem
-	SSL_PRIVATE_KEY_FILE=/etc/dovecot/private/dovecot.pem
+	SSL_CA_BUNDLE_FILE=SSL_CA_BUNDLE_FILE_DEFAULT
+	SSL_PRIVATE_KEY_FILE=SSL_PRIVATE_KEY_FILE_DEFAULT
 		
 	# Ask for Letsencrypt SSL certificate
 	if [ "$USE_LETSENCRYPT" == "" ]; then
