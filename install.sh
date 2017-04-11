@@ -176,6 +176,22 @@ if [ "$HOSTNAME" == "" ]; then
 	read -p "Type hostname: " HOSTNAME
 fi
 
+# SSL question.
+
+# NOT READY YET
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE_DEFAULT" -keyout "$SSL_PRIVATE_KEY_FILE_DEFAULT"
+
+sed -i "s#ssl_cert =.*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/conf.d/10-ssl.conf
+sed -i "s#ssl_key =.*#ssl_key = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/conf.d/10-ssl.conf
+
+sed -i "s/ssl_certificate .*/ssl_certificate $SSL_PRIVATE_KEY_FILE/g" /etc/nginx/sites-enabled/roundcube
+sed -i "s/ssl_certificate_key .*/ssl_certificate $SSL_PRIVATE_KEY_FILE/g" /etc/nginx/sites-enabled/roundcube
+
+postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
+# NOT READY YET
+
+
+
 # Set HOSTNAME
 	# Auto configurations
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
