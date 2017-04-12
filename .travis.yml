@@ -15,7 +15,7 @@ script:
 # just for testing
     - docker commit easymail easymail-img
     - docker rm easymail
-    - docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" easymail /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+    - docker run -it -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" easymail-img /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
     - docker exec easymail wget --no-check-certificate https://localhost
     - docker exec easymail wget --no-check-certificate https://localhost/api/
     
