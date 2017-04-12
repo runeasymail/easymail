@@ -19,7 +19,3 @@ script:
     - sleep 10
     - docker exec easymail wget --no-check-certificate https://test.exmaple.com
     - docker exec easymail wget --no-check-certificate https://test.exmaple.com/api/
-    - docker exec easymail wget --no-check-certificate https://localhost
-    - docker exec easymail wget --no-check-certificate https://localhost/api/
-    - docker exec easymail ping test.exmaple.com
-  
