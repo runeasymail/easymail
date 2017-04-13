@@ -9,6 +9,18 @@ before_install: >
   echo 'SSL_INSTALL_OWN: n' >> easy-mail-install.config &&
   echo 'USE_LETSENCRYPT: n' >> easy-mail-install.config 
 
-
 script:
-    - docker run -it -v /home/travis/build/runeasymail/easymail/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "mail.example.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:16.04 /bin/sh -c "bash /easymail/install.sh -c /easymail/easy-mail-install.config"
+    - docker run -it -v /home/travis/build/runeasymail/easymail/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.exmaple.com" --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:16.04 /bin/sh -c "bash /easymail/install.sh -c /easymail/easy-mail-install.config"
+    
+# just for testing
+    - docker commit easymail easymail-img
+    - docker rm easymail
+    - docker run -itd -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.exmaple.com" --name="easymail" easymail-img /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
+    - sleep 10
+    - docker exec easymail wget --no-check-certificate https://test.exmaple.com
+    
+    # uncomment after updating to ManagmentAPI v0.5 
+    #- docker exec easymail wget --no-check-certificate https://test.exmaple.com/api/ping
+    
+    # uncomment after integration GUI
+    #- docker exec easymail wget --no-check-certificate https://test.exmaple.com/admin/
