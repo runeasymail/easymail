@@ -15,7 +15,7 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 # Check for min system requirements
-if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 1024)); then
+if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 900)); then
    echo -e "The installation of EasyMail has been stopped because of the following minimum requirements:\n";
    echo -e "- RAM (or RAM + SWAP) >= 1GB\n\n";
    exit;
