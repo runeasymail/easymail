@@ -1,7 +1,6 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export IS_ON_DOCKER=""
-export USE_LETSENCRYPT=""
 export SSL_INSTALL_OWN=""
 export SSL_CA_BUNDLE_FILE=""
 export SSL_PRIVATE_KEY_FILE=""
@@ -52,8 +51,7 @@ if [  "$useConfig" != "" ]; then
         if [ -f "$useConfig" ]; then     
 		export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
-                export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')
-                export USE_LETSENCRYPT=$(cat $useConfig | grep USE_LETSENCRYPT: | awk '{ print $2 }')
+                export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')                
                 export SSL_CA_BUNDLE_FILE=$(cat $useConfig | grep SSL_CA_BUNDLE_FILE: | awk '{ print $2 }')
                 export SSL_PRIVATE_KEY_FILE=$(cat $useConfig | grep SSL_PRIVATE_KEY_FILE: | awk '{ print $2 }')
         else
@@ -84,12 +82,7 @@ fi
 if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then	
 	# By default use Dovecot's self-signed certificate
 	SSL_CA_BUNDLE_FILE=$SSL_CA_BUNDLE_FILE_DEFAULT
-	SSL_PRIVATE_KEY_FILE=$SSL_PRIVATE_KEY_FILE_DEFAULT
-		
-	# Ask for Letsencrypt SSL certificate
-	if [ "$USE_LETSENCRYPT" == "" ]; then
-		read -e -p "Use Let's encrypt SSL [n/Y] " USE_LETSENCRYPT
-	fi
+	SSL_PRIVATE_KEY_FILE=$SSL_PRIVATE_KEY_FILE_DEFAULT	
 else	
 	# Set you own SSL certificate
 	if [ "$SSL_CA_BUNDLE_FILE" == "" ]; then
@@ -103,9 +96,6 @@ else
 			read -p "[SSL] Private key file path: " SSL_PRIVATE_KEY_FILE
 		done 
 	fi
-	
-	# Set the Letsencrypt certificate to No
-	USE_LETSENCRYPT='n';
 fi
 
 if [ "$IS_ON_DOCKER" == "" ]; then
@@ -113,7 +103,6 @@ if [ "$IS_ON_DOCKER" == "" ]; then
 fi
 
 IS_ON_DOCKER="${IS_ON_DOCKER:-N}"
-USE_LETSENCRYPT="${USE_LETSENCRYPT:-Y}"
 SSL_INSTALL_OWN="${SSL_INSTALL_OWN:-Y}"
 
 if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
@@ -166,10 +155,6 @@ bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
-
-if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
-	bash $CURRENT_DIR/letsencrypt/before-install.sh
-fi
 
 # Ask for input data
 if [ "$HOSTNAME" == "" ]; then
@@ -228,10 +213,6 @@ else
 fi
 	# DKIM
 bash $CURRENT_DIR/dkim/install.sh
-	# Let's encrypt
-if [ "$USE_LETSENCRYPT" == "y"  ] || [ "$USE_LETSENCRYPT" == "Y"  ]; then
-	bash $CURRENT_DIR/letsencrypt/install.sh
-fi
 
 echo "
 # EASY MAIL INSTALL CONFIGURATION
@@ -241,7 +222,6 @@ IS_ON_DOCKER: $IS_ON_DOCKER
 SSL_INSTALL_OWN: $SSL_INSTALL_OWN
 SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
 SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
-USE_LETSENCRYPT: $USE_LETSENCRYPT
 " > easy-mail-install.config
 
 echo -e "\n----------------------"
