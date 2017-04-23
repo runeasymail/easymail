@@ -4,6 +4,7 @@ export IS_ON_DOCKER=""
 export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
 export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
 
+
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
    echo "Please log in as root"
@@ -125,7 +126,6 @@ bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
-
 
 # after that part all the code should be executed for each container too.
 
