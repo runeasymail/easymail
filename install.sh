@@ -54,8 +54,6 @@ if [  "$useConfig" != "" ]; then
         fi
 fi
 
-bash $CURRENT_DIR/event/before-install.sh
-
 if [ $(is_installed php) == 1 ]; then
 	echo "PHP is already installed, installation aborted"; exit
 elif [ $(is_installed nginx) == 1 ]; then
@@ -191,6 +189,4 @@ echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | pas
 
 echo -e "\nInstallation has finished"
 echo "All services have been started automatically"
-
-bash $CURRENT_DIR/event/after-install.sh
 
