@@ -1,11 +1,9 @@
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export IS_ON_DOCKER=""
-export SSL_INSTALL_OWN=""
-export SSL_CA_BUNDLE_FILE=""
-export SSL_PRIVATE_KEY_FILE=""
-export SSL_CA_BUNDLE_FILE_DEFAULT="/etc/dovecot/dovecot.pem"
-export SSL_PRIVATE_KEY_FILE_DEFAULT="/etc/dovecot/private/dovecot.pem"
+export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
+export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
+
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
@@ -49,11 +47,8 @@ done
 
 if [  "$useConfig" != "" ]; then
         if [ -f "$useConfig" ]; then     
-		export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
+                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
                 export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
-                export SSL_INSTALL_OWN=$(cat $useConfig | grep SSL_INSTALL_OWN: | awk '{ print $2 }')                
-                export SSL_CA_BUNDLE_FILE=$(cat $useConfig | grep SSL_CA_BUNDLE_FILE: | awk '{ print $2 }')
-                export SSL_PRIVATE_KEY_FILE=$(cat $useConfig | grep SSL_PRIVATE_KEY_FILE: | awk '{ print $2 }')
         else
                 echo "The config file does not exist!"; exit;
         fi
@@ -75,35 +70,11 @@ elif [ $(is_installed spamassassin) == 1 ]; then
 	echo "SpamAssassin is already installed, installation aborted"; exit
 fi
 
-if [ "$SSL_INSTALL_OWN" == "" ]; then
-	read -e -p "Do you want to install your own ssl certificates? [n/Y] " SSL_INSTALL_OWN 
-fi
-
-if [ "$SSL_INSTALL_OWN" == "n"  ] || [ "$SSL_INSTALL_OWN" == "N"  ]; then	
-	# By default use Dovecot's self-signed certificate
-	SSL_CA_BUNDLE_FILE=$SSL_CA_BUNDLE_FILE_DEFAULT
-	SSL_PRIVATE_KEY_FILE=$SSL_PRIVATE_KEY_FILE_DEFAULT	
-else	
-	# Set you own SSL certificate
-	if [ "$SSL_CA_BUNDLE_FILE" == "" ]; then
-		while [ ! -f "$SSL_CA_BUNDLE_FILE" ]; do
-			read -p "[SSL] CA Bundle file path: " SSL_CA_BUNDLE_FILE
-		done
-	fi
- 
-	if [ "$SSL_PRIVATE_KEY_FILE" == "" ]; then
-		while [ ! -f "$SSL_PRIVATE_KEY_FILE" ]; do
-			read -p "[SSL] Private key file path: " SSL_PRIVATE_KEY_FILE
-		done 
-	fi
-fi
-
 if [ "$IS_ON_DOCKER" == "" ]; then
 	read -e -p "Is this installation on Docker? [N/y] " IS_ON_DOCKER
 fi
 
 IS_ON_DOCKER="${IS_ON_DOCKER:-N}"
-SSL_INSTALL_OWN="${SSL_INSTALL_OWN:-Y}"
 
 if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
 	IS_ON_DOCKER=true
@@ -156,10 +127,15 @@ bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 
+# after that part all the code should be executed for each container too.
+
 # Ask for input data
 if [ "$HOSTNAME" == "" ]; then
 	read -p "Type hostname: " HOSTNAME
 fi
+
+# re-generate the Dovecot's self-signed certificate
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
 # Set HOSTNAME
 	# Auto configurations
@@ -197,16 +173,6 @@ else
 fi
 	# DKIM
 bash $CURRENT_DIR/dkim/install.sh
-
-echo "
-# EASY MAIL INSTALL CONFIGURATION
-HOSTNAME: $HOSTNAME
-PASSWORD: $PASSWORD
-IS_ON_DOCKER: $IS_ON_DOCKER
-SSL_INSTALL_OWN: $SSL_INSTALL_OWN
-SSL_CA_BUNDLE_FILE: $SSL_CA_BUNDLE_FILE
-SSL_PRIVATE_KEY_FILE: $SSL_PRIVATE_KEY_FILE
-" > easy-mail-install.config
 
 echo -e "\n----------------------"
 echo "Database - access:"
