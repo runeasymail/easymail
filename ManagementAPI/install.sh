@@ -11,6 +11,8 @@ chmod +x ManagementAPI
 echo "
 [app]
 port=7080
+hostname=__EASYMAIL_HOSTNAME__
+
 [mysql]
 dsn=$MYSQL_USERNAME:$MYSQL_PASSWORD@tcp($MYSQL_HOSTNAME:3306)/$MYSQL_DATABASE
 
