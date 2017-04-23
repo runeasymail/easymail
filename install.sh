@@ -198,6 +198,9 @@ fi
 	# DKIM
 bash $CURRENT_DIR/dkim/install.sh
 
+sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
+
+
 echo "
 # EASY MAIL INSTALL CONFIGURATION
 HOSTNAME: $HOSTNAME
