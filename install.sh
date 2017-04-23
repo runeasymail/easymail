@@ -199,7 +199,8 @@ fi
 bash $CURRENT_DIR/dkim/install.sh
 
 sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
-
+# restart the ManagementAPI 
+pkill ManagementAPI && cd /opt/easymail/ManagementAPI && ./ManagementAPI &
 
 echo "
 # EASY MAIL INSTALL CONFIGURATION
