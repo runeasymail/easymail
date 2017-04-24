@@ -1,3 +1,5 @@
+set -e
+
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export IS_ON_DOCKER=""
