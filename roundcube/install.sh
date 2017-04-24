@@ -1,4 +1,4 @@
-# INSTALL Roundcube and all its dependences
+# Install Roundcube and its dependencies
 set -e
 
 ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
