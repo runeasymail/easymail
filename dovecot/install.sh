@@ -1,3 +1,5 @@
+# Install Dovecot
+
 DOVECOT_DIR="$CURRENT_DIR/dovecot"
 
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-exists string error"
