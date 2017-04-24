@@ -1,4 +1,5 @@
 # Install autoconfig and autodiscover
+set -e
 
 AUTOCONFIG_DIR="$CURRENT_DIR/autoconfig"
 
