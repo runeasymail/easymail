@@ -1,4 +1,4 @@
-# INSTALL Nginx
+# Install Nginx
 set -e
 
 apt-get update -y 
