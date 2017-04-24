@@ -1,3 +1,5 @@
+# Install Postfix
+
 debconf-set-selections <<< "postfix postfix/mailname string __EASYMAIL_HOSTNAME__"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 
