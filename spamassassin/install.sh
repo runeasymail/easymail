@@ -1,4 +1,6 @@
 # Install SpamAssassin
+set -e
+
 apt-get install spamassassin spamc -y
 groupadd spamd
 useradd -g spamd -s /bin/false -d /var/log/spamassassin spamd
