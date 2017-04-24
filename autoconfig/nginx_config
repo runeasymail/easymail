@@ -14,6 +14,11 @@ server {
 	ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
 	ssl_prefer_server_ciphers on;
 
+	location /mail/config-v1.1.xml {
+		try_files $uri /autoconfig.php?$args;
+		rewrite ^(.+)$ /autoconfig.php?$1 last;
+	}
+	
 	location /autodiscover/autodiscover.xml {
 		try_files $uri /autodiscover.php?$args;
 		rewrite ^(.+)$ /autodiscover.php?$1 last;
