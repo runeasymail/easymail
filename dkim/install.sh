@@ -1,4 +1,5 @@
 # Install DKIM
+set -e
 
 apt-get install opendkim opendkim-tools -y
 
