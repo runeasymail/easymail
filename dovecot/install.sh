@@ -1,4 +1,5 @@
 # Install Dovecot
+set -e
 
 DOVECOT_DIR="$CURRENT_DIR/dovecot"
 
