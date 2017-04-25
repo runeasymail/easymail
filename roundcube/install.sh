@@ -4,20 +4,23 @@ set -e
 ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
 
 apt-get install language-pack-en-base software-properties-common -y
+echo "Step 1!"
 LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
+echo "Step 2!"
 apt-get install php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-mbstring php7.0-curl php7.0-zip php-xml php-xml-parser php7.0-cli php7.0-gd php-apcu php7.0-imap php-mail php-mail-mimedecode php-mime-type php-mail-mime -y
+echo "Step 3!"
 
 phpenmod intl zip
-
+echo "Step 4!"
 if [ $IS_ON_DOCKER == true ]; then
 	apt-get install  wget -y
 fi
-
+echo "Step 5!"
 cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
-
+echo "Step 6!"
 sed -i "s#__EASYMAIL_SSL_CA_BUNDLE_FILE__#$SSL_CA_BUNDLE_FILE#g" /etc/nginx/sites-enabled/roundcube
 sed -i "s#__EASYMAIL_SSL_PRIVATE_KEY_FILE__#$SSL_PRIVATE_KEY_FILE#g" /etc/nginx/sites-enabled/roundcube
-
+echo "Step 7!"
 cd /tmp && wget -O roundcubemail.tar.gz https://github.com/roundcube/roundcubemail/releases/download/$ROUNDCUBE_VERSION/roundcubemail-$ROUNDCUBE_VERSION-complete.tar.gz
 tar -xvzf roundcubemail.tar.gz
 mkdir /usr/share/roundcubemail
