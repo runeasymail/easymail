@@ -20,7 +20,7 @@ if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 900)); then
    exit;
 fi
 
-apt-get update -y && apt-get install openssl python -y
+apt-get update -y && apt-get install openssl python dialog -y
 
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
