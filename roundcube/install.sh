@@ -59,3 +59,5 @@ sed -i "s/__EASYMAIL_MYSQL_DATABASE__/$MYSQL_DATABASE/g" config.inc.php
 
 service php7.0-fpm start
 service nginx restart
+
+echo "ROUNDCUVE OK!"
