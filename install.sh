@@ -158,14 +158,14 @@ SET \`email\`='$ADMIN_EMAIL'
 WHERE \`id\`='1';
 
 EOF
-echo "Step 1";
-exit;
 	# Dovecot
 mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
 	# Reload services
 service nginx restart 
 service dovecot reload
+echo "Step 1";
+exit;
 service postfix reload
 	# DKIM
 bash $CURRENT_DIR/dkim/install.sh
