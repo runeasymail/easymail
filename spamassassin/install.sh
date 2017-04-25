@@ -25,7 +25,7 @@ spamassassin unix -     n       n       -       -       pipe
 "  >> /etc/postfix/master.cf
 
 if [ $IS_ON_DOCKER == true ]; then
-	chown -R postfix:maildrop /var/spool/postfix/maildrop/
+	chown -R postfix:postfix /var/spool/postfix/maildrop/
 	chmod -R 0770 /var/spool/postfix/maildrop/ 
 	postfix reload
 else 
