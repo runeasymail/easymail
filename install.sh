@@ -173,9 +173,6 @@ groupadd -g 5000 vmail
 useradd -g vmail -u 5000 vmail -d /var/mail
 chown -R vmail:vmail /var/mail
 
-echo "Step 1!"
-exit;
-
 sed -i "s/^#disable_plaintext_auth = .*/disable_plaintext_auth = yes/g" /etc/dovecot/conf.d/10-auth.conf
 sed -i "s/^auth_mechanisms = .*/auth_mechanisms = plain login/g" /etc/dovecot/conf.d/10-auth.conf
 sed -i "s/\!include auth-system.conf.ext/#\!include auth-system.conf.ext/g" /etc/dovecot/conf.d/10-auth.conf
@@ -206,7 +203,8 @@ chown -R vmail:dovecot /etc/dovecot
 chmod -R o-rwx /etc/dovecot
 
 cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
-
+echo "Step 1!"
+exit;
 # Generate self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
