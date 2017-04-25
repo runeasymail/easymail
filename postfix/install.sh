@@ -1,3 +1,6 @@
+# Install Postfix
+set -e
+
 debconf-set-selections <<< "postfix postfix/mailname string __EASYMAIL_HOSTNAME__"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 
@@ -84,9 +87,4 @@ postfix_mysql_file "query = SELECT 1 FROM virtual_users WHERE email='%s'" mysql-
 postfix_mysql_file "query = SELECT destination FROM virtual_aliases WHERE source='%s'" mysql-virtual-alias-maps.cf
 postfix_mysql_file "query = SELECT to_address FROM recipient_bcc WHERE from_address='%s'" mysql-recipient-bcc-maps.cf
 
-if [ $IS_ON_DOCKER == true ]; then 
-	/etc/init.d/postfix start
-else 
-	service postfix start
-fi
-
+service postfix start

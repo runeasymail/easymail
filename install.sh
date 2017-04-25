@@ -1,9 +1,10 @@
+set -e
+
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export IS_ON_DOCKER=""
 export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
 export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
-
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
@@ -18,7 +19,7 @@ if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 900)); then
    exit;
 fi
 
-apt-get update -y && apt-get install openssl python -y
+apt-get update -y && apt-get install openssl python dialog -y
 
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
@@ -125,7 +126,7 @@ bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 
-# after that part all the code should be executed for each container too.
+# After that part all the code should be executed for each container too.
 
 # Ask for input data
 if [ "$HOSTNAME" == "" ]; then
@@ -162,20 +163,15 @@ mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
 	# Reload services
 service nginx restart 
-if [ $IS_ON_DOCKER == true ]; then
-	/usr/sbin/dovecot
-	/etc/init.d/postfix reload
-else 
-	service dovecot reload
-	service postfix reload
-fi
-	# DKIM
+service dovecot reload
+service postfix reload
+	# DKIM		
 bash $CURRENT_DIR/dkim/install.sh
-
-
+	# Management API
 sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
-# restart the ManagementAPI 
 pkill ManagementAPI && cd /opt/easymail/ManagementAPI && ./ManagementAPI &
+
+
 
 echo -e "\n----------------------"
 echo "Database - access:"

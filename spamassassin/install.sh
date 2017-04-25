@@ -1,4 +1,6 @@
 # Install SpamAssassin
+set -e
+
 apt-get install spamassassin spamc -y
 groupadd spamd
 useradd -g spamd -s /bin/false -d /var/log/spamassassin spamd
@@ -22,8 +24,9 @@ spamassassin unix -     n       n       -       -       pipe
  /usr/sbin/sendmail -oi -f \${sender} \${recipient}
 "  >> /etc/postfix/master.cf
 
-if [ $IS_ON_DOCKER == true ]; then
-	chown -R postfix:maildrop /var/spool/postfix/maildrop/
+if [ $IS_ON_DOCKER == true ]; then		
+	chown -R postfix:postdrop /var/spool/postfix/public
+	chown -R postfix:postdrop /var/spool/postfix/maildrop/
 	chmod -R 0770 /var/spool/postfix/maildrop/ 
 	postfix reload
 else 
@@ -61,9 +64,4 @@ if header :contains \"X-Spam-Flag\" \"YES\" {
 chown -R vmail:vmail /var/lib/dovecot
 sievec /var/lib/dovecot/sieve/default.sieve
 
-if [ $IS_ON_DOCKER == true ]; then
-	/usr/sbin/dovecot
-	/etc/init.d/postfix restart
-else 
-	service dovecot restart
-fi
+service dovecot restart

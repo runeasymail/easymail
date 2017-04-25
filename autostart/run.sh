@@ -1,7 +1,7 @@
 service mysql start
 service nginx start
 service php7.0-fpm start
-/etc/init.d/postfix start
-/usr/sbin/dovecot
+service postfix start
+service dovecot start
 service spamassassin start
 service opendkim start

@@ -1,3 +1,6 @@
+# Install Dovecot
+set -e
+
 DOVECOT_DIR="$CURRENT_DIR/dovecot"
 
 debconf-set-selections <<< "dovecot-core dovecot-core/ssl-cert-exists string error"
@@ -73,7 +76,7 @@ chmod -R o-rwx /etc/dovecot
 cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
 # Generate self-signed certificate
-openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE_DEFAULT" -keyout "$SSL_PRIVATE_KEY_FILE_DEFAULT"
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
 # Configure Sieve
 apt-get install dovecot-sieve dovecot-managesieved php-net-sieve apache2- -y
@@ -103,13 +106,5 @@ protocol lda {
 } 	
 " >> /etc/dovecot/dovecot.conf
 
-# Kill all processes (Apache) listening on port 80 because this may prevent the start of NGINX
-fuser -k 80/tcp
-
-if [ $IS_ON_DOCKER == true ]; then
-	/usr/sbin/dovecot
-	/etc/init.d/postfix restart
-else 
-	service dovecot reload
-	service postfix reload
-fi
+service dovecot reload
+service postfix reload

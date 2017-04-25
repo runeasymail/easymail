@@ -1,3 +1,5 @@
+# Implement ManagementAPI
+set -e
 
 export MANAGEMENT_API_DIR=$EASY_MAIL_DIR/ManagementAPI
 

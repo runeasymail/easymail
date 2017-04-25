@@ -1,3 +1,6 @@
+# Install DKIM
+set -e
+
 apt-get install opendkim opendkim-tools -y
 
 echo "
@@ -63,7 +66,7 @@ cd /etc/opendkim/keys && mkdir $HOSTNAME && cd $HOSTNAME
 opendkim-genkey -s mail -d $HOSTNAME
 chown opendkim:opendkim mail.private
 
-service postfix restart
+service postfix reload
 service opendkim restart
 
 echo "Create mail._domainkey.$HOSTNAME TXT record with following content"
