@@ -2,7 +2,6 @@ set -e
 
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
-export IS_ON_DOCKER=""
 export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
 export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
 
@@ -48,8 +47,7 @@ done
 
 if [  "$useConfig" != "" ]; then
         if [ -f "$useConfig" ]; then     
-                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')   
-                export IS_ON_DOCKER=$(cat $useConfig | grep IS_ON_DOCKER: | awk '{ print $2 }')
+                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')                   
         else
                 echo "The config file does not exist!"; exit;
         fi
@@ -68,19 +66,6 @@ elif [ $(is_installed mysql) == 1 ]; then
 elif [ $(is_installed spamassassin) == 1 ]; then
 	echo "SpamAssassin is already installed, installation aborted"; exit
 fi
-
-if [ "$IS_ON_DOCKER" == "" ]; then
-	read -e -p "Is this installation on Docker? [N/y] " IS_ON_DOCKER
-fi
-
-IS_ON_DOCKER="${IS_ON_DOCKER:-N}"
-
-if [ "$IS_ON_DOCKER" == "y"  ] || [ "$IS_ON_DOCKER" == "Y"  ]; then
-	IS_ON_DOCKER=true
-else
-	IS_ON_DOCKER=false
-fi
-
 
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
