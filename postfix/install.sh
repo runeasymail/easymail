@@ -88,10 +88,3 @@ postfix_mysql_file "query = SELECT destination FROM virtual_aliases WHERE source
 postfix_mysql_file "query = SELECT to_address FROM recipient_bcc WHERE from_address='%s'" mysql-recipient-bcc-maps.cf
 
 service postfix start
-
-#if [ $IS_ON_DOCKER == true ]; then 
-#	/etc/init.d/postfix start
-#else 
-#	service postfix start
-#fi
-
