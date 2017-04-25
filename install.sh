@@ -203,11 +203,11 @@ chown -R vmail:dovecot /etc/dovecot
 chmod -R o-rwx /etc/dovecot
 
 cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
-echo "Step 1!"
-exit;
+
 # Generate self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
-
+echo "Step 1!"
+exit;
 # Configure Sieve
 apt-get install dovecot-sieve dovecot-managesieved php-net-sieve apache2- -y
 echo "
