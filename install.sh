@@ -122,10 +122,10 @@ bash $CURRENT_DIR/dovecot/install.sh
 bash $CURRENT_DIR/nginx/install.sh
 bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
-bash $CURRENT_DIR/spamassassin/install.sh
-bash $CURRENT_DIR/autostart/install.sh
 echo "Stop 1";
 exit;
+bash $CURRENT_DIR/spamassassin/install.sh
+bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 
 # after that part all the code should be executed for each container too.
