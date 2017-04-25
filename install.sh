@@ -163,13 +163,8 @@ mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
 	# Reload services
 service nginx restart 
-if [ $IS_ON_DOCKER == true ]; then
-	/usr/sbin/dovecot
-	/etc/init.d/postfix reload
-else 
-	service dovecot reload
-	service postfix reload
-fi
+service dovecot reload
+service postfix reload
 	# DKIM
 bash $CURRENT_DIR/dkim/install.sh
 
