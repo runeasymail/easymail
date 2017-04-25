@@ -125,8 +125,7 @@ bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
-echo "Step 1";
-exit;
+
 # After that part all the code should be executed for each container too.
 
 # Ask for input data
@@ -159,6 +158,8 @@ SET \`email\`='$ADMIN_EMAIL'
 WHERE \`id\`='1';
 
 EOF
+echo "Step 1";
+exit;
 	# Dovecot
 mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
