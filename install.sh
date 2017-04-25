@@ -135,7 +135,8 @@ fi
 
 # re-generate the Dovecot's self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
-
+echo "Step 1";
+exit;
 # Set HOSTNAME
 	# Auto configurations
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
@@ -165,8 +166,6 @@ sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-
 service nginx restart 
 service dovecot reload
 service postfix reload
-echo "Step 1";
-exit;
 	# DKIM
 bash $CURRENT_DIR/dkim/install.sh
 
