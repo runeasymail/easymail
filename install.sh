@@ -6,7 +6,8 @@ export IS_ON_DOCKER=""
 export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
 export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
 
-
+echo -e "Step 0!"
+exit;
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
    echo "Please log in as root"
