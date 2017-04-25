@@ -136,8 +136,11 @@ useradd -g spamd -s /bin/false -d /var/log/spamassassin spamd
 mkdir /var/log/spamassassin
 chown spamd:spamd /var/log/spamassassin
 
-echo "Stop 1";
-exit;
+
+
+
+
+
 
 cp /etc/default/spamassassin /etc/default/spamassassin.orig
 sed -i "s/ENABLED=0/ENABLED=1/" /etc/default/spamassassin
@@ -165,6 +168,14 @@ else
 	service postfix restart
 fi
 service spamassassin restart
+echo "Stop 1";
+exit;
+
+
+
+
+
+
 
 #Move spam message to spam folder
 apt-get install dovecot-sieve dovecot-managesieved -y
