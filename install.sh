@@ -125,7 +125,8 @@ bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
-
+echo "Step 1";
+exit;
 # after that part all the code should be executed for each container too.
 
 # Ask for input data
@@ -135,8 +136,7 @@ fi
 
 # re-generate the Dovecot's self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
-echo "Step 1";
-exit;
+
 # Set HOSTNAME
 	# Auto configurations
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
