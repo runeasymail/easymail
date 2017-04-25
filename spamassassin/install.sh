@@ -64,10 +64,3 @@ chown -R vmail:vmail /var/lib/dovecot
 sievec /var/lib/dovecot/sieve/default.sieve
 
 service dovecot restart
-
-#if [ $IS_ON_DOCKER == true ]; then
-#	/usr/sbin/dovecot
-#	/etc/init.d/postfix restart
-#else 
-#	service dovecot restart
-#fi
