@@ -118,40 +118,14 @@ export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
 
 bash $CURRENT_DIR/mysql/install.sh
-
-echo "MySQL OK!"
-
 bash $CURRENT_DIR/postfix/install.sh
-
-echo "Postfix OK!"
-
 bash $CURRENT_DIR/dovecot/install.sh
-
-echo "Dovecot OK!"
-
 bash $CURRENT_DIR/nginx/install.sh
-
-echo "NGINX OK!"
-
 bash $CURRENT_DIR/roundcube/install.sh
-
-echo "Roundcube OK!"
-
 bash $CURRENT_DIR/autoconfig/install.sh
-
-echo "Autoconfig OK!"
-
 bash $CURRENT_DIR/spamassassin/install.sh
-
-echo "Smapassassin OK!"
-
 bash $CURRENT_DIR/autostart/install.sh
-
-echo "Autostart OK!"
-
 bash $CURRENT_DIR/ManagementAPI/install.sh
-
-echo "ManagementAPI OK!"
 
 # after that part all the code should be executed for each container too.
 
