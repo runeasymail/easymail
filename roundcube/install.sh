@@ -6,10 +6,10 @@ ROUNDCUBE_DIR="$CURRENT_DIR/roundcube"
 apt-get install language-pack-en-base software-properties-common -y
 echo "Step 1!"
 LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php -y
-echo "Step 2!"
+echo -e "Step 2!"
+exit;
 apt-get install php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-mbstring php7.0-curl php7.0-zip php-xml php-xml-parser php7.0-cli php7.0-gd php-apcu php7.0-imap php-mail php-mail-mimedecode php-mime-type php-mail-mime -y
 echo -e "Step 3!"
-exit;
 
 phpenmod intl zip
 echo "Step 4!"
