@@ -239,11 +239,10 @@ protocol lda {
 
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
+	/etc/init.d/postfix restart
 	
 	echo "Stop 1";
-exit;
-
-	/etc/init.d/postfix restart
+	exit;
 else 
 	service dovecot reload
 	service postfix reload
