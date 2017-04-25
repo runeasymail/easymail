@@ -9,9 +9,7 @@ apt-get install php7.0-fpm mcrypt php7.0-mcrypt php7.0-intl php7.0-mysql php7.0-
 
 phpenmod intl zip
 
-if [ $IS_ON_DOCKER == true ]; then
-	apt-get install  wget -y
-fi
+apt-get install wget -y
 
 cp $ROUNDCUBE_DIR/nginx_config /etc/nginx/sites-enabled/roundcube
 
