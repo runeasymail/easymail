@@ -24,9 +24,8 @@ spamassassin unix -     n       n       -       -       pipe
  /usr/sbin/sendmail -oi -f \${sender} \${recipient}
 "  >> /etc/postfix/master.cf
 
-if [ $IS_ON_DOCKER == true ]; then	
-	addgroup postdrop
-	chgrp -R postfix:postdrop /var/spool/postfix/public
+if [ $IS_ON_DOCKER == true ]; then		
+	chown -R postfix:postdrop /var/spool/postfix/public
 	chown -R postfix:postdrop /var/spool/postfix/maildrop/
 	chmod -R 0770 /var/spool/postfix/maildrop/ 
 	postfix reload
