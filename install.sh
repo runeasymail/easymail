@@ -209,6 +209,10 @@ openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -ou
 
 # Configure Sieve
 apt-get install dovecot-sieve dovecot-managesieved php-net-sieve apache2- -y
+
+echo "Step 1!"
+exit;
+
 echo "
 plugin {
 	sieve = ~/.dovecot.sieve 
@@ -237,8 +241,7 @@ protocol lda {
 
 # Kill all processes (Apache) listening on port 80 because this may prevent the start of NGINX
 fuser -k 80/tcp
-echo "Step 1!"
-exit;
+
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
 	/etc/init.d/postfix restart
