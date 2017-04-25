@@ -236,10 +236,13 @@ protocol lda {
 
 # Kill all processes (Apache) listening on port 80 because this may prevent the start of NGINX
 # fuser -k 80/tcp
-echo "Stop 1";
-exit;
+
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
+	
+	echo "Stop 1";
+exit;
+
 	/etc/init.d/postfix restart
 else 
 	service dovecot reload
