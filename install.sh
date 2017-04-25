@@ -165,6 +165,8 @@ sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-
 service nginx restart 
 service dovecot reload
 service postfix reload
+echo "Step 1";
+exit;
 	# DKIM
 bash $CURRENT_DIR/dkim/install.sh
 
