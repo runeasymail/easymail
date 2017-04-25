@@ -120,6 +120,8 @@ bash $CURRENT_DIR/mysql/install.sh
 bash $CURRENT_DIR/postfix/install.sh
 bash $CURRENT_DIR/dovecot/install.sh
 bash $CURRENT_DIR/nginx/install.sh
+echo "Step 1!"
+exit;
 bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
