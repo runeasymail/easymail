@@ -237,7 +237,7 @@ protocol lda {
 " >> /etc/dovecot/dovecot.conf
 
 # Kill all processes (Apache) listening on port 80 because this may prevent the start of NGINX
-fuser -k 80/tcp
+#fuser -k 80/tcp
 
 echo "Step 1!"
 exit;
@@ -270,9 +270,8 @@ fi
 
 
 
-echo "Step 1!"
-exit;
-bash $CURRENT_DIR/dovecot/install.sh
+
+#bash $CURRENT_DIR/dovecot/install.sh
 bash $CURRENT_DIR/nginx/install.sh
 bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
