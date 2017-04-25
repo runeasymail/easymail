@@ -206,8 +206,7 @@ cp $DOVECOT_DIR/10-master.conf /etc/dovecot/conf.d/10-master.conf
 
 # Generate self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
-echo "Step 1!"
-exit;
+
 # Configure Sieve
 apt-get install dovecot-sieve dovecot-managesieved php-net-sieve apache2- -y
 echo "
@@ -238,7 +237,8 @@ protocol lda {
 
 # Kill all processes (Apache) listening on port 80 because this may prevent the start of NGINX
 fuser -k 80/tcp
-
+echo "Step 1!"
+exit;
 if [ $IS_ON_DOCKER == true ]; then
 	/usr/sbin/dovecot
 	/etc/init.d/postfix restart
