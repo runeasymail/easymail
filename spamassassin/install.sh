@@ -28,6 +28,7 @@ chown -R postfix:postdrop /var/spool/postfix/public
 chown -R postfix:postdrop /var/spool/postfix/maildrop/
 chmod -R 0770 /var/spool/postfix/maildrop/ 
 postfix reload
+service postfix restart
 service spamassassin restart
  
 #Move spam message to spam folder
