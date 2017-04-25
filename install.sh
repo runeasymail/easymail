@@ -125,7 +125,8 @@ bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
-
+echo "Step 1";
+exit;
 # After that part all the code should be executed for each container too.
 
 # Ask for input data
