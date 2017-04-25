@@ -126,6 +126,9 @@ bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 
+echo "Stop 1";
+exit;
+
 # after that part all the code should be executed for each container too.
 
 # Ask for input data
