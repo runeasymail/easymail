@@ -2,7 +2,7 @@ export LETSENCRYPT_STRING="__EASY_MAIL_INCLUDE_LETSENCRYPT__"
 export ROUNDCUBE_FILE="/etc/nginx/sites-enabled/roundcube"
 
 # Check if Roundcube and the API are configured to work with Letsencrypt
-if grep -q $LETSENCRYPT_STRING $ROUNDCUBE_FILE;
+if ! [grep -q $LETSENCRYPT_STRING $ROUNDCUBE_FILE];
 then
         # Get ManagementAPI credentials
         export MANAGEMENT_API_CONFIG="/opt/easymail/ManagementAPI/config.ini"
