@@ -5,3 +5,4 @@ service postfix start
 service dovecot start
 service spamassassin start
 service opendkim start
+service cron start
