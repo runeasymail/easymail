@@ -151,7 +151,7 @@ api_password:$MANAGEMENT_API_PASSWORD
 "  >> $EASY_MAIL_DIR/config.ini
 
 # Execute some post installation commands
-. ./$CURRENT_DIR/post_install.sh	
+. .$CURRENT_DIR/post_install.sh	
 bash $CURRENT_DIR/dkim/install.sh
 
 
