@@ -144,7 +144,7 @@ password:$PASSWORD
 url:
 username:$MANAGEMENT_API_USERNAME
 password:$MANAGEMENT_API_PASSWORD
-"  >> $EASY_MAIL_DIR/config.txt
+"  >> $EASY_MAIL_DIR/config.ini
 
 # Execute some post installation commands
 bash $CURRENT_DIR/post_install.sh	
