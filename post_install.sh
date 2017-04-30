@@ -49,6 +49,7 @@ sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.
 pkill ManagementAPI && cd /opt/easymail/ManagementAPI && ./ManagementAPI &
 
 # Add new configurations to easymail config file
+sed -i "s/general_hostname:.*/general_hostname:$HOSTNAME/" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_url:.*/roundcube_web_url:https:\/\/$HOSTNAME\//" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_username:.*/roundcube_web_username:$ADMIN_EMAIL/" $EASYMAIL_CONFIG
 sed -i "s/api_url:.*/api_url:https:\/\/$HOSTNAME\/api/" $EASYMAIL_CONFIG
