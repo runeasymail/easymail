@@ -159,7 +159,7 @@ bash $CURRENT_DIR/dkim/install.sh
 
 echo -e "\n----------------------"
 echo -e "\nApplications - access:"
-echo "Roundcube: https://$HOSTNAME/ | username: $ADMIN_EMAIL | password: $PASSWORD"
+echo "Roundcube: https://$HOSTNAME/ | username: admin@$HOSTNAME | password: $PASSWORD"
 echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
 
 echo -e "\nInstallation has finished"
