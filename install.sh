@@ -18,31 +18,6 @@ if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 900)); then
    exit;
 fi
 
-# Check if some of the services are already installed
-function is_installed {
-    is_installed=$(dpkg -l | grep $1 | wc -c)
-
-    if [ $is_installed != "0" ]; then
-        is_installed=1
-    fi
-
-   echo $is_installed
-}
-
-if [ $(is_installed php) == 1 ]; then
-	echo "PHP is already installed, installation aborted"; exit
-elif [ $(is_installed nginx) == 1 ]; then
-	echo "Nginx is already installed, installation aborted"; exit
-elif [ $(is_installed postfix) == 1 ]; then
-	echo "Postfix is already installed, installation aborted"; exit
-elif [ $(is_installed dovecot) == 1 ]; then
-	echo "Dovecot is already installed, installation aborted"; exit
-elif [ $(is_installed mysql) == 1 ]; then
-	echo "MySQL is already installed, installation aborted"; exit
-elif [ $(is_installed spamassassin) == 1 ]; then
-	echo "SpamAssassin is already installed, installation aborted"; exit
-fi
-
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
 
