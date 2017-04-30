@@ -127,6 +127,7 @@ password:$ROOT_MYSQL_PASSWORD
 
 [mysql_easymail]
 database:$MYSQL_DATABASE
+hostname:$MYSQL_HOSTNAME
 username:$MYSQL_USERNAME
 password:$MYSQL_PASSWORD
 
