@@ -35,6 +35,8 @@ echo "
 #Automatic added by script for auto install mail server.
 protocols = imap pop3 lmtp sieve	
 ssl = required
+ssl_cert = </etc/dovecot/dovecot.pem
+ssl_key = </etc/dovecot/private/dovecot.pem
 " >> /etc/dovecot/dovecot.conf
 
 sed -i "s/mail_location = .*/mail_location = maildir:\/var\/mail\/vhosts\/%d\/\%n/g" /etc/dovecot/conf.d/10-mail.conf
@@ -49,9 +51,6 @@ sed -i "s/^#disable_plaintext_auth = .*/disable_plaintext_auth = yes/g" /etc/dov
 sed -i "s/^auth_mechanisms = .*/auth_mechanisms = plain login/g" /etc/dovecot/conf.d/10-auth.conf
 sed -i "s/\!include auth-system.conf.ext/#\!include auth-system.conf.ext/g" /etc/dovecot/conf.d/10-auth.conf
 sed -i "s/#\!include auth-sql.conf.ext/\!include auth-sql.conf.ext/g" /etc/dovecot/conf.d/10-auth.conf
-
-sed -i "s#ssl_cert =.*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/conf.d/10-ssl.conf
-sed -i "s#ssl_key =.*#ssl_key = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/conf.d/10-ssl.conf
 
 echo '
 passdb {
