@@ -117,6 +117,9 @@ bash $CURRENT_DIR/ManagementAPI/install.sh
 
 # Save the system configurations
 echo "
+[general]
+general_hostname:
+
 [ssl]
 public_dovecot_key:$SSL_CA_BUNDLE_FILE
 private_dovecot_key:$SSL_PRIVATE_KEY_FILE
