@@ -1,6 +1,9 @@
 # Install DKIM
 set -e
 
+export EASYMAIL_CONFIG="/opt/easymail/config.ini"
+export HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep general_hostname: | awk -F':' '{ print $2;}')
+
 apt-get install opendkim opendkim-tools -y
 
 echo "
