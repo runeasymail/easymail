@@ -35,8 +35,8 @@ echo "
 #Automatic added by script for auto install mail server.
 protocols = imap pop3 lmtp sieve	
 ssl = required
-ssl_cert = </etc/dovecot/dovecot.pem
-ssl_key = </etc/dovecot/private/dovecot.pem
+ssl_cert = <$SSL_CA_BUNDLE_FILE
+ssl_key = <$SSL_PRIVATE_KEY_FILE
 " >> /etc/dovecot/dovecot.conf
 
 sed -i "s/mail_location = .*/mail_location = maildir:\/var\/mail\/vhosts\/%d\/\%n/g" /etc/dovecot/conf.d/10-mail.conf
