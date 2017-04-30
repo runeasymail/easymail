@@ -122,29 +122,29 @@ public_dovecot_key:$SSL_CA_BUNDLE_FILE
 private_dovecot_key:$SSL_PRIVATE_KEY_FILE
 
 [mysql_root]
-username:$ROOT_MYSQL_USERNAME
-password:$ROOT_MYSQL_PASSWORD
+mysql_root_username:$ROOT_MYSQL_USERNAME
+mysql_root_password:$ROOT_MYSQL_PASSWORD
 
 [mysql_easymail]
-database:$MYSQL_DATABASE
-hostname:$MYSQL_HOSTNAME
-username:$MYSQL_USERNAME
-password:$MYSQL_PASSWORD
+mysql_easymail_database:$MYSQL_DATABASE
+mysql_easymail_hostname:$MYSQL_HOSTNAME
+mysql_easymail_username:$MYSQL_USERNAME
+mysql_easymail_password:$MYSQL_PASSWORD
 
 [mysql_roundcube]
-database:$ROUNDCUBE_MYSQL_DATABASE
-username:$ROUNDCUBE_MYSQL_USERNAME
-password:$ROUNDCUBE_MYSQL_PASSWORD
+mysql_roundcube_database:$ROUNDCUBE_MYSQL_DATABASE
+mysql_roundcube_username:$ROUNDCUBE_MYSQL_USERNAME
+mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD
 
 [roundcube]
-url:
-username:
-password:$PASSWORD
+roundcube_url:
+roundcube_username:
+roundcube_password:$PASSWORD
 
 [api]
-url:
-username:$MANAGEMENT_API_USERNAME
-password:$MANAGEMENT_API_PASSWORD
+api_url:
+api_username:$MANAGEMENT_API_USERNAME
+api_password:$MANAGEMENT_API_PASSWORD
 "  >> $EASY_MAIL_DIR/config.ini
 
 # Execute some post installation commands
