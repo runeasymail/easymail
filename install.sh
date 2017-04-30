@@ -136,10 +136,10 @@ mysql_roundcube_database:$ROUNDCUBE_MYSQL_DATABASE
 mysql_roundcube_username:$ROUNDCUBE_MYSQL_USERNAME
 mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD
 
-[roundcube]
-roundcube_url:
-roundcube_username:
-roundcube_password:$PASSWORD
+[roundcube_web]
+roundcube_web_url:
+roundcube_web_username:
+roundcube_web_password:$PASSWORD
 
 [api]
 api_url:
