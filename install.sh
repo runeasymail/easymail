@@ -18,8 +18,7 @@ if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 900)); then
    exit;
 fi
 
-apt-get update -y && apt-get install openssl python dialog cron -y
-
+# Check if some of the services are already installed
 function is_installed {
     is_installed=$(dpkg -l | grep $1 | wc -c)
 
@@ -30,7 +29,24 @@ function is_installed {
    echo $is_installed
 }
 
-# Use config.
+if [ $(is_installed php) == 1 ]; then
+	echo "PHP is already installed, installation aborted"; exit
+elif [ $(is_installed nginx) == 1 ]; then
+	echo "Nginx is already installed, installation aborted"; exit
+elif [ $(is_installed postfix) == 1 ]; then
+	echo "Postfix is already installed, installation aborted"; exit
+elif [ $(is_installed dovecot) == 1 ]; then
+	echo "Dovecot is already installed, installation aborted"; exit
+elif [ $(is_installed mysql) == 1 ]; then
+	echo "MySQL is already installed, installation aborted"; exit
+elif [ $(is_installed spamassassin) == 1 ]; then
+	echo "SpamAssassin is already installed, installation aborted"; exit
+fi
+
+# Update and install initially required services
+apt-get update -y && apt-get install openssl python dialog cron -y
+
+# Use config
 while [[ "$#" > 1 ]]; do case $1 in
     --config) useConfig="$2";;
     -c) useConfig="$2";;
@@ -53,20 +69,7 @@ if [  "$useConfig" != "" ]; then
         fi
 fi
 
-if [ $(is_installed php) == 1 ]; then
-	echo "PHP is already installed, installation aborted"; exit
-elif [ $(is_installed nginx) == 1 ]; then
-	echo "Nginx is already installed, installation aborted"; exit
-elif [ $(is_installed postfix) == 1 ]; then
-	echo "Postfix is already installed, installation aborted"; exit
-elif [ $(is_installed dovecot) == 1 ]; then
-	echo "Dovecot is already installed, installation aborted"; exit
-elif [ $(is_installed mysql) == 1 ]; then
-	echo "MySQL is already installed, installation aborted"; exit
-elif [ $(is_installed spamassassin) == 1 ]; then
-	echo "SpamAssassin is already installed, installation aborted"; exit
-fi
-
+# Define some functions and variables
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
@@ -101,6 +104,7 @@ export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
 export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
 
+# Install
 bash $CURRENT_DIR/mysql/install.sh
 bash $CURRENT_DIR/postfix/install.sh
 bash $CURRENT_DIR/dovecot/install.sh
@@ -111,63 +115,52 @@ bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
 
-# After that part all the code should be executed for each container too.
+# Save the system configurations
+echo "
+[general]
+general_hostname:
 
-# Ask for input data
-if [ "$HOSTNAME" == "" ]; then
-	read -p "Type hostname: " HOSTNAME
-fi
+[ssl]
+public_dovecot_key:$SSL_CA_BUNDLE_FILE
+private_dovecot_key:$SSL_PRIVATE_KEY_FILE
 
-# re-generate the Dovecot's self-signed certificate
-openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+[mysql_root]
+mysql_root_username:$ROOT_MYSQL_USERNAME
+mysql_root_password:$ROOT_MYSQL_PASSWORD
 
-# Set HOSTNAME
-	# Auto configurations
-set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
-set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
-	# Roundcube
-set_hostname /etc/nginx/sites-enabled/roundcube
-	# Postfix
-debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
-	# MySQL 
-export ADMIN_EMAIL="admin@$HOSTNAME"
-mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
-USE $MYSQL_DATABASE;
+[mysql_easymail]
+mysql_easymail_database:$MYSQL_DATABASE
+mysql_easymail_hostname:$MYSQL_HOSTNAME
+mysql_easymail_username:$MYSQL_USERNAME
+mysql_easymail_password:$MYSQL_PASSWORD
 
-UPDATE \`virtual_domains\`
-SET \`name\`='$HOSTNAME'
-WHERE \`id\`='1';
+[mysql_roundcube]
+mysql_roundcube_database:$ROUNDCUBE_MYSQL_DATABASE
+mysql_roundcube_username:$ROUNDCUBE_MYSQL_USERNAME
+mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD
 
-UPDATE \`virtual_users\`
-SET \`email\`='$ADMIN_EMAIL'
-WHERE \`id\`='1';
+[roundcube_web]
+roundcube_web_url:
+roundcube_web_username:
+roundcube_web_password:$PASSWORD
 
-EOF
-	# Dovecot
-mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
-sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
-	# Reload services
-service nginx restart 
-service dovecot reload
-service postfix reload
-	# DKIM		
+[api]
+api_url:
+api_username:$MANAGEMENT_API_USERNAME
+api_password:$MANAGEMENT_API_PASSWORD
+"  >> $EASY_MAIL_DIR/config.ini
+
+# Execute some post installation commands
+bash $CURRENT_DIR/post_install.sh
+export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
 bash $CURRENT_DIR/dkim/install.sh
-	# Management API
-sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
-pkill ManagementAPI && cd /opt/easymail/ManagementAPI && ./ManagementAPI &
 
 
 
 echo -e "\n----------------------"
-echo "Database - access:"
-echo "Root MySQL username: $ROOT_MYSQL_USERNAME | password: $ROOT_MYSQL_PASSWORD"
-echo "Easymail MySQL db: $MYSQL_DATABASE | username: $MYSQL_USERNAME | password: $MYSQL_PASSWORD"
-echo "Roundcube MySQL db: $ROUNDCUBE_MYSQL_DATABASE | username: $ROUNDCUBE_MYSQL_USERNAME | password: $ROUNDCUBE_MYSQL_PASSWORD"
-
 echo -e "\nApplications - access:"
-echo "Roundcube: https://$HOSTNAME/ | username: $ADMIN_EMAIL | password: $PASSWORD"
+echo "Roundcube: https://$HOSTNAME/ | username: admin@$HOSTNAME | password: $PASSWORD"
 echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
 
 echo -e "\nInstallation has finished"
-echo "All services have been started automatically"
-
+echo "All services have been started automatically."
