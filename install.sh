@@ -126,11 +126,8 @@ api_password:$MANAGEMENT_API_PASSWORD
 "  >> $EASY_MAIL_DIR/config.ini
 
 # Execute some post installation commands
-bash $CURRENT_DIR/post_install.sh
 export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
 bash $CURRENT_DIR/dkim/install.sh
-
-
 
 echo -e "\n----------------------"
 echo -e "\nApplications - access:"
