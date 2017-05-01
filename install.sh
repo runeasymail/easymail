@@ -89,6 +89,7 @@ bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
 bash $CURRENT_DIR/ManagementAPI/install.sh
+bash $CURRENT_DIR/dkim/install.sh
 
 # Save the system configurations
 echo "
@@ -128,9 +129,6 @@ api_password:$MANAGEMENT_API_PASSWORD
 # Execute some post installation commands
 bash $CURRENT_DIR/post_install.sh
 export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
-bash $CURRENT_DIR/dkim/install.sh
-
-
 
 echo -e "\n----------------------"
 echo -e "\nApplications - access:"
