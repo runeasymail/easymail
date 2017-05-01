@@ -43,35 +43,4 @@ echo "
 localhost
 192.168.0.1/24
 
-*$HOSTNAME
-# add more domains
-#*<DOMAIN>
 " > /etc/opendkim/TrustedHosts
-
-echo "
-mail._domainkey.$HOSTNAME $HOSTNAME:mail:/etc/opendkim/keys/$HOSTNAME/mail.private
-
-# add more domains in following format.
-#mail._domainkey.<DOMAIN> <DOMAIN>:mail:/etc/opendkim/keys/<DOMAIN>/mail.private
-" > /etc/opendkim/KeyTable
-
-echo "
-*@$HOSTNAME mail._domainkey.$HOSTNAME
-
-# Add more domains in following format.
-#*@<DOMAIN> mail._domainkey.<DOMAIN>
-" > /etc/opendkim/SigningTable
-
-cd /etc/opendkim/keys && mkdir $HOSTNAME && cd $HOSTNAME
-opendkim-genkey -s mail -d $HOSTNAME
-chown opendkim:opendkim mail.private
-
-service postfix reload
-service opendkim restart
-
-echo "Create mail._domainkey.$HOSTNAME TXT record with following content"
-echo ""
-tail mail.txt  -n 1 | awk '{ print $1 }' | sed 's/p=/v=DKIM1; k=rsa; p=/g'
-echo ""
-
-
