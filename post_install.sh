@@ -51,10 +51,17 @@ service dovecot reload
 service postfix reload
 	# Management API
 sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
-mkdir /opt/easymail/logs/
-pkill ManagementAPI && cd /opt/easymail/ManagementAPI && ./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
 
-# Add new configurations to easymail config file
+echo "Create a log dir"
+mkdir /opt/easymail/logs/
+
+echo "Kill ManagementAPI"
+pkill ManagementAPI && cd /opt/easymail/ManagementAPI
+
+echo "Run ManagementAPI"
+./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
+
+echo "Add new configurations to easymail config file"
 sed -i "s/general_hostname:.*/general_hostname:$HOSTNAME/" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_url:.*/roundcube_web_url:https:\/\/$HOSTNAME\//" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_username:.*/roundcube_web_username:$ADMIN_EMAIL/" $EASYMAIL_CONFIG
