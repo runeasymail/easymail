@@ -8,6 +8,7 @@ export MYSQL_HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_hostname: |
 export ROOT_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_username: | awk -F':' '{ print $2;}')
 export ROOT_MYSQL_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
 export MYSQL_DATABASE=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_database: | awk -F':' '{ print $2;}')
+export HOSTNAME=$1
 
 # Define some functions
 function set_hostname {
@@ -15,11 +16,6 @@ function set_hostname {
 }
 
 export -f set_hostname
-
-# Ask for input data
-if [ "$HOSTNAME" == "" ]; then
-	read -p "Type hostname: " HOSTNAME
-fi
 
 # Re-generate the Dovecot's self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
@@ -55,9 +51,17 @@ service dovecot reload
 service postfix reload
 	# Management API
 sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
-pkill ManagementAPI && cd /opt/easymail/ManagementAPI && ./ManagementAPI &
 
-# Add new configurations to easymail config file
+echo "Create a log dir"
+mkdir /opt/easymail/logs/
+
+echo "Kill ManagementAPI"
+pkill ManagementAPI && cd /opt/easymail/ManagementAPI
+
+echo "Run ManagementAPI"
+./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
+
+echo "Add new configurations to easymail config file"
 sed -i "s/general_hostname:.*/general_hostname:$HOSTNAME/" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_url:.*/roundcube_web_url:https:\/\/$HOSTNAME\//" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_username:.*/roundcube_web_username:$ADMIN_EMAIL/" $EASYMAIL_CONFIG

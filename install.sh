@@ -21,29 +21,6 @@ fi
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
 
-# Use config
-while [[ "$#" > 1 ]]; do case $1 in
-    --config) useConfig="$2";;
-    -c) useConfig="$2";;
-    *) break;;
-  esac; shift; shift
-done
-
-while [[ "$#" > 1 ]]; do case $1 in
-    --config) useConfig="$2";;
-    -c) useConfig="$2";;
-    *) break;;
-  esac; shift; shift
-done
-
-if [  "$useConfig" != "" ]; then
-        if [ -f "$useConfig" ]; then     
-                export HOSTNAME=$(cat $useConfig | grep HOSTNAME: | awk '{ print $2 }')                   
-        else
-                echo "The config file does not exist!"; exit;
-        fi
-fi
-
 # Define some functions and variables
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
@@ -126,9 +103,8 @@ api_username:$MANAGEMENT_API_USERNAME
 api_password:$MANAGEMENT_API_PASSWORD
 "  >> $EASY_MAIL_DIR/config.ini
 
-# Execute some post installation commands
-bash $CURRENT_DIR/post_install.sh
 export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
+cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
 
 echo -e "\n----------------------"
 echo -e "\nApplications - access:"
