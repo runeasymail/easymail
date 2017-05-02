@@ -55,6 +55,7 @@ service dovecot reload
 service postfix reload
 	# Management API
 sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
+mkdir /opt/easymail/logs/
 pkill ManagementAPI && cd /opt/easymail/ManagementAPI && ./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
 
 # Add new configurations to easymail config file
