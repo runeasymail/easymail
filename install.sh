@@ -126,8 +126,6 @@ api_username:$MANAGEMENT_API_USERNAME
 api_password:$MANAGEMENT_API_PASSWORD
 "  >> $EASY_MAIL_DIR/config.ini
 
-# Execute some post installation commands
-bash $CURRENT_DIR/post_install.sh
 export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
 
 echo -e "\n----------------------"
