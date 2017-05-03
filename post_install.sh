@@ -8,6 +8,9 @@ export MYSQL_HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_hostname: |
 export ROOT_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_username: | awk -F':' '{ print $2;}')
 export ROOT_MYSQL_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
 export MYSQL_DATABASE=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_database: | awk -F':' '{ print $2;}')
+export PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep roundcube_web_password: | awk -F':' '{ print $2;}')
+export MANAGEMENT_API_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep api_username: | awk -F':' '{ print $2;}')
+export MANAGEMENT_API_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep api_password: | awk -F':' '{ print $2;}')
 export HOSTNAME=$1
 
 # Define some functions
@@ -66,3 +69,11 @@ sed -i "s/general_hostname:.*/general_hostname:$HOSTNAME/" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_url:.*/roundcube_web_url:https:\/\/$HOSTNAME\//" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_username:.*/roundcube_web_username:$ADMIN_EMAIL/" $EASYMAIL_CONFIG
 sed -i "s/api_url:.*/api_url:https:\/\/$HOSTNAME\/api/" $EASYMAIL_CONFIG
+
+echo -e "\n----------------------"
+echo -e "\nApplications - access:"
+echo "Roundcube: https://$HOSTNAME/ | username: admin@$HOSTNAME | password: $PASSWORD"
+echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
+
+echo -e "\nInstallation has finished"
+echo "All services have been started automatically."
