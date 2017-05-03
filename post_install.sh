@@ -1,10 +1,12 @@
 set -e
 
+bash /run.sh; 
+
 # run only once
 ALREADY_RUN_POST_INSTALL_FILE="/opt/easymail/already-run-post-install.txt"
 
 if [ -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
-  bash /run.sh; exit;
+  exit;
 fi
 
 touch $ALREADY_RUN_POST_INSTALL_FILE
