@@ -105,11 +105,3 @@ api_password:$MANAGEMENT_API_PASSWORD
 
 export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
-
-echo -e "\n----------------------"
-echo -e "\nApplications - access:"
-echo "Roundcube: https://$HOSTNAME/ | username: admin@$HOSTNAME | password: $PASSWORD"
-echo "API url: https://$HOSTNAME/api/ | username: $MANAGEMENT_API_USERNAME | password: $MANAGEMENT_API_PASSWORD"
-
-echo -e "\nInstallation has finished"
-echo "All services have been started automatically."
