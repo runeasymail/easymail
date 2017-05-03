@@ -4,7 +4,7 @@ set -e
 ALREADY_RUN_POST_INSTALL_FILE="/opt/easymail/already-run-post-install.txt"
 
 if [ -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
-  exit;
+  bash /run.sh; exit;
 fi
 
 touch $ALREADY_RUN_POST_INSTALL_FILE
