@@ -9,9 +9,8 @@ script:
  
 # Somke tests START
     - docker rm easymail
-    - docker run -itd -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.exmaple.com" --name="easymail" easymail-img /bin/sh -c "if [ -f /run.sh ]; then bash /run.sh; fi; exec /bin/bash"
-    - sleep 10
-    - docker exec easymail bash /opt/easymail/post_install.sh test.exmaple.com
+    - docker run -itd -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.exmaple.com" --name="easymail" easymail-img /bin/sh -c "bash /opt/easymail/post_install.sh test.exmaple.com; exec /bin/bash"
+    - sleep 15
     - docker exec easymail wget --no-check-certificate https://test.exmaple.com
     - docker exec easymail wget --no-check-certificate https://test.exmaple.com/api/ping
     # uncomment after integration GUI
