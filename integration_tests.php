@@ -87,6 +87,7 @@ $mail->SMTPOptions = array(
     )
 ); 
 $mail->Host = $domain;
+$mail->From = $email;
 $mail->setFrom($email, $from);
 $mail->addAddress($email, $from);
 $mail->Subject = $subject;
