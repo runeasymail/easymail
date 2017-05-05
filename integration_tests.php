@@ -44,7 +44,6 @@ $pop = new POP3;
 $pop->authorise($domain, 110, 30, $email, $password, 1);
 $mail = new PHPMailer; 
 $mail->SMTPDebug = 2; 
-//$mail->isSMTP();
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'tls';
 $mail->SMTPOptions = array(
@@ -79,7 +78,6 @@ $pop = new POP3;
 $pop->authorise($domain, 995, 30, $email, $password, 1);
 $mail = new PHPMailer; 
 $mail->SMTPDebug = 2; 
-//$mail->isSMTP();
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'ssl';
 $mail->SMTPOptions = array(
