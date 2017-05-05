@@ -10,7 +10,7 @@ $body = "Test.";
 
 /*=============================== POP3 ===============================*/
         // STARTTLS on port 110
-$imap_stream = imap_open("{".$domain.":993/imap/ssl/novalidate-cert}INBOX", $email, $password) or die("Can't connect over IMAP, SSL on port 993: ".imap_last_error());
+$imap_stream = imap_open("{".$hostname.":993/imap/ssl/novalidate-cert}INBOX", $email, $password) or die("Can't connect over IMAP, SSL on port 993: ".imap_last_error());
 $inbox = (array) imap_check($imap_stream);
 $messages_in_inbox = $inbox['Nmsgs'];
 
