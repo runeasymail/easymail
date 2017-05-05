@@ -58,6 +58,7 @@ if (!$mail->send()) {
     die("Can't send email over POP3, STARTTLS on port 110: ".$mail->ErrorInfo);
 }
 
+sleep(1);
 $inbox = (array) imap_check($imap_stream);
 
 if ($messages_in_inbox == $inbox['Nmsgs']) {
@@ -86,6 +87,7 @@ if (!$mail->send()) {
     die("Can't send email over POP3, SSL on port 995: ".$mail->ErrorInfo);
 }
 
+sleep(1);
 $inbox = (array) imap_check($imap_stream);
 
 if ($messages_in_inbox == $inbox['Nmsgs']) {
@@ -116,6 +118,7 @@ if (!$mail->send()) {
     die("Can't send email over SMTP, STARTTLS on port 587: ".$mail->ErrorInfo);
 }
 
+sleep(1);
 $inbox = (array) imap_check($imap_stream);
 
 if ($messages_in_inbox == $inbox['Nmsgs']) {
@@ -140,6 +143,7 @@ $mail->addAddress($email, $from);
 $mail->Subject = $subject;
 $mail->msgHTML($message);
 
+sleep(1);
 if (!$mail->send()) {
     die("Can't send email over SMTP, SSL on port 465: ".$mail->ErrorInfo);
 }
