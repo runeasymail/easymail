@@ -109,10 +109,10 @@ $messages_in_inbox = $inbox['Nmsgs'];
 /*=============================== SMTP ===============================*/
         // STARTTLS on port 587
 $mail = new PHPMailer;
-$mail->isSMTP();
-$mail->SMTPDebug = 0;
 $mail->Host = $domain;
 $mail->Port = 587;
+$mail->isSMTP();
+$mail->SMTPDebug = 0;
 $mail->SMTPSecure = 'tls';
 $mail->SMTPOptions = array(
         'ssl' => array(
@@ -145,10 +145,10 @@ $messages_in_inbox = $inbox['Nmsgs'];
 
         // SSL on port 465
 $mail = new PHPMailer;
-$mail->isSMTP();
-$mail->SMTPDebug = 0;
 $mail->Host = $domain;
 $mail->Port = 465;
+$mail->isSMTP();
+$mail->SMTPDebug = 0;
 $mail->SMTPSecure = 'ssl';
 $mail->SMTPOptions = array(
         'ssl' => array(
