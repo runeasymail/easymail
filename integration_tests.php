@@ -44,7 +44,6 @@ $pop = new POP3;
 $pop->authorise($domain, 110, 30, $email, $password);
 $mail = new PHPMailer; 
 $mail->SMTPDebug = 0; 
-$mail->isHTML(false); 
 $mail->SMTPSecure = 'tls';
 $mail->SMTPOptions = array(
     'ssl' => array(
@@ -55,10 +54,11 @@ $mail->SMTPOptions = array(
 ); 
 $mail->Host = $domain;
 $mail->From = $email;
-$mail->FromName = $from;
-$mail->Subject = $subject;
-$mail->Body = $body;
+$mail->setFrom($email, $from);
 $mail->addAddress($email, $from);
+$mail->Subject = $subject;
+$mail->isHTML(false);
+$mail->Body = $body;
 
 if (!$mail->send()) {
     die("Can't send email over POP3, STARTTLS on port 110: ".$mail->ErrorInfo);
@@ -77,8 +77,7 @@ $messages_in_inbox = $inbox['Nmsgs'];
 $pop = new POP3;
 $pop->authorise($domain, 995, 30, $email, $password);
 $mail = new PHPMailer; 
-$mail->SMTPDebug = 0; 
-$mail->isHTML(false); 
+$mail->SMTPDebug = 0;  
 $mail->SMTPSecure = 'ssl';
 $mail->SMTPOptions = array(
     'ssl' => array(
@@ -88,11 +87,11 @@ $mail->SMTPOptions = array(
     )
 ); 
 $mail->Host = $domain;
-$mail->From = $email;
-$mail->FromName = $from;
-$mail->Subject = $subject;
-$mail->Body = $body;
+$mail->setFrom($email, $from);
 $mail->addAddress($email, $from);
+$mail->Subject = $subject;
+$mail->isHTML(false);
+$mail->Body = $body;
 
 if (!$mail->send()) {
     die("Can't send email over POP3, SSL on port 995: ".$mail->ErrorInfo);
@@ -112,7 +111,6 @@ $messages_in_inbox = $inbox['Nmsgs'];
 $mail = new PHPMailer;
 $mail->isSMTP();
 $mail->SMTPDebug = 0;
-$mail->Debugoutput = 'html';
 $mail->Host = $domain;
 $mail->Port = 587;
 $mail->SMTPSecure = 'tls';
@@ -129,7 +127,8 @@ $mail->Password = $password;
 $mail->setFrom($email, $from);
 $mail->addAddress($email, $from);
 $mail->Subject = $subject;
-$mail->msgHTML($body);
+$mail->isHTML(false);
+$mail->Body = $body;
 
 if (!$mail->send()) {
     die("Can't send email over SMTP, STARTTLS on port 587: ".$mail->ErrorInfo);
@@ -148,7 +147,6 @@ $messages_in_inbox = $inbox['Nmsgs'];
 $mail = new PHPMailer;
 $mail->isSMTP();
 $mail->SMTPDebug = 0;
-$mail->Debugoutput = 'html';
 $mail->Host = $domain;
 $mail->Port = 465;
 $mail->SMTPSecure = 'ssl';
@@ -165,7 +163,8 @@ $mail->Password = $password;
 $mail->setFrom($email, $from);
 $mail->addAddress($email, $from);
 $mail->Subject = $subject;
-$mail->msgHTML($body);
+$mail->isHTML(false);
+$mail->Body = $body;
 
 if (!$mail->send()) {
     die("Can't send email over SMTP, SSL on port 465: ".$mail->ErrorInfo);
