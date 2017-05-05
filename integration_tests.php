@@ -48,7 +48,7 @@ $mail->SMTPDebug = 2;
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'tls';
 $mail->SMTPOptions = array(
-        'ssl' => array(
+    'ssl' => array(
         'verify_peer' => false,
         'verify_peer_name' => false,
         'allow_self_signed' => true
@@ -83,7 +83,7 @@ $mail->SMTPDebug = 2;
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'ssl';
 $mail->SMTPOptions = array(
-        'ssl' => array(
+    'ssl' => array(
         'verify_peer' => false,
         'verify_peer_name' => false,
         'allow_self_signed' => true
