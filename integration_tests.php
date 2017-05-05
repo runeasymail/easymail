@@ -41,7 +41,7 @@ $messages_in_inbox = $inbox['Nmsgs'];
 /*=============================== POP3 ===============================*/
         // STARTTLS on port 110
 $pop = new POP3;
-$pop->authorise($domain, 110, 30, $email, $password, 1);
+$pop->authorise($domain, 110, 30, $email, $password);
 $mail = new PHPMailer; 
 $mail->SMTPDebug = 2; 
 $mail->isHTML(false); 
@@ -75,7 +75,7 @@ $messages_in_inbox = $inbox['Nmsgs'];
 
         // SSL on port 995
 $pop = new POP3;
-$pop->authorise($domain, 995, 30, $email, $password, 1);
+$pop->authorise($domain, 995, 30, $email, $password);
 $mail = new PHPMailer; 
 $mail->SMTPDebug = 2; 
 $mail->isHTML(false); 
