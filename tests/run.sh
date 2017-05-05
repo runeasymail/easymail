@@ -1,6 +1,5 @@
-
-
-export $PASSWORD='PUT password here'
+export EASY_MAIL_DIR="/opt/easymail"
+export PASSWORD=$(cat "$EASY_MAIL_DIR/config.ini" | grep roundcube_web_password: | awk -F':' '{ print $2;}')
 
 apt-get install git -y
 
