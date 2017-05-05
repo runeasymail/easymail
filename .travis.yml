@@ -9,12 +9,12 @@ script:
  
 # Somke tests START
     - docker rm easymail
-    - docker run -itd -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.example.com" --name="easymail" easymail-img /bin/sh -c "bash /opt/easymail/post_install.sh test.example.com; exec /bin/bash"
+    - docker run -itd -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.exmaple.com" --name="easymail" easymail-img /bin/sh -c "bash /opt/easymail/post_install.sh test.exmaple.com; exec /bin/bash"
     - sleep 15
-    - docker exec easymail wget --no-check-certificate https://test.example.com
-    - docker exec easymail wget --no-check-certificate https://test.example.com/api/ping
+    - docker exec easymail wget --no-check-certificate https://test.exmaple.com
+    - docker exec easymail wget --no-check-certificate https://test.exmaple.com/api/ping
     # uncomment after integration GUI
-    #- docker exec easymail wget --no-check-certificate https://test.example.com/admin/
+    #- docker exec easymail wget --no-check-certificate https://test.exmaple.com/admin/
 # Smoke tests END
 
 env:
