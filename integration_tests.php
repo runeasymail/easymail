@@ -43,7 +43,7 @@ $messages_in_inbox = $inbox['Nmsgs'];
 $pop = new POP3;
 $pop->authorise($domain, 110, 30, $email, $password);
 $mail = new PHPMailer; 
-$mail->SMTPDebug = 2; 
+$mail->SMTPDebug = 0; 
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'tls';
 $mail->SMTPOptions = array(
@@ -77,7 +77,7 @@ $messages_in_inbox = $inbox['Nmsgs'];
 $pop = new POP3;
 $pop->authorise($domain, 995, 30, $email, $password);
 $mail = new PHPMailer; 
-$mail->SMTPDebug = 2; 
+$mail->SMTPDebug = 0; 
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'ssl';
 $mail->SMTPOptions = array(
@@ -111,7 +111,7 @@ $messages_in_inbox = $inbox['Nmsgs'];
         // STARTTLS on port 587
 $mail = new PHPMailer;
 $mail->isSMTP();
-$mail->SMTPDebug = 2;
+$mail->SMTPDebug = 0;
 $mail->Debugoutput = 'html';
 $mail->Host = $domain;
 $mail->Port = 587;
@@ -147,7 +147,7 @@ $messages_in_inbox = $inbox['Nmsgs'];
         // SSL on port 465
 $mail = new PHPMailer;
 $mail->isSMTP();
-$mail->SMTPDebug = 2;
+$mail->SMTPDebug = 0;
 $mail->Debugoutput = 'html';
 $mail->Host = $domain;
 $mail->Port = 465;
