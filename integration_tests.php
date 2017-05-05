@@ -47,6 +47,13 @@ $mail->SMTPDebug = 2;
 //$mail->isSMTP();
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'tls';
+$mail->SMTPOptions = array(
+        'ssl' => array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    )
+); 
 $mail->Host = $domain;
 $mail->From = $email;
 $mail->FromName = $from;
@@ -75,6 +82,13 @@ $mail->SMTPDebug = 2;
 //$mail->isSMTP();
 $mail->isHTML(false); 
 $mail->SMTPSecure = 'ssl';
+$mail->SMTPOptions = array(
+        'ssl' => array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    )
+); 
 $mail->Host = $domain;
 $mail->From = $email;
 $mail->FromName = $from;
@@ -104,6 +118,13 @@ $mail->Debugoutput = 'html';
 $mail->Host = $domain;
 $mail->Port = 587;
 $mail->SMTPSecure = 'tls';
+$mail->SMTPOptions = array(
+        'ssl' => array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    )
+); 
 $mail->SMTPAuth = true;
 $mail->Username = $email;
 $mail->Password = $password;
@@ -133,6 +154,13 @@ $mail->Debugoutput = 'html';
 $mail->Host = $domain;
 $mail->Port = 465;
 $mail->SMTPSecure = 'ssl';
+$mail->SMTPOptions = array(
+        'ssl' => array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    )
+); 
 $mail->SMTPAuth = true;
 $mail->Username = $email;
 $mail->Password = $password;
