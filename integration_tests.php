@@ -40,8 +40,56 @@ $messages_in_inbox = $inbox['Nmsgs'];
 
 /*=============================== POP3 ===============================*/
         // STARTTLS on port 110
+$pop->authorise($domain, 110, 30, $email, $password, 1);
+$mail = new PHPMailer; 
+$mail->SMTPDebug = 2; 
+//$mail->isSMTP();
+$mail->isHTML(false); 
+$mail->SMTPSecure = 'tls';
+$mail->Host = $domain;
+$mail->From = $email;
+$mail->FromName = $from;
+$mail->Subject = $subject;
+$mail->Body = $message;
+$mail->addAddress($email, $from);
+
+if (!$mail->send()) {
+    die("Can't send email over POP3, STARTTLS on port 110: ".$mail->ErrorInfo);
+}
+
+$inbox = (array) imap_check($imap_stream);
+
+if ($messages_in_inbox == $inbox['Nmsgs']) {
+        die("Message not received over POP3, STARTTLS on port 110: ".imap_last_error());
+}
+
+$messages_in_inbox = $inbox['Nmsgs'];
 
         // SSL on port 995
+$pop->authorise($domain, 995, 30, $email, $password, 1);
+$mail = new PHPMailer; 
+$mail->SMTPDebug = 2; 
+//$mail->isSMTP();
+$mail->isHTML(false); 
+$mail->SMTPSecure = 'ssl';
+$mail->Host = $domain;
+$mail->From = $email;
+$mail->FromName = $from;
+$mail->Subject = $subject;
+$mail->Body = $message;
+$mail->addAddress($email, $from);
+
+if (!$mail->send()) {
+    die("Can't send email over POP3, SSL on port 995: ".$mail->ErrorInfo);
+}
+
+$inbox = (array) imap_check($imap_stream);
+
+if ($messages_in_inbox == $inbox['Nmsgs']) {
+        die("Message not received over POP3, SSL on port 995: ".imap_last_error());
+}
+
+$messages_in_inbox = $inbox['Nmsgs'];
 
 /*=============================== SMTP ===============================*/
         // STARTTLS on port 587
