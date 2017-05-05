@@ -6,7 +6,7 @@ export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
 export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
 
 # tmp workaround, please have a look at https://github.com/moby/moby/issues/13555 
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
