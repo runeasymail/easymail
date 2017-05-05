@@ -17,6 +17,12 @@ script:
     #- docker exec easymail wget --no-check-certificate https://test.exmaple.com/admin/
 # Smoke tests END
 
+# Integration tests START
+    - php /opt/easymail/imap_integration_test.php
+    - php /opt/easymail/pop3_integration_test.php
+    - php /opt/easymail/smtp_integration_test.php
+# Integration tests END
+
 env:
   global:
     - secure: "Z6z/fFxVZWBjUSH/6Thg9WOg1r9yqXekS1COYxQ+mZeeakPOOnC7N1zy/DR7/8eWdQvXMDcgpqBXN68wtUdxi6VtuRuwqSRz0o3eytrpbP/kTg+fx7wRHzhEOonlZM/Gd1rJioPQQGgp2TBWEUi4jAduYSGswMeLIqLC6jMu1OfXGzolvctI+DNhNAvvIvuAiyv3uQTt9fHtgKi3ZeprM6Z0OVRRphW4IE07d3kP4pQ3P6MznN4054xR1zypacen7xMPWzOzFjELucYJmOkgVbHbHf6s9M5ElyOrfUcV7L4rvyZX4ze7H8OVGh2NVYC8LwCwkhSNtjeI6onCJBogj6VQ53xW/XRmD4QF5xN6g57gUzGluonuv/kPisMXETUizYFEjaUyH3djJcsErPegvmwhldjrH11AGlDl+fTKcb5sdE8XHLPPRwB97sPhlSZmDnG3zGCBPoV8DJkxO22Z0yity63ijAdH5Yi2UqccpR+n7An+YgZTiTnwOxsQVtgiEcRvUJ680X5WR0EjA4Z2DLjmztxxoa5GyE/LipZ6b1ZorvMfLeff1BwHXnB7Xq8CLoP+NOONgaFxfOyFxB1oMrjlQ8FlgXwe/xJu5whoyCc1hs/HL0rrprcZ8pKgkDq37ge97gMmYsKCP2ZaJOrqeKU8VCxFVTml6js+/9Wwkqk=" # DOCKER_EMAIL
