@@ -105,9 +105,3 @@ api_password:$MANAGEMENT_API_PASSWORD
 
 export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
-
-# Prepare for integration tests
-cp -R $CURRENT_DIR/tests $EASY_MAIL_DIR/tests
-cd $EASY_MAIL_DIR/tests
-git clone https://github.com/PHPMailer/PHPMailer.git
-sed -i "s#__ROUNDCUBE_WEB_PASSWORD__#$PASSWORD#g" $EASY_MAIL_DIR/tests/config.php
