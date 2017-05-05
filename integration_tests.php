@@ -143,11 +143,11 @@ $mail->addAddress($email, $from);
 $mail->Subject = $subject;
 $mail->msgHTML($message);
 
-sleep(1);
 if (!$mail->send()) {
     die("Can't send email over SMTP, SSL on port 465: ".$mail->ErrorInfo);
 }
 
+sleep(1);
 $inbox = (array) imap_check($imap_stream);
 
 if ($messages_in_inbox == $inbox['Nmsgs']) {
