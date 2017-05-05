@@ -66,7 +66,6 @@ if ($messages_in_inbox == $inbox['Nmsgs']) {
 }
 
 $messages_in_inbox = $inbox['Nmsgs'];
-$pop->disconnect();
 
         // SSL on port 995
 $pop = new POP3;
@@ -95,7 +94,6 @@ if ($messages_in_inbox == $inbox['Nmsgs']) {
 }
 
 $messages_in_inbox = $inbox['Nmsgs'];
-$pop->disconnect();
 
 /*=============================== SMTP ===============================*/
         // STARTTLS on port 587
