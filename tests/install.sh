@@ -6,7 +6,7 @@ apt-get install wget -y
 
 cd /easymail/tests/
 
-wget -O PHPMailer.tar.gz https://github.com/PHPMailer/PHPMailer/archive/v$PHP_MAILER_TAG.tar.gz
+wget --no-check-certificate -O PHPMailer.tar.gz https://github.com/PHPMailer/PHPMailer/archive/v$PHP_MAILER_TAG.tar.gz
 tar -xvzf PHPMailer.tar.gz
 mv PHPMailer-$PHP_MAILER_TAG PHPMailer
 
