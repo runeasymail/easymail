@@ -18,6 +18,7 @@ script:
 # Smoke tests END
 
 # Integration tests START
+    - docker bash /easymail/tests/install.sh
     - docker exec easymail php /easymail/tests/imap_integration_test.php
     - docker exec easymail php /easymail/tests/pop3_integration_test.php
     - docker exec easymail php /easymail/tests/smtp_integration_test.php
