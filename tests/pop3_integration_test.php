@@ -69,12 +69,12 @@ $mail->isHTML(false);
 $mail->Body = $body;
 
 if (!$mail->send()) {
-    die("Can't send email over POP3, SSL on port 995: ".$mail->ErrorInfo);
+    die2("Can't send email over POP3, SSL on port 995: ".$mail->ErrorInfo);
 }
 
 sleep(1);
 $inbox = (array) imap_check($imap_stream);
 
 if ($messages_in_inbox == $inbox['Nmsgs']) {
-        die("Message not received over POP3, SSL on port 995: ".imap_last_error());
+        die2("Message not received over POP3, SSL on port 995: ".imap_last_error());
 }
