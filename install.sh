@@ -1,5 +1,9 @@
 set -e
 
+apt-get install wget -y
+
+wget -O PHPMailer.tar.gz https://github.com/PHPMailer/PHPMailer/archive/v$PHP_MAILER_TAG.tar.gz
+exit;
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
 export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
