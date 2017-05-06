@@ -1,8 +1,8 @@
 set -e
 
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 
-wget -O PHPMailer.tar.gz https://github.com/PHPMailer/PHPMailer/archive/v$PHP_MAILER_TAG.tar.gz
+wget --no-check-certificate -O PHPMailer.tar.gz https://github.com/PHPMailer/PHPMailer/archive/v$PHP_MAILER_TAG.tar.gz
 exit;
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export HOSTNAME=""
