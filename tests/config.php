@@ -8,6 +8,5 @@ $password = "__ROUNDCUBE_WEB_PASSWORD__";
 // Define functions
 function die2($input) {
   echo $input; 
-  die();
-  //exit(1);
+  exit(1);
 }
