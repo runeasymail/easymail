@@ -50,6 +50,7 @@ if ($messages_in_inbox == $inbox['Nmsgs']) {
 $messages_in_inbox = $inbox['Nmsgs'];
 
         // SSL on port 465
+$imap_stream = imap_open("{".$hostname.":993/imap/ssl/novalidate-cert}INBOX", $email, $password) or die2("Can't connect over IMAP, SSL on port 993: ".imap_last_error());
 $mail = new PHPMailer;
 $mail->Host = $hostname;
 $mail->Port = 465;
