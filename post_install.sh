@@ -17,7 +17,7 @@ export SSL_CA_BUNDLE_FILE=$(cat "$EASYMAIL_CONFIG" | grep public_dovecot_key: | 
 export SSL_PRIVATE_KEY_FILE=$(cat "$EASYMAIL_CONFIG" | grep private_dovecot_key: | awk -F':' '{ print $2;}')
 export MYSQL_HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_hostname: | awk -F':' '{ print $2;}')
 export ROOT_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_username: | awk -F':' '{ print $2;}')
-export ROOT_MYSQL_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
+export OLD_ROOT_MYSQL_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
 export MYSQL_DATABASE=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_database: | awk -F':' '{ print $2;}')
 export HOSTNAME=$1
 
@@ -26,7 +26,21 @@ function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
 
+function get_rand_password() {
+	openssl rand  32 | md5sum | awk '{print $1;}'
+}
+
 export -f set_hostname
+
+# Re-generate the passwords
+export PASSWORD=$(get_rand_password)
+export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
+
+export ROOT_MYSQL_PASSWORD=$(get_rand_password)
+export MYSQL_PASSWORD=$(get_rand_password)
+export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
+export MANAGEMENT_API_PASSWORD=$(get_rand_password)
+export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
 # Re-generate the Dovecot's self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
@@ -41,7 +55,7 @@ set_hostname /etc/nginx/sites-enabled/roundcube
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 	# MySQL 
 export ADMIN_EMAIL="admin@$HOSTNAME"
-mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$OLD_ROOT_MYSQL_PASSWORD << EOF
 USE $MYSQL_DATABASE;
 
 UPDATE \`virtual_domains\`
@@ -49,7 +63,7 @@ SET \`name\`='$HOSTNAME'
 WHERE \`id\`='1';
 
 UPDATE \`virtual_users\`
-SET \`email\`='$ADMIN_EMAIL'
+SET \`email\`='$ADMIN_EMAIL', \`password\`='$ADMIN_PASSWORD'
 WHERE \`id\`='1';
 
 EOF
