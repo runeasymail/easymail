@@ -35,4 +35,8 @@ after_success:
       docker login -u $DOCKER_USER -p $DOCKER_PASS &&
       docker tag easymail-img easymail/easymail:$TRAVIS_TAG &&
       docker push easymail/easymail:$TRAVIS_TAG;
+    else
+      docker login -u $DOCKER_USER -p $DOCKER_PASS &&
+      docker tag easymail-img easymail/only-for-testing-purposes:$TRAVIS_BUILD_NUMBER &&
+      docker push easymail/only-for-testing-purposes:$TRAVIS_BUILD_NUMBER;
     fi
