@@ -36,11 +36,13 @@ USE $ROUNDCUBE_MYSQL_DATABASE;
 EOF
 
 chmod -R 644 /usr/share/nginx/roundcubemail/temp /usr/share/nginx/roundcubemail/logs
-cp $ROUNDCUBE_DIR/config /usr/share/nginx/roundcubemail/config/config.inc.php
-sed -i "s/__EASYMAIL_MYSQL_HOSTNAME__/$MYSQL_HOSTNAME/g" /usr/share/nginx/roundcubemail/config/config.inc.php
-sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_DATABASE__/$ROUNDCUBE_MYSQL_DATABASE/g" /usr/share/nginx/roundcubemail/config/config.inc.php
-sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_USERNAME__/$ROUNDCUBE_MYSQL_USERNAME/g" /usr/share/nginx/roundcubemail/config/config.inc.php
-sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__/$ROUNDCUBE_MYSQL_PASSWORD/g" /usr/share/nginx/roundcubemail/config/config.inc.php
+export NGINX_ROUNDCUBEMAIL_FILE=/usr/share/nginx/roundcubemail/config/config.inc.php
+cp $ROUNDCUBE_DIR/config $NGINX_ROUNDCUBEMAIL_FILE
+
+sed -i "s/__EASYMAIL_MYSQL_HOSTNAME__/$MYSQL_HOSTNAME/g" $NGINX_ROUNDCUBEMAIL_FILE
+sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_DATABASE__/$ROUNDCUBE_MYSQL_DATABASE/g" $NGINX_ROUNDCUBEMAIL_FILE
+sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_USERNAME__/$ROUNDCUBE_MYSQL_USERNAME/g" $NGINX_ROUNDCUBEMAIL_FILE
+sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__/$ROUNDCUBE_MYSQL_PASSWORD/g" $NGINX_ROUNDCUBEMAIL_FILE
 
 mysql -h $MYSQL_HOSTNAME -u$ROUNDCUBE_MYSQL_USERNAME -p$ROUNDCUBE_MYSQL_PASSWORD $ROUNDCUBE_MYSQL_DATABASE < /usr/share/nginx/roundcubemail/SQL/mysql.initial.sql
 rm -r /usr/share/nginx/roundcubemail/installer
