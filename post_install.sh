@@ -13,11 +13,14 @@ touch $ALREADY_RUN_POST_INSTALL_FILE
 
 # Get variables
 export EASYMAIL_CONFIG="/opt/easymail/config.ini"
+export MYSQL_HOSTNAME='127.0.0.1'
 export SSL_CA_BUNDLE_FILE=$(cat "$EASYMAIL_CONFIG" | grep public_dovecot_key: | awk -F':' '{ print $2;}')
 export SSL_PRIVATE_KEY_FILE=$(cat "$EASYMAIL_CONFIG" | grep private_dovecot_key: | awk -F':' '{ print $2;}')
+export ROUNDCUBE_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_roundcube_username: | awk -F':' '{ print $2;}')
 export MYSQL_HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_hostname: | awk -F':' '{ print $2;}')
+export MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_username: | awk -F':' '{ print $2;}')
 export ROOT_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_username: | awk -F':' '{ print $2;}')
-export ROOT_MYSQL_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
+export OLD_ROOT_MYSQL_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
 export MYSQL_DATABASE=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_database: | awk -F':' '{ print $2;}')
 export HOSTNAME=$1
 
@@ -26,7 +29,20 @@ function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
 }
 
+function get_rand_password() {
+	openssl rand  32 | md5sum | awk '{print $1;}'
+}
+
 export -f set_hostname
+
+# Re-generate the passwords
+export PASSWORD=$(get_rand_password)
+export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
+export ROOT_MYSQL_PASSWORD=$(get_rand_password)
+export MYSQL_PASSWORD=$(get_rand_password)
+export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
+export MANAGEMENT_API_PASSWORD=$(get_rand_password)
+export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
 # Re-generate the Dovecot's self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
@@ -41,7 +57,20 @@ set_hostname /etc/nginx/sites-enabled/roundcube
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 	# MySQL 
 export ADMIN_EMAIL="admin@$HOSTNAME"
-mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$OLD_ROOT_MYSQL_PASSWORD << EOF
+#ALTER USER '$ROOT_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
+#ALTER USER '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$MYSQL_PASSWORD';
+#ALTER USER '$ROUNDCUBE_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$ROUNDCUBE_MYSQL_PASSWORD';
+
+#ALTER USER '$ROOT_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED WITH mysql_native_password BY '$ROOT_MYSQL_PASSWORD';
+#ALTER USER '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASSWORD';
+#ALTER USER '$ROUNDCUBE_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED WITH mysql_native_password BY '$ROUNDCUBE_MYSQL_PASSWORD';
+
+#SET old_passwords = 0;
+#SET PASSWORD FOR '$ROOT_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' = PASSWORD('$ROOT_MYSQL_PASSWORD');
+#SET PASSWORD FOR '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' = PASSWORD('$MYSQL_PASSWORD');
+#SET PASSWORD FOR '$ROUNDCUBE_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' = PASSWORD('$ROUNDCUBE_MYSQL_PASSWORD');
+
 USE $MYSQL_DATABASE;
 
 UPDATE \`virtual_domains\`
@@ -49,7 +78,7 @@ SET \`name\`='$HOSTNAME'
 WHERE \`id\`='1';
 
 UPDATE \`virtual_users\`
-SET \`email\`='$ADMIN_EMAIL'
+SET \`email\`='$ADMIN_EMAIL', \`password\`='$ADMIN_PASSWORD'
 WHERE \`id\`='1';
 
 EOF
@@ -62,6 +91,8 @@ service dovecot reload
 service postfix reload
 	# Management API
 sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
+sed -i "s/__MANAGEMENT_API_SECRETKEY__/$MANAGEMENT_API_SECRETKEY/g" /opt/easymail/ManagementAPI/config.ini
+sed -i "s/__MANAGEMENT_API_PASSWORD__/$MANAGEMENT_API_PASSWORD/g" /opt/easymail/ManagementAPI/config.ini
 
 echo "Create a log dir"
 mkdir /opt/easymail/logs/
@@ -73,6 +104,12 @@ echo "Run ManagementAPI"
 ./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
 
 echo "Add new configurations to easymail config file"
+sed -i "s/mysql_root_password:.*/mysql_root_password:$ROOT_MYSQL_PASSWORD/" $EASYMAIL_CONFIG
+sed -i "s/mysql_easymail_password:.*/mysql_easymail_password:$MYSQL_PASSWORD/" $EASYMAIL_CONFIG
+sed -i "s/mysql_roundcube_password:.*/mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD/" $EASYMAIL_CONFIG
+sed -i "s/roundcube_web_password:.*/roundcube_web_password:$PASSWORD/" $EASYMAIL_CONFIG
+sed -i "s/api_password:.*/api_password:$MANAGEMENT_API_PASSWORD/" $EASYMAIL_CONFIG
+
 sed -i "s/general_hostname:.*/general_hostname:$HOSTNAME/" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_url:.*/roundcube_web_url:https:\/\/$HOSTNAME\//" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_username:.*/roundcube_web_username:$ADMIN_EMAIL/" $EASYMAIL_CONFIG
