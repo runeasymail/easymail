@@ -53,7 +53,7 @@ export MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_MYSQL_DATABASE='roundcube_dbname'
 export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
-export ROUNDCUBE_VERSION=1.2.3
+export ROUNDCUBE_VERSION=1.2.5
 
 export MANAGEMENT_API_USERNAME='easyadmin'
 export MANAGEMENT_API_PASSWORD=$(get_rand_password)
