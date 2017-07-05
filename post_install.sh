@@ -1,5 +1,12 @@
 set -e
 
+# Check for min system requirements
+if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 900)); then
+   echo -e "EasyMail has been stopped because of the following minimum requirements:\n";
+   echo -e "- RAM (or RAM + SWAP) >= 1GB\n\n";
+   exit;
+fi
+
 bash /run.sh; 
 
 # run only once
