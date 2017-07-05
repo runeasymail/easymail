@@ -10,19 +10,6 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59
 
-# Make sure only root can run our script
-if [ "$(id -u)" != "0" ]; then
-   echo "Please log in as root"
-   exit
-fi
-
-# Check for min system requirements
-if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 900)); then
-   echo -e "The installation of EasyMail has been stopped because of the following minimum requirements:\n";
-   echo -e "- RAM (or RAM + SWAP) >= 1GB\n\n";
-   exit;
-fi
-
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
 
