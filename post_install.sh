@@ -47,29 +47,19 @@ export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 # Re-generate the Dovecot's self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
-# Set HOSTNAME
-	# Auto configurations
+# Set HOSTNAME for auto configurations
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
-	# Roundcube
+	
+# Set HOSTNAME for Roundcube
 set_hostname /etc/nginx/sites-enabled/roundcube
-	# Postfix
+	
+# Set HOSTNAME for Postfix
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
-	# MySQL 
+
+# Set HOSTNAME for MySQL 
 export ADMIN_EMAIL="admin@$HOSTNAME"
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$OLD_ROOT_MYSQL_PASSWORD << EOF
-#ALTER USER '$ROOT_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
-#ALTER USER '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$MYSQL_PASSWORD';
-#ALTER USER '$ROUNDCUBE_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED BY '$ROUNDCUBE_MYSQL_PASSWORD';
-
-#ALTER USER '$ROOT_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED WITH mysql_native_password BY '$ROOT_MYSQL_PASSWORD';
-#ALTER USER '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASSWORD';
-#ALTER USER '$ROUNDCUBE_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' IDENTIFIED WITH mysql_native_password BY '$ROUNDCUBE_MYSQL_PASSWORD';
-
-#SET old_passwords = 0;
-#SET PASSWORD FOR '$ROOT_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' = PASSWORD('$ROOT_MYSQL_PASSWORD');
-#SET PASSWORD FOR '$MYSQL_USERNAME'@'$MYSQL_HOSTNAME' = PASSWORD('$MYSQL_PASSWORD');
-#SET PASSWORD FOR '$ROUNDCUBE_MYSQL_USERNAME'@'$MYSQL_HOSTNAME' = PASSWORD('$ROUNDCUBE_MYSQL_PASSWORD');
 
 USE $MYSQL_DATABASE;
 
@@ -80,16 +70,18 @@ WHERE \`id\`='1';
 UPDATE \`virtual_users\`
 SET \`email\`='$ADMIN_EMAIL', \`password\`='$ADMIN_PASSWORD'
 WHERE \`id\`='1';
-
 EOF
-	# Dovecot
+
+# Set HOSTNAME for Dovecot
 mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
-	# Reload services
+	
+# Reload services
 service nginx restart 
 service dovecot reload
 service postfix reload
-	# Management API
+	
+# Set HOSTNAME Management API
 sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
 sed -i "s/__MANAGEMENT_API_SECRETKEY__/$MANAGEMENT_API_SECRETKEY/g" /opt/easymail/ManagementAPI/config.ini
 sed -i "s/__MANAGEMENT_API_PASSWORD__/$MANAGEMENT_API_PASSWORD/g" /opt/easymail/ManagementAPI/config.ini
