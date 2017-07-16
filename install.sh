@@ -24,10 +24,9 @@ function get_rand_password() {
 
 export -f set_hostname
 
-export PASSWORD=$(get_rand_password)
-
 export ADMIN_EMAIL="admin@__EASYMAIL_HOSTNAME__"
-export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
+export ADMIN_PASSWORD_UNENCRYPTED=$(get_rand_password)
+export ADMIN_PASSWORD=$(openssl passwd -1 $ADMIN_PASSWORD_UNENCRYPTED)
 
 export ROOT_MYSQL_USERNAME='root'
 export ROOT_MYSQL_PASSWORD=$(get_rand_password)
@@ -87,7 +86,7 @@ mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD
 [roundcube_web]
 roundcube_web_url:
 roundcube_web_username:
-roundcube_web_password:$PASSWORD
+roundcube_web_password:$ADMIN_PASSWORD_UNENCRYPTED
 
 [api]
 api_url:

@@ -20,12 +20,15 @@ touch $ALREADY_RUN_POST_INSTALL_FILE
 
 # Get variables
 export EASYMAIL_CONFIG="/opt/easymail/config.ini"
-export MYSQL_HOSTNAME='127.0.0.1'
+
 export SSL_CA_BUNDLE_FILE=$(cat "$EASYMAIL_CONFIG" | grep public_dovecot_key: | awk -F':' '{ print $2;}')
 export SSL_PRIVATE_KEY_FILE=$(cat "$EASYMAIL_CONFIG" | grep private_dovecot_key: | awk -F':' '{ print $2;}')
+
 export ROUNDCUBE_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_roundcube_username: | awk -F':' '{ print $2;}')
+
 export MYSQL_HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_hostname: | awk -F':' '{ print $2;}')
 export MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_username: | awk -F':' '{ print $2;}')
+
 export ROOT_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_username: | awk -F':' '{ print $2;}')
 export OLD_ROOT_MYSQL_PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
 export MYSQL_DATABASE=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_database: | awk -F':' '{ print $2;}')
@@ -43,8 +46,8 @@ function get_rand_password() {
 export -f set_hostname
 
 # Re-generate the passwords
-export PASSWORD=$(get_rand_password)
-export ADMIN_PASSWORD=$(openssl passwd -1 $PASSWORD)
+export ADMIN_PASSWORD_UNENCRYPTED=$(get_rand_password)
+export ADMIN_PASSWORD=$(openssl passwd -1 $ADMIN_PASSWORD_UNENCRYPTED)
 export ROOT_MYSQL_PASSWORD=$(get_rand_password)
 export MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
@@ -106,7 +109,7 @@ echo "Add new configurations to easymail config file"
 sed -i "s/mysql_root_password:.*/mysql_root_password:$ROOT_MYSQL_PASSWORD/" $EASYMAIL_CONFIG
 sed -i "s/mysql_easymail_password:.*/mysql_easymail_password:$MYSQL_PASSWORD/" $EASYMAIL_CONFIG
 sed -i "s/mysql_roundcube_password:.*/mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD/" $EASYMAIL_CONFIG
-sed -i "s/roundcube_web_password:.*/roundcube_web_password:$PASSWORD/" $EASYMAIL_CONFIG
+sed -i "s/roundcube_web_password:.*/roundcube_web_password:$ADMIN_PASSWORD_UNENCRYPTED/" $EASYMAIL_CONFIG
 sed -i "s/api_password:.*/api_password:$MANAGEMENT_API_PASSWORD/" $EASYMAIL_CONFIG
 
 sed -i "s/general_hostname:.*/general_hostname:$HOSTNAME/" $EASYMAIL_CONFIG
