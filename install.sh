@@ -25,25 +25,25 @@ function get_rand_password() {
 export -f set_hostname
 
 export ADMIN_EMAIL="admin@__EASYMAIL_HOSTNAME__"
-export ADMIN_PASSWORD_UNENCRYPTED=$(get_rand_password)
+export ADMIN_PASSWORD_UNENCRYPTED='__EASYMAIL_ADMIN_PASSWORD_UNENCRYPTED__'
 export ADMIN_PASSWORD=$(openssl passwd -1 $ADMIN_PASSWORD_UNENCRYPTED)
 
 export ROOT_MYSQL_USERNAME='root'
-export ROOT_MYSQL_PASSWORD=$(get_rand_password)
+export ROOT_MYSQL_PASSWORD='__EASYMAIL_ROOT_MYSQL_PASSWORD__'
 
 export MYSQL_DATABASE='mailserver'
 export MYSQL_HOSTNAME='127.0.0.1'
 export MYSQL_USERNAME='mailuser'
-export MYSQL_PASSWORD=$(get_rand_password)
+export MYSQL_PASSWORD='__EASYMAIL_MYSQL_PASSWORD__'
 
 export ROUNDCUBE_MYSQL_DATABASE='roundcube_dbname'
 export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
-export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
+export ROUNDCUBE_MYSQL_PASSWORD='__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__'
 export ROUNDCUBE_VERSION=1.2.5
 
 export MANAGEMENT_API_USERNAME='easyadmin'
-export MANAGEMENT_API_PASSWORD=$(get_rand_password)
-export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
+export MANAGEMENT_API_PASSWORD='__EASYMAIL_MANAGEMENT_API_PASSWORD__'
+export MANAGEMENT_API_SECRETKEY='__EASYMAIL_MANAGEMENT_API_SECRETKEY__'
 
 export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
 
