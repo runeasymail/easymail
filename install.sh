@@ -13,13 +13,8 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
 
-# Define some functions and variables
 function set_hostname {
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
-}
-
-function get_rand_password() {
-	openssl rand  32 | md5sum | awk '{print $1;}'
 }
 
 export -f set_hostname
@@ -94,5 +89,4 @@ api_username:$MANAGEMENT_API_USERNAME
 api_password:$MANAGEMENT_API_PASSWORD
 "  >> $EASY_MAIL_DIR/config.ini
 
-export HOSTNAME=$(cat "$EASY_MAIL_DIR/config.ini" | grep general_hostname: | awk -F':' '{ print $2;}')
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
