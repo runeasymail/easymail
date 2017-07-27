@@ -25,9 +25,6 @@ send \"$ROOT_MYSQL_PASSWORD\r\"
 expect \"Press y|Y for Yes, any other key for No:\"
 send \"n\r\"
 
-expect \"Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG:\"
-send \"0\r\"
-
 expect \"Change the password for root ? ((Press y|Y for Yes, any other key for No) :\"
 send \"n\r\"
 
