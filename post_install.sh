@@ -53,8 +53,10 @@ function apply_easymail_configs {
 	sed -i "s/__EASYMAIL_ADMIN_PASSWORD_UNENCRYPTED__/$ADMIN_PASSWORD_UNENCRYPTED/g" $FILEPATH
 
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $FILEPATH
-	
+
+	sed -i "s/__EASYMAIL_MANAGEMENT_API_USERNAME__/$MANAGEMENT_API_USERNAME/g" $FILEPATH
 	sed -i "s/__EASYMAIL_MANAGEMENT_API_PASSWORD__/$MANAGEMENT_API_PASSWORD/g" $FILEPATH
+	sed -i "s/__EASYMAIL_MANAGEMENT_API_SECRETKEY__/$MANAGEMENT_API_SECRETKEY/g" $FILEPATH
 }
 
 export -f set_hostname
@@ -65,6 +67,8 @@ export ADMIN_PASSWORD=$(openssl passwd -1 $ADMIN_PASSWORD_UNENCRYPTED)
 export ROOT_MYSQL_PASSWORD=$(get_rand_password)
 export MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
+
+export MANAGEMENT_API_USERNAME="easyadmin"
 export MANAGEMENT_API_PASSWORD=$(get_rand_password)
 export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
@@ -122,6 +126,4 @@ echo "Run ManagementAPI"
 ./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
 
 echo "Add new configurations to easymail config file"
-
 apply_easymail_configs $EASYMAIL_CONFIG
-
