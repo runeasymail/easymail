@@ -87,7 +87,7 @@ roundcube_web_password:$ADMIN_PASSWORD_UNENCRYPTED
 [api]
 api_url:https://__EASYMAIL_HOSTNAME__/api/
 api_username:$MANAGEMENT_API_USERNAME
-api_password:$MANAGEMENT_API_PASSWORD
+api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
 
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
