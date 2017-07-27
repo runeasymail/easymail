@@ -99,7 +99,8 @@ UPDATE \`virtual_users\`
 SET \`email\`='$ADMIN_EMAIL', \`password\`='$ADMIN_PASSWORD'
 WHERE \`id\`='1';
 
-ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
+ALTER USER 'mailuser'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
 EOF
 
 # Set HOSTNAME for Dovecot
