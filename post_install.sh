@@ -40,7 +40,7 @@ function set_hostname {
 }
 
 function get_rand_password() {
-	openssl rand  32 | md5sum | awk '{print $1;}'
+	< /dev/urandom tr -dc A-Z-_\/*{}[]a-z-0-9 | head -c${1:-60};
 }
 
 export -f set_hostname
