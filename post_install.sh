@@ -43,6 +43,11 @@ function get_rand_password() {
 	< /dev/urandom tr -dc A-Z-_{}a-z-0-9 | head -c${1:-60};
 }
 
+function apply_easymail_configs {
+	export FILEPATH=$1;
+	sed -i "s/__EASYMAIL_ROOT_MYSQL_PASSWORD__/$ROOT_MYSQL_PASSWORD/g" $FILEPATH
+}
+
 export -f set_hostname
 
 # Re-generate the passwords
@@ -108,7 +113,9 @@ echo "Run ManagementAPI"
 ./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
 
 echo "Add new configurations to easymail config file"
-sed -i "s/mysql_root_password:.*/mysql_root_password:$ROOT_MYSQL_PASSWORD/" $EASYMAIL_CONFIG
+
+apply_easymail_configs $EASYMAIL_CONFIG
+
 sed -i "s/mysql_easymail_password:.*/mysql_easymail_password:$MYSQL_PASSWORD/" $EASYMAIL_CONFIG
 sed -i "s/mysql_roundcube_password:.*/mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD/" $EASYMAIL_CONFIG
 sed -i "s/roundcube_web_password:.*/roundcube_web_password:$ADMIN_PASSWORD_UNENCRYPTED/" $EASYMAIL_CONFIG
