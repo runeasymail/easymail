@@ -40,7 +40,7 @@ function set_hostname {
 }
 
 function get_rand_password() {
-	< /dev/urandom tr -dc A-Z-_{}[]a-z-0-9 | head -c${1:-60};
+	< /dev/urandom tr -dc A-Z-_{}a-z-0-9 | head -c${1:-60};
 }
 
 export -f set_hostname
