@@ -40,7 +40,7 @@ function set_hostname {
 }
 
 function get_rand_password() {
-	openssl rand  32 | md5sum | awk '{print $1;}'
+	< /dev/urandom tr -dc A-Z-_{}a-z-0-9 | head -c${1:-60};
 }
 
 export -f set_hostname
@@ -80,6 +80,8 @@ WHERE \`id\`='1';
 UPDATE \`virtual_users\`
 SET \`email\`='$ADMIN_EMAIL', \`password\`='$ADMIN_PASSWORD'
 WHERE \`id\`='1';
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
 EOF
 
 # Set HOSTNAME for Dovecot
