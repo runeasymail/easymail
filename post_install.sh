@@ -45,7 +45,16 @@ function get_rand_password() {
 
 function apply_easymail_configs {
 	export FILEPATH=$1;
+
+	sed -i "s/__EASYMAIL_MYSQL_PASSWORD__/$MYSQL_PASSWORD/g" $FILEPATH
 	sed -i "s/__EASYMAIL_ROOT_MYSQL_PASSWORD__/$ROOT_MYSQL_PASSWORD/g" $FILEPATH
+	sed -i "s/__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__/$ROUNDCUBE_MYSQL_PASSWORD/g" $FILEPATH
+
+	sed -i "s/__EASYMAIL_ADMIN_PASSWORD_UNENCRYPTED__/$ADMIN_PASSWORD_UNENCRYPTED/g" $FILEPATH
+
+	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $FILEPATH
+	
+	sed -i "s/__EASYMAIL_MANAGEMENT_API_PASSWORD__/$MANAGEMENT_API_PASSWORD/g" $FILEPATH
 }
 
 export -f set_hostname
@@ -91,7 +100,7 @@ EOF
 
 # Set HOSTNAME for Dovecot
 mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
-sed -i "s/admin@__EASYMAIL_HOSTNAME__/admin@$HOSTNAME/g" /etc/dovecot/conf.d/20-lmtp.conf
+apply_easymail_configs /etc/dovecot/conf.d/20-lmtp.conf
 	
 # Reload services
 service nginx restart 
@@ -99,7 +108,7 @@ service dovecot reload
 service postfix reload
 	
 # Set HOSTNAME Management API
-sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" /opt/easymail/ManagementAPI/config.ini
+apply_easymail_configs /opt/easymail/ManagementAPI/config.ini
 sed -i "s/__MANAGEMENT_API_SECRETKEY__/$MANAGEMENT_API_SECRETKEY/g" /opt/easymail/ManagementAPI/config.ini
 sed -i "s/__MANAGEMENT_API_PASSWORD__/$MANAGEMENT_API_PASSWORD/g" /opt/easymail/ManagementAPI/config.ini
 
@@ -116,12 +125,3 @@ echo "Add new configurations to easymail config file"
 
 apply_easymail_configs $EASYMAIL_CONFIG
 
-sed -i "s/mysql_easymail_password:.*/mysql_easymail_password:$MYSQL_PASSWORD/" $EASYMAIL_CONFIG
-sed -i "s/mysql_roundcube_password:.*/mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD/" $EASYMAIL_CONFIG
-sed -i "s/roundcube_web_password:.*/roundcube_web_password:$ADMIN_PASSWORD_UNENCRYPTED/" $EASYMAIL_CONFIG
-sed -i "s/api_password:.*/api_password:$MANAGEMENT_API_PASSWORD/" $EASYMAIL_CONFIG
-
-sed -i "s/general_hostname:.*/general_hostname:$HOSTNAME/" $EASYMAIL_CONFIG
-sed -i "s/roundcube_web_url:.*/roundcube_web_url:https:\/\/$HOSTNAME\//" $EASYMAIL_CONFIG
-sed -i "s/roundcube_web_username:.*/roundcube_web_username:$ADMIN_EMAIL/" $EASYMAIL_CONFIG
-sed -i "s/api_url:.*/api_url:https:\/\/$HOSTNAME\/api/" $EASYMAIL_CONFIG
