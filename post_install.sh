@@ -128,3 +128,11 @@ echo "Run ManagementAPI"
 
 echo "Add new configurations to easymail config file"
 apply_easymail_configs $EASYMAIL_CONFIG
+
+apply_easymail_configs /etc/dovecot/dovecot.conf
+apply_easymail_configs /etc/dovecot/dovecot-sql.conf.ext
+
+apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-maps.cf
+apply_easymail_configs /etc/postfix/mysql-recipient-bcc-maps.cf
+apply_easymail_configs /etc/postfix/mysql-virtual-alias-maps.cf
+apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-domains.cf
