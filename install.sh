@@ -1,10 +1,5 @@
 set -e
 
-export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-export HOSTNAME=""
-export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
-export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
-
 # tmp workaround, please have a look at https://github.com/moby/moby/issues/13555 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
@@ -13,13 +8,13 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
 
-function set_hostname {
-	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
-}
+export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-export -f set_hostname
+export HOSTNAME="__EASYMAIL_HOSTNAME__"
+export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
+export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
 
-export ADMIN_EMAIL="admin@__EASYMAIL_HOSTNAME__"
+export ADMIN_EMAIL="admin@$HOSTNAME"
 export ADMIN_PASSWORD_UNENCRYPTED='__EASYMAIL_ADMIN_PASSWORD_UNENCRYPTED__'
 export ADMIN_PASSWORD=$(openssl passwd -1 $ADMIN_PASSWORD_UNENCRYPTED)
 
@@ -36,11 +31,17 @@ export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
 export ROUNDCUBE_MYSQL_PASSWORD='__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__'
 export ROUNDCUBE_VERSION=1.2.5
 
-export MANAGEMENT_API_USERNAME='easyadmin'
+export MANAGEMENT_API_USERNAME='__EASYMAIL_MANAGEMENT_API_USERNAME__'
 export MANAGEMENT_API_PASSWORD='__EASYMAIL_MANAGEMENT_API_PASSWORD__'
 export MANAGEMENT_API_SECRETKEY='__EASYMAIL_MANAGEMENT_API_SECRETKEY__'
 
 export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
+
+function set_hostname {
+	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $1
+}
+
+export -f set_hostname
 
 # Install
 bash $CURRENT_DIR/mysql/install.sh
@@ -57,7 +58,7 @@ bash $CURRENT_DIR/dkim/install.sh
 # Save the system configurations
 echo "
 [general]
-general_hostname:
+general_hostname:__EASYMAIL_HOSTNAME__
 
 [ssl]
 public_dovecot_key:$SSL_CA_BUNDLE_FILE
@@ -79,14 +80,14 @@ mysql_roundcube_username:$ROUNDCUBE_MYSQL_USERNAME
 mysql_roundcube_password:$ROUNDCUBE_MYSQL_PASSWORD
 
 [roundcube_web]
-roundcube_web_url:
-roundcube_web_username:
+roundcube_web_url:https://__EASYMAIL_HOSTNAME__
+roundcube_web_username:admin@__EASYMAIL_HOSTNAME__
 roundcube_web_password:$ADMIN_PASSWORD_UNENCRYPTED
 
 [api]
-api_url:
-api_username:$MANAGEMENT_API_USERNAME
-api_password:$MANAGEMENT_API_PASSWORD
+api_url:https://__EASYMAIL_HOSTNAME__/api/
+api_username:__EASYMAIL_MANAGEMENT_API_USERNAME__
+api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
 
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
