@@ -113,7 +113,7 @@ apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-maps.cf
 apply_easymail_configs /etc/postfix/mysql-recipient-bcc-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-alias-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-domains.cf
-	
+
 # Reload services
 service nginx restart 
 service dovecot reload
@@ -121,8 +121,6 @@ service postfix reload
 	
 # Set HOSTNAME Management API
 apply_easymail_configs /opt/easymail/ManagementAPI/config.ini
-sed -i "s/__MANAGEMENT_API_SECRETKEY__/$MANAGEMENT_API_SECRETKEY/g" /opt/easymail/ManagementAPI/config.ini
-sed -i "s/__MANAGEMENT_API_PASSWORD__/$MANAGEMENT_API_PASSWORD/g" /opt/easymail/ManagementAPI/config.ini
 
 echo "Create a log dir"
 mkdir /opt/easymail/logs/
