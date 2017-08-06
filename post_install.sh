@@ -40,7 +40,7 @@ function set_hostname {
 }
 
 function get_rand_password() {
-	< /dev/urandom tr -dc A-Za-z-0-9 | head -c${1:-10};
+	< /dev/urandom tr -dc A-Za-z-0-9 | head -c${1:-60};
 }
 
 function apply_easymail_configs {
