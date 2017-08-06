@@ -7,7 +7,7 @@ mkdir $MANAGEMENT_API_DIR && cd $MANAGEMENT_API_DIR
 
 apt-get install wget -y
 
-wget https://github.com/runeasymail/ManagementAPI/releases/download/v0.9.3/ManagementAPI
+wget https://github.com/runeasymail/ManagementAPI/releases/download/v$MANAGEMENT_API_VERSION/ManagementAPI
 chmod +x ManagementAPI
 
 echo "
