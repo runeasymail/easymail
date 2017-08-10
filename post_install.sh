@@ -108,10 +108,12 @@ EOF
 
 # Set HOSTNAME for Dovecot
 mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
+
 apply_easymail_configs /etc/dovecot/dovecot.conf
 apply_easymail_configs /etc/dovecot/dovecot-sql.conf.ext
 apply_easymail_configs /etc/dovecot/conf.d/20-lmtp.conf
 
+postconf -e myhostname="$HOSTNAME"
 apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-maps.cf
 apply_easymail_configs /etc/postfix/mysql-recipient-bcc-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-alias-maps.cf
