@@ -112,6 +112,8 @@ mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
 apply_easymail_configs /etc/dovecot/dovecot.conf
 apply_easymail_configs /etc/dovecot/dovecot-sql.conf.ext
 apply_easymail_configs /etc/dovecot/conf.d/20-lmtp.conf
+echo "log_path = /opt/easymail/logs/dovecot.log" >> /etc/dovecot/dovecot.conf
+
 
 postconf -e myhostname="$HOSTNAME"
 apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-maps.cf
