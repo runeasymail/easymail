@@ -6,7 +6,10 @@
 <a href="https://github.com/runeasymail/easymail/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>
 
-# Easy way to install a mail server
+# Easy way to install
+```
+docker run -itd -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "YOUR_DOMAIN_NAME" --name="" easymail/easymail:v1.0.3 /bin/sh -c "bash /opt/easymail/post_install.sh YOUR_DOMAIN_NAME; exec /bin/bash"
+```
 
 ## About EasyMail
 EasyMail is an open-sourced software which will help you to build your own mail server.
