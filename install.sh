@@ -8,6 +8,7 @@ set -e
 
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
+update-ca-certificates
 
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
