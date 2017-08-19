@@ -92,4 +92,5 @@ api_username:__EASYMAIL_MANAGEMENT_API_USERNAME__
 api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
 
+update-ca-certificates
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
