@@ -8,7 +8,6 @@ set -e
 
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
-update-ca-certificates
 
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -93,4 +92,5 @@ api_username:__EASYMAIL_MANAGEMENT_API_USERNAME__
 api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
 
+update-ca-certificates
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
