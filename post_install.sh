@@ -141,4 +141,6 @@ echo "Run ManagementAPI"
 echo "Add new configurations to easymail config file"
 apply_easymail_configs $EASYMAIL_CONFIG
 
+update-ca-certificates
+
 
