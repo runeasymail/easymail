@@ -4,7 +4,7 @@ set -e
 debconf-set-selections <<< "postfix postfix/mailname string __EASYMAIL_HOSTNAME__"
 debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 
-apt-get install postfix postfix-mysql -y
+apt-get install postfix postfix-mysql syslog-ng -q -y
 
 mysqladmin -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD create $MYSQL_DATABASE	
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
@@ -87,4 +87,6 @@ postfix_mysql_file "query = SELECT 1 FROM virtual_users WHERE email='%s'" mysql-
 postfix_mysql_file "query = SELECT destination FROM virtual_aliases WHERE source='%s'" mysql-virtual-alias-maps.cf
 postfix_mysql_file "query = SELECT to_address FROM recipient_bcc WHERE from_address='%s'" mysql-recipient-bcc-maps.cf
 
+sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
+service syslog-ng start
 service postfix start
