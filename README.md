@@ -8,7 +8,7 @@
 
 # Easy way to install
 ```
-docker run -itd -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "YOUR_DOMAIN_NAME" --name="" easymail/easymail:v1.0.7 /bin/sh -c "bash /opt/easymail/post_install.sh YOUR_DOMAIN_NAME; exec /bin/bash"
+docker run -itd -h "YOUR_DOMAIN_NAME" -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 --name="easymail" easymail/easymail:v1.0.8 /bin/sh -c "bash /opt/easymail/post_install.sh; exec /bin/bash"
 ```
 
 ## About EasyMail
