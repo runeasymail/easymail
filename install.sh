@@ -92,4 +92,7 @@ api_username:__EASYMAIL_MANAGEMENT_API_USERNAME__
 api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
 
+# Keep the hostname dir in "/easymail_mail_dir" because mail dir is volume it will remove it  
+mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /easymail_mail_dir
+ 
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
