@@ -2,11 +2,14 @@ server {
 	listen 80;
 	server_name __EASYMAIL_HOSTNAME__;
 	
+	location /.well-known/acme-challenge/ {
+		alias /var/www/challenges/;
+		try_files $uri =404;
+	}
+	
 	location / {
 		rewrite ^ https://$host$request_uri;
 	}
-	
-	# __EASY_MAIL_INCLUDE_LETSENCRYPT__
 }
 
 server {
