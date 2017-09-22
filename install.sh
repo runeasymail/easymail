@@ -92,4 +92,7 @@ api_username:__EASYMAIL_MANAGEMENT_API_USERNAME__
 api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
 
+# Set HOSTNAME for Dovecot
+mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /easymail_mail_dir
+ 
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
