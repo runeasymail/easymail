@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-    - docker run -it -v /home/travis/build/runeasymail/easymail/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 --name="easymail" -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:16.04 /bin/sh -c "bash /easymail/install.sh"
+    - docker run -it -v /home/travis/build/runeasymail/easymail/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 --name="easymail" -v /var/mail/vhosts/:/var/mail/vhosts/ -v /etc/ssl/certs/:/etc/ssl/certs/ ubuntu:16.04 /bin/sh -c "bash /easymail/install.sh"
     - docker commit easymail easymail-img
  
 # Smoke tests START
