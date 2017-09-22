@@ -106,8 +106,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
 EOF
 
 # Set HOSTNAME for Dovecot
-mv /var/mail/vhosts/__EASYMAIL_HOSTNAME__ /var/mail/vhosts/$HOSTNAME
-
+mkdir /var/mail/vhosts/$HOSTNAME -p
 apply_easymail_configs /etc/dovecot/dovecot.conf
 apply_easymail_configs /etc/dovecot/dovecot-sql.conf.ext
 apply_easymail_configs /etc/dovecot/conf.d/20-lmtp.conf
