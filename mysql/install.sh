@@ -7,13 +7,9 @@ debconf-set-selections <<< "mysql-community-server mysql-community-server/re-roo
 
 apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5
 echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" | tee -a /etc/apt/sources.list.d/mysql.list
-apt-get update -y
-
-apt-get install mysql-server -y
+apt-get update -y && apt-get install mysql-server expect -y
 update-alternatives --remove my.cnf /etc/mysql/my.cnf.migrated
 service mysql start
-
-apt-get install expect -y
 
 expect -c "
 set timeout 10
