@@ -4,12 +4,13 @@ services:
   - docker
 
 script:
+    - mkdir -p /opt/easymail/{mysql,dovecot}
     - docker run -it -v /home/travis/build/runeasymail/easymail/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 --name="easymail" ubuntu:16.04 /bin/sh -c "bash /easymail/install.sh"
     - docker commit easymail easymail-img
  
 # Smoke tests START
     - docker rm easymail
-    - docker run -itd -v /home/travis/build/runeasymail/easymail/:/easymail -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.example.com" --name="easymail" easymail-img /bin/sh -c "bash /opt/easymail/post_install.sh; exec /bin/bash"
+    - docker run -itd -v /home/travis/build/runeasymail/easymail/:/easymail -v /opt/easymail/dovecot/:/var/mail/vhosts/ -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.example.com" --name="easymail" easymail-img /bin/sh -c "bash /opt/easymail/post_install.sh; exec /bin/bash"
     - sleep 15
     - docker exec easymail wget --no-check-certificate https://test.example.com
     - docker exec easymail wget --no-check-certificate https://test.example.com/api/ping
