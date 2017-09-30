@@ -14,6 +14,7 @@ ALREADY_RUN_POST_INSTALL_FILE="/opt/easymail/already-run-post-install.txt"
 if [ ! -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
   # move the inital mysql data files
   mv /easymail_mysql_lib_dir /var/lib/mysql
+  chown mysql:mysql /var/lib/mysql -R
 fi
 
 bash /run.sh; 
