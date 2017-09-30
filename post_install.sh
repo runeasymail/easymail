@@ -109,7 +109,9 @@ EOF
 echo 111
 ls /easymail_mail_dir
 echo 222
+chmod 0777 /var/mail/vhosts/ -R
 mkdir -p /var/mail/vhosts/$HOSTNAME
+chmod 0777 /var/mail/vhosts/ -R
 echo 3333
 ls /var/mail/vhosts/
 echo 444
