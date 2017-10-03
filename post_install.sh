@@ -7,7 +7,7 @@ if (($(($(free -mt|awk '/^Total:/{print $2}')*1)) <= 700)); then
    exit;
 fi
 
-# run only once
+# run only once 
 ALREADY_RUN_POST_INSTALL_FILE="/opt/easymail/already-run-post-install.txt"
 
 # It has to be done only on first run.
