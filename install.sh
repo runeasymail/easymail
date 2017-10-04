@@ -92,6 +92,6 @@ api_username:__EASYMAIL_MANAGEMENT_API_USERNAME__
 api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
  
-mv /var/lib/mysql /easymail_mysql_lib_dir 
+cd /var/lib/ && tar -cvf mysql.tar mysql
 
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
