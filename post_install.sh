@@ -18,6 +18,9 @@ fi
 
 touch $ALREADY_RUN_POST_INSTALL_FILE
 
+# create payload directory
+mkdir -p /opt/easymail/data/{mysql,dovecot}
+
 # Get variables
 export EASYMAIL_CONFIG="/opt/easymail/config.ini"
 
