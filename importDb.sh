@@ -7,4 +7,6 @@ export DATABASE2=$(cat "$EASYMAIL_CONFIG" | grep mysql_roundcube_database: | awk
 export USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_username: | awk -F':' '{ print $2;}')
 export PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':' '{ print $2;}')
 
-mysqldump -u$USERNAME -p$PASSWORD -h$HOSTNAME --databases $DATABASE $DATABASE2 | sed 's/ AUTO_INCREMENT=[0-9]*//g'  > /opt/easymail/dbBackup.sql
+mysql -h$HOSTNAME -u$USERNAME -p$PASSWORD -e "DROP DATABASE IF EXISTS $DATABASE; CREATE DATABASE $DATABASE;"
+mysql -h$HOSTNAME -u$USERNAME -p$PASSWORD -e "DROP DATABASE IF EXISTS $DATABASE2; CREATE DATABASE $DATABASE2;"
+mysql -h$HOSTNAME -u$USERNAME -p$PASSWORD < /opt/easymail/data/mysql/db.sql
