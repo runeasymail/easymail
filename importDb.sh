@@ -9,4 +9,4 @@ export PASSWORD=$(cat "$EASYMAIL_CONFIG" | grep mysql_root_password: | awk -F':'
 
 mysql -h$HOSTNAME -u$USERNAME -p$PASSWORD -e "DROP DATABASE IF EXISTS $DATABASE; CREATE DATABASE $DATABASE;"
 mysql -h$HOSTNAME -u$USERNAME -p$PASSWORD -e "DROP DATABASE IF EXISTS $DATABASE2; CREATE DATABASE $DATABASE2;"
-mysql -h$HOSTNAME -u$USERNAME -p$PASSWORD < /opt/easymail/dbBackup.sql
+mysql -h$HOSTNAME -u$USERNAME -p$PASSWORD < /opt/easymail/data/mysql/db.sql
