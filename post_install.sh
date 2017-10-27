@@ -10,7 +10,7 @@ fi
 # run only once 
 ALREADY_RUN_POST_INSTALL_FILE="/opt/easymail/already-run-post-install.txt"
 
-if [ -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
+if [ ! -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
   mv /opendkim/ /etc/opendkim/
 fi
 
