@@ -10,6 +10,16 @@ fi
 # run only once 
 ALREADY_RUN_POST_INSTALL_FILE="/opt/easymail/already-run-post-install.txt"
 
+if [ ! -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
+  mkdir /etc/opendkim/keys -p
+  echo "
+	127.0.0.1
+	localhost
+	192.168.0.1/24
+  " > /etc/opendkim/TrustedHosts
+  chown opendkim:opendkim /etc/opendkim/ -R
+fi
+
 bash /run.sh; 
 
 if [ -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
