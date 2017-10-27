@@ -96,3 +96,5 @@ cp $CURRENT_DIR/exportDb.sh $EASY_MAIL_DIR/exportDb.sh
 cp $CURRENT_DIR/importDb.sh $EASY_MAIL_DIR/importDb.sh
 
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
+
+cp /etc/opendkim /opendkim
