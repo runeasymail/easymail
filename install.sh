@@ -97,4 +97,4 @@ cp $CURRENT_DIR/importDb.sh $EASY_MAIL_DIR/importDb.sh
 
 cp $CURRENT_DIR/post_install.sh $EASY_MAIL_DIR/post_install.sh
 
-cp /etc/opendkim /opendkim
+cp /etc/opendkim /opendkim -r
