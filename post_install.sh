@@ -17,6 +17,7 @@ if [ ! -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
 	localhost
 	192.168.0.1/24
   " > /etc/opendkim/TrustedHosts
+  chown opendkim:opendkim /etc/opendkim/ -R
 fi
 
 bash /run.sh; 
