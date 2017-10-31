@@ -11,9 +11,8 @@ apt-get update -y && apt-get install openssl python dialog cron -y
 
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-export HOSTNAME="__EASYMAIL_HOSTNAME__"
-export SSL_CA_BUNDLE_FILE="/opt/easymail/ssl/public.pem"
-export SSL_PRIVATE_KEY_FILE="/opt/easymail/ssl/private.pem"
+export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
+export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
 
 export ADMIN_EMAIL="admin@$HOSTNAME"
 export ADMIN_PASSWORD_UNENCRYPTED='__EASYMAIL_ADMIN_PASSWORD_UNENCRYPTED__'
@@ -61,10 +60,6 @@ bash $CURRENT_DIR/dkim/install.sh
 echo "
 [general]
 general_hostname:__EASYMAIL_HOSTNAME__
-
-[ssl]
-public_dovecot_key:$SSL_CA_BUNDLE_FILE
-private_dovecot_key:$SSL_PRIVATE_KEY_FILE
 
 [mysql_root]
 mysql_root_username:$ROOT_MYSQL_USERNAME
