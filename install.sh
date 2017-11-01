@@ -11,6 +11,7 @@ apt-get update -y && apt-get install openssl python dialog cron -y
 
 export CURRENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+export HOSTNAME="__EASYMAIL_HOSTNAME__"
 export SSL_CA_BUNDLE_FILE="/etc/dovecot/dovecot.pem"
 export SSL_PRIVATE_KEY_FILE="/etc/dovecot/private/dovecot.pem"
 
