@@ -84,6 +84,10 @@ export MANAGEMENT_API_USERNAME="easyadmin"
 export MANAGEMENT_API_PASSWORD=$(get_rand_password)
 export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
+# new ssl location path
+postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
+postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
+
 # Re-generate the Dovecot's self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
