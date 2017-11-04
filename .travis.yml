@@ -11,7 +11,7 @@ script:
 # Smoke tests START
     - docker rm easymail
     - docker run -itd -v /home/travis/build/runeasymail/easymail/:/easymail   -v /opt/easymail/data/ssl/:/opt/easymail/data/ssl/ -v /opt/easymail/data/dovecot/:/var/mail/vhosts/ -v /opt/easymail/data/mysql/:/opt/easymail/data/mysql/ -p=110:110 -p=25:25 -p=995:995 -p=80:80 -p=443:443 -p=587:587 -p=993:993 -p=143:143 -p=465:465 -h "test.example.com" --name="easymail" easymail-img /bin/sh -c "bash /opt/easymail/post_install.sh; exec /bin/bash"
-    - sleep 15
+    - sleep 25
     - docker exec easymail wget --no-check-certificate https://test.example.com
     - docker exec easymail wget --no-check-certificate https://test.example.com/api/ping
 # Smoke tests END
