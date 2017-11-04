@@ -84,20 +84,21 @@ export MANAGEMENT_API_USERNAME="easyadmin"
 export MANAGEMENT_API_PASSWORD=$(get_rand_password)
 export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
+# Re-generate the Dovecot's self-signed certificate
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+
 # new SSL location for Postfix
 postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
 postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
 
 # new SSL location for Nginx
-# sed -i -e "s#ssl_certificate .*#ssl_certificate $SSL_CA_BUNDLE_FILE;#g" /etc/nginx/sites-enabled/roundcube
-# sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g" /etc/nginx/sites-enabled/roundcube
+sed -i -e "s#ssl_certificate .*#ssl_certificate $SSL_CA_BUNDLE_FILE;#g" /etc/nginx/sites-enabled/roundcube
+sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g" /etc/nginx/sites-enabled/roundcube
 
 # new SSL location for Dovecot
 sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
 sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
 
-# Re-generate the Dovecot's self-signed certificate
-openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
 # Set HOSTNAME for auto configurations
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
