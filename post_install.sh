@@ -96,8 +96,8 @@ sed -i -e "s#ssl_certificate .*#ssl_certificate $SSL_CA_BUNDLE_FILE;#g" /etc/ngi
 sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g" /etc/nginx/sites-enabled/roundcube
 
 # new SSL location for Dovecot
-sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
-sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
+#sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
+#sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
 
 
 # Set HOSTNAME for auto configurations
