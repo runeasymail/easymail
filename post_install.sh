@@ -34,8 +34,8 @@ mkdir -p /opt/easymail/data/{mysql,dovecot,ssl}
 # Get variables
 export EASYMAIL_CONFIG="/opt/easymail/config.ini"
 
-export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
-export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
+export SSL_CA_BUNDLE_FILE=$(cat "$EASYMAIL_CONFIG" | grep public_dovecot_key: | awk -F':' '{ print $2;}')
+export SSL_PRIVATE_KEY_FILE=$(cat "$EASYMAIL_CONFIG" | grep private_dovecot_key: | awk -F':' '{ print $2;}') 
 
 export ROUNDCUBE_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_roundcube_username: | awk -F':' '{ print $2;}')
 
@@ -160,6 +160,12 @@ update-ca-certificates
 
 
 sleep 10
+
+export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
+export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
+
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+
 # new SSL location for Postfix
 postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
 postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
