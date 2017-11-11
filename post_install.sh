@@ -157,10 +157,6 @@ apply_easymail_configs $EASYMAIL_CONFIG
 
 update-ca-certificates
 
-
-
-sleep 10
-
 export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
 export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
 
