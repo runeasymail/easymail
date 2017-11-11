@@ -1,9 +1,9 @@
 set -e
 
 # tmp workaround, please have a look at https://github.com/moby/moby/issues/13555 
-#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 #apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-#gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59
 #gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 
 # Update and install initially required services
@@ -61,10 +61,6 @@ bash $CURRENT_DIR/dkim/install.sh
 echo "
 [general]
 general_hostname:__EASYMAIL_HOSTNAME__
-
-[ssl]
-public_dovecot_key:$SSL_CA_BUNDLE_FILE
-private_dovecot_key:$SSL_PRIVATE_KEY_FILE
 
 [mysql_root]
 mysql_root_username:$ROOT_MYSQL_USERNAME
