@@ -161,5 +161,10 @@ export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
 chmod 0777 -R /opt/easymail/data/ssl
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
+# new SSL location for Postfix
+postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
+postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
+
+
 
 
