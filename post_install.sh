@@ -166,5 +166,6 @@ postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
 postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
 
 
-
+sed -i -e "s#ssl_certificate .*#ssl_certificate $SSL_CA_BUNDLE_FILE;#g" /etc/nginx/sites-enabled/roundcube
+sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g" /etc/nginx/sites-enabled/roundcube
 
