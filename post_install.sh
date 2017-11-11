@@ -133,6 +133,36 @@ apply_easymail_configs /etc/postfix/mysql-recipient-bcc-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-alias-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-domains.cf
 
+
+
+
+############################
+export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
+export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
+ 
+chmod 0777 -R /opt/easymail/data/ssl
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+
+# new SSL location for Postfix
+postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
+postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
+
+# new SSL location for Nginx
+sed -i -e "s#ssl_certificate .*#ssl_certificate $SSL_CA_BUNDLE_FILE;#g" /etc/nginx/sites-enabled/roundcube
+sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g" /etc/nginx/sites-enabled/roundcube
+
+# new SSL location for Dovecot
+sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
+sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
+
+# new SSL location for Dovecot
+sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
+sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
+############################
+
+
+
+
 # Reload services
 service nginx restart 
 service dovecot reload
@@ -155,24 +185,4 @@ apply_easymail_configs $EASYMAIL_CONFIG
 
 update-ca-certificates
 
-export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
-export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
- 
-chmod 0777 -R /opt/easymail/data/ssl
-openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 
-# new SSL location for Postfix
-postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
-postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
-
-# new SSL location for Nginx
-sed -i -e "s#ssl_certificate .*#ssl_certificate $SSL_CA_BUNDLE_FILE;#g" /etc/nginx/sites-enabled/roundcube
-sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g" /etc/nginx/sites-enabled/roundcube
-
-# new SSL location for Dovecot
-sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
-sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
-
-# new SSL location for Dovecot
-sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
-sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
