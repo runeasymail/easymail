@@ -155,4 +155,11 @@ apply_easymail_configs $EASYMAIL_CONFIG
 
 update-ca-certificates
 
+export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
+export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
+ 
+chmod 0777 -R /opt/easymail/data/ssl
+openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+
+
 
