@@ -33,10 +33,6 @@ mkdir -p /opt/easymail/data/{mysql,dovecot,ssl}
 
 # Get variables
 export EASYMAIL_CONFIG="/opt/easymail/config.ini"
-
-export SSL_CA_BUNDLE_FILE=$(cat "$EASYMAIL_CONFIG" | grep public_dovecot_key: | awk -F':' '{ print $2;}')
-export SSL_PRIVATE_KEY_FILE=$(cat "$EASYMAIL_CONFIG" | grep private_dovecot_key: | awk -F':' '{ print $2;}')
-
 export ROUNDCUBE_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_roundcube_username: | awk -F':' '{ print $2;}')
 
 export MYSQL_HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_hostname: | awk -F':' '{ print $2;}')
