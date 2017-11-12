@@ -18,6 +18,7 @@ if [ ! -e "$ALREADY_RUN_POST_INSTALL_FILE" ]; then
 	192.168.0.1/24
   " >> /etc/opendkim/TrustedHosts
   chown opendkim:opendkim /etc/opendkim/ -R
+  chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 fi
 
 bash /run.sh; 
