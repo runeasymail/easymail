@@ -86,8 +86,12 @@ export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
 
 chmod 0777 -R /opt/easymail/data/ssl
 
-# Re-generate the self-signed certificate
-openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+# if the sertificate files are there don't re-generate them.
+if [ ! -e "$SSL_CA_BUNDLE_FILE" ] || [ ! -e "$SSL_PRIVATE_KEY_FILE" ]  ; then
+  # Re-generate the self-signed certificate
+  openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+fi
+
 
 # new SSL location for Postfix
 postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
