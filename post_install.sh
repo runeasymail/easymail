@@ -29,14 +29,10 @@ fi
 touch $ALREADY_RUN_POST_INSTALL_FILE
 
 # create payload directory
-mkdir -p /opt/easymail/data/{mysql,dovecot}
+mkdir -p /opt/easymail/data/{mysql,dovecot,ssl}
 
 # Get variables
 export EASYMAIL_CONFIG="/opt/easymail/config.ini"
-
-export SSL_CA_BUNDLE_FILE=$(cat "$EASYMAIL_CONFIG" | grep public_dovecot_key: | awk -F':' '{ print $2;}')
-export SSL_PRIVATE_KEY_FILE=$(cat "$EASYMAIL_CONFIG" | grep private_dovecot_key: | awk -F':' '{ print $2;}')
-
 export ROUNDCUBE_MYSQL_USERNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_roundcube_username: | awk -F':' '{ print $2;}')
 
 export MYSQL_HOSTNAME=$(cat "$EASYMAIL_CONFIG" | grep mysql_easymail_hostname: | awk -F':' '{ print $2;}')
@@ -84,8 +80,25 @@ export MANAGEMENT_API_USERNAME="easyadmin"
 export MANAGEMENT_API_PASSWORD=$(get_rand_password)
 export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
-# Re-generate the Dovecot's self-signed certificate
+export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
+export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
+
+chmod 0777 -R /opt/easymail/data/ssl
+
+# Re-generate the self-signed certificate
 openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
+
+# new SSL location for Postfix
+postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
+postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
+
+# new SSL location for Nginx
+sed -i -e "s#ssl_certificate .*#ssl_certificate $SSL_CA_BUNDLE_FILE;#g" /etc/nginx/sites-enabled/roundcube
+sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g" /etc/nginx/sites-enabled/roundcube
+
+# new SSL location for Dovecot
+sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
+sed -i -e "s#ssl_key .*#ssl_key = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
 
 # Set HOSTNAME for auto configurations
 set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autoconfig.php
