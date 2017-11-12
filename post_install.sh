@@ -133,10 +133,6 @@ apply_easymail_configs /etc/postfix/mysql-recipient-bcc-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-alias-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-domains.cf
 
-
-
-
-############################
 export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
 export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
  
@@ -154,14 +150,6 @@ sed -i -e "s#ssl_certificate_key .*#ssl_certificate_key $SSL_PRIVATE_KEY_FILE;#g
 # new SSL location for Dovecot
 sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
 sed -i -e "s#ssl_key .*#ssl_cert = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
-
-# new SSL location for Dovecot
-sed -i -e "s#ssl_cert .*#ssl_cert = <$SSL_CA_BUNDLE_FILE#g" /etc/dovecot/dovecot.conf
-sed -i -e "s#ssl_key .*#ssl_key = <$SSL_PRIVATE_KEY_FILE#g" /etc/dovecot/dovecot.conf
-############################
-
-
-
 
 # Reload services
 service nginx restart 
