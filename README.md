@@ -21,6 +21,11 @@ More detail information can be found on the website [www.runeasymail.com](http:/
 
 For the installation instructions, please read [the documentation of EasyMail](http://www.runeasymail.com/master/installation).
 
+# Easy upgrade to the latest (still beta use with care)
+```
+wget -qO- https://www.runeasymail.com/upgrade | sh
+```
+
 ## Contributing
 Thank you for considering contributing to EasyMail! The contribution guide can be found in the [EasyMail documentation](http://www.runeasymail.com/master/contribution-guide).
 
