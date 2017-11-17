@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://travis-ci.org/runeasymail/easymail"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://github.com/runeasymail/easymail/releases/tag/v0.6"><img src="https://img.shields.io/badge/stable-v1.0.7-blue.svg" alt="Last stable version"></a>
+<a href="https://github.com/runeasymail/easymail/releases/tag/v1.0.23"><img src="https://img.shields.io/badge/stable-v1.0.23-blue.svg" alt="Last stable version"></a>
 <a href="https://github.com/runeasymail/easymail/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>
 
