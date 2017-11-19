@@ -92,7 +92,6 @@ if [ ! -e "$SSL_CA_BUNDLE_FILE" ] || [ ! -e "$SSL_PRIVATE_KEY_FILE" ]  ; then
   openssl req -new -x509 -days 365000 -nodes -subj "/C=/ST=/L=/O=/CN=EasyMail" -out "$SSL_CA_BUNDLE_FILE" -keyout "$SSL_PRIVATE_KEY_FILE"
 fi
 
-
 # new SSL location for Postfix
 postconf -e smtpd_tls_cert_file=$SSL_CA_BUNDLE_FILE
 postconf -e smtpd_tls_key_file=$SSL_PRIVATE_KEY_FILE
@@ -111,7 +110,7 @@ set_hostname /usr/share/nginx/autoconfig_and_autodiscover/autodiscover.php
 	
 # Set HOSTNAME for Roundcube
 set_hostname /etc/nginx/sites-enabled/roundcube
-	
+
 # Set HOSTNAME for Postfix
 debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 
@@ -129,12 +128,15 @@ UPDATE \`virtual_users\`
 SET \`email\`='$ADMIN_EMAIL', \`password\`='$ADMIN_PASSWORD'
 WHERE \`id\`='1';
 
-# this should be fixed
-#ALTER USER 'roundcube_user'@'localhost' IDENTIFIED BY '$ROUNDCUBE_MYSQL_PASSWORD';
-
+ALTER USER 'roundcube_user'@'localhost' IDENTIFIED BY '$ROUNDCUBE_MYSQL_PASSWORD';
 ALTER USER 'mailuser'@'127.0.0.1' IDENTIFIED BY '$MYSQL_PASSWORD';
 ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
 EOF
+
+# reset generate roundcubemail
+apply_easymail_configs /usr/share/nginx/roundcubemail/plugins/password/config.inc.php
+apply_easymail_configs /usr/share/nginx/roundcubemail/config/config.inc.php
+apply_easymail_configs /usr/share/nginx/roundcubemail/public_html/plugins/password/config.inc.php
 
 # Set HOSTNAME for Dovecot
 mkdir -p /var/mail/vhosts/$HOSTNAME
