@@ -1,10 +1,6 @@
 set -e
 
-# tmp workaround, please have a look at https://github.com/moby/moby/issues/13555 
-#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-#apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-#gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59
-#gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3C962022012520A0 
 
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
