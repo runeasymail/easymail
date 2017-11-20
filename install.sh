@@ -1,11 +1,5 @@
 set -e
 
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3C962022012520A0 
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
-apt-key adv --recv-keys --keyserver keyserver.ubuntu.com EB563F93142986CE
-
-
 # Update and install initially required services
 apt-get update -y && apt-get install openssl python dialog cron -y
 
