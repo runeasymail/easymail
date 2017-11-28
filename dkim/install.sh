@@ -25,6 +25,9 @@ SignatureAlgorithm      rsa-sha256
 UserID                  opendkim:opendkim
 
 Socket                  inet:12301@localhost
+
+RequireSafeKeys         false
+
 " > /etc/opendkim.conf
 
 echo 'SOCKET="inet:12301@localhost"' > /etc/default/opendkim
