@@ -128,7 +128,7 @@ UPDATE \`virtual_users\`
 SET \`email\`='$ADMIN_EMAIL', \`password\`='$ADMIN_PASSWORD'
 WHERE \`id\`='1';
 
-ALTER USER 'roundcube_user'@'localhost' IDENTIFIED BY '$ROUNDCUBE_MYSQL_PASSWORD';
+ALTER USER 'roundcube_user'@'127.0.0.1' IDENTIFIED BY '$ROUNDCUBE_MYSQL_PASSWORD';
 ALTER USER 'mailuser'@'127.0.0.1' IDENTIFIED BY '$MYSQL_PASSWORD';
 ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
 EOF
