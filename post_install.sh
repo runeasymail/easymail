@@ -78,7 +78,7 @@ export MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
 
 export MANAGEMENT_API_USERNAME="easyadmin"
-export MANAGEMENT_API_PASSWORD=$(get_rand_password)
+export MANAGEMENT_API_PASSWORD=${1:-$(get_rand_password)}
 export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
 export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
