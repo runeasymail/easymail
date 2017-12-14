@@ -28,6 +28,8 @@ Socket                  inet:12301@localhost
 
 RequireSafeKeys         false
 
+Selector                mail
+
 " > /etc/opendkim.conf
 
 echo 'SOCKET="inet:12301@localhost"' > /etc/default/opendkim
@@ -47,3 +49,16 @@ localhost
 192.168.0.1/24
 
 " > /etc/opendkim/TrustedHosts
+
+
+
+mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+CREATE TABLE IF NOT EXISTS `dkim` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `domain_name` varchar(50) NOT NULL,
+  `selector` varchar(50) NOT NULL,
+  `private_key` text NOT NULL,
+  `public_key` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+EOF
