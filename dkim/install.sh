@@ -50,7 +50,8 @@ localhost
 
 " > /etc/opendkim/TrustedHosts
 
-
+wget http://mirrors.kernel.org/ubuntu/pool/universe/libo/libopendbx/libopendbx1-mysql_1.4.6-9build1_amd64.deb
+dpkg -i libopendbx1-mysql_1.4.6-9build1_amd64.deb
 
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
 CREATE TABLE IF NOT EXISTS `dkim` (
