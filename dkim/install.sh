@@ -55,6 +55,7 @@ wget http://mirrors.kernel.org/ubuntu/pool/universe/libo/libopendbx/libopendbx1-
 dpkg -i libopendbx1-mysql_1.4.6-9build1_amd64.deb
 
 mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$ROOT_MYSQL_PASSWORD << EOF
+USE $MYSQL_DATABASE;
 CREATE TABLE IF NOT EXISTS `dkim` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain_name` varchar(50) NOT NULL,
