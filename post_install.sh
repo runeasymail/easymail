@@ -152,6 +152,7 @@ apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-maps.cf
 apply_easymail_configs /etc/postfix/mysql-recipient-bcc-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-alias-maps.cf
 apply_easymail_configs /etc/postfix/mysql-virtual-mailbox-domains.cf
+apply_easymail_configs /etc/opendkim.conf
 
 # Reload services
 service nginx restart 
