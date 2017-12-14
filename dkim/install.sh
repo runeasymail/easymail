@@ -15,8 +15,9 @@ Canonicalization        relaxed/simple
 
 ExternalIgnoreList      refile:/etc/opendkim/TrustedHosts
 InternalHosts           refile:/etc/opendkim/TrustedHosts
-KeyTable                refile:/etc/opendkim/KeyTable
-SigningTable            refile:/etc/opendkim/SigningTable
+KeyTable                dsn:mysql://root:$ROOT_MYSQL_PASSWORD@localhost/mailserver/table=dkim?keycol=id?datacol=domain_name,selector,private_key
+SigningTable            dsn:mysql://root:$ROOT_MYSQL_PASSWORD@localhost/mailserver/table=dkim?keycol=domain_name?datacol=id
+
 
 Mode                    sv
 PidFile                 /var/run/opendkim/opendkim.pid
