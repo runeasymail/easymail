@@ -42,14 +42,8 @@ smtpd_milters = unix:/spamass/spamass.sock, inet:localhost:12301
 non_smtpd_milters = unix:/spamass/spamass.sock, inet:localhost:12301
 " >>  /etc/postfix/main.cf
 
-mkdir /etc/opendkim/keys -p
-
-echo "
-127.0.0.1
-localhost
-192.168.0.1/24
-
-" > /etc/opendkim/TrustedHosts
+mkdir /etc/opendkim -p
+touch /etc/opendkim/TrustedHosts
 
 wget http://mirrors.kernel.org/ubuntu/pool/universe/libo/libopendbx/libopendbx1-mysql_1.4.6-9build1_amd64.deb
 dpkg -i libopendbx1-mysql_1.4.6-9build1_amd64.deb
