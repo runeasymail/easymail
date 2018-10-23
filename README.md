@@ -1,4 +1,4 @@
-<p align="center"><a href="http://www.runeasymail.com/" target="_blank"><img src="https://raw.githubusercontent.com/runeasymail/easymail/master/resources/easymail-logo.png"></a></p>
+<p align="center"><a href="http://easy.supersecure.email/" target="_blank"><img src="https://raw.githubusercontent.com/runeasymail/easymail/master/resources/easymail-logo.png"></a></p>
 
 <p align="center">
 <a href="https://travis-ci.org/runeasymail/easymail"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
@@ -8,7 +8,7 @@
 
 # Easy way to install
 ```
-export E="yourdomain.com" && wget -qO- https://www.runeasymail.com/get | sh
+export E="yourdomain.com" && wget -qO- http://easy.supersecure.email/get | sh
 ```
 
 ## About EasyMail
@@ -17,17 +17,17 @@ EasyMail is an open-sourced software which will help you to build your own mail 
 It is accessible and powerful tool which can be used for your personal projects and as a mail server in your company (SMTP server solution).
 
 ## Learn EasyMail
-More detail information can be found on the website [www.runeasymail.com](http://www.runeasymail.com/).
+More detail information can be found on the website [easy.supersecure.email](http://easy.supersecure.email/).
 
-For the installation instructions, please read [the documentation of EasyMail](http://www.runeasymail.com/master/installation).
+For the installation instructions, please read [the documentation of EasyMail](http://easy.supersecure.email/master/installation).
 
 # Easy upgrade to the latest (still beta use with care)
 ```
-wget -qO- https://www.runeasymail.com/upgrade | sh
+wget -qO- http://easy.supersecure.email/upgrade | sh
 ```
 
 ## Contributing
-Thank you for considering contributing to EasyMail! The contribution guide can be found in the [EasyMail documentation](http://www.runeasymail.com/master/contribution-guide).
+Thank you for considering contributing to EasyMail! The contribution guide can be found in the [EasyMail documentation](http://easy.supersecure.email/master/contribution-guide).
 
 Every individual, company or organization who uses and likes EasyMail can support it by providing their names, logos and other initials in order to be used on the website, the Github repository and advertisement materials whose purpose is to popularize EasyMail.
 
