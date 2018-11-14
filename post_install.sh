@@ -61,10 +61,6 @@ function apply_easymail_configs {
 	sed -i "s/__EASYMAIL_ADMIN_PASSWORD_UNENCRYPTED__/$ADMIN_PASSWORD_UNENCRYPTED/g" $FILEPATH
 
 	sed -i "s/__EASYMAIL_HOSTNAME__/$HOSTNAME/g" $FILEPATH
-
-	sed -i "s/__EASYMAIL_MANAGEMENT_API_USERNAME__/$MANAGEMENT_API_USERNAME/g" $FILEPATH
-	sed -i "s/__EASYMAIL_MANAGEMENT_API_PASSWORD__/$MANAGEMENT_API_PASSWORD/g" $FILEPATH
-	sed -i "s/__EASYMAIL_MANAGEMENT_API_SECRETKEY__/$MANAGEMENT_API_SECRETKEY/g" $FILEPATH
 }
 
 export -f set_hostname
@@ -75,10 +71,6 @@ export ADMIN_PASSWORD=$(openssl passwd -1 $ADMIN_PASSWORD_UNENCRYPTED)
 export ROOT_MYSQL_PASSWORD=$(get_rand_password)
 export MYSQL_PASSWORD=$(get_rand_password)
 export ROUNDCUBE_MYSQL_PASSWORD=$(get_rand_password)
-
-export MANAGEMENT_API_USERNAME="easyadmin"
-export MANAGEMENT_API_PASSWORD=${1:-$(get_rand_password)}
-export MANAGEMENT_API_SECRETKEY=$(get_rand_password)
 
 export SSL_CA_BUNDLE_FILE="/opt/easymail/data/ssl/public.pem"
 export SSL_PRIVATE_KEY_FILE="/opt/easymail/data/ssl/private.pem"
@@ -157,9 +149,6 @@ apply_easymail_configs /etc/opendkim.conf
 service nginx restart 
 service dovecot reload
 service postfix reload
-	
-# Set HOSTNAME Management API
-apply_easymail_configs /opt/easymail/ManagementAPI/config.ini
 
 echo "Create a log dir"
 mkdir /opt/easymail/logs/
