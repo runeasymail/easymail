@@ -164,12 +164,6 @@ apply_easymail_configs /opt/easymail/ManagementAPI/config.ini
 echo "Create a log dir"
 mkdir /opt/easymail/logs/
 
-echo "Kill ManagementAPI"
-pkill ManagementAPI && cd /opt/easymail/ManagementAPI
-
-echo "Run ManagementAPI"
-./ManagementAPI > /opt/easymail/logs/ManagementAPI.log 2>&1 &
-
 echo "Add new configurations to easymail config file"
 apply_easymail_configs $EASYMAIL_CONFIG
 
