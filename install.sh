@@ -28,11 +28,6 @@ export ROUNDCUBE_MYSQL_USERNAME='roundcube_user'
 export ROUNDCUBE_MYSQL_PASSWORD='__EASYMAIL_ROUNDCUBE_MYSQL_PASSWORD__'
 export ROUNDCUBE_VERSION=1.3.8
 
-export MANAGEMENT_API_USERNAME='__EASYMAIL_MANAGEMENT_API_USERNAME__'
-export MANAGEMENT_API_PASSWORD='__EASYMAIL_MANAGEMENT_API_PASSWORD__'
-export MANAGEMENT_API_SECRETKEY='__EASYMAIL_MANAGEMENT_API_SECRETKEY__'
-export MANAGEMENT_API_VERSION=0.9.17
-
 export EASY_MAIL_DIR="/opt/easymail" && mkdir $EASY_MAIL_DIR
 
 function set_hostname {
@@ -50,7 +45,6 @@ bash $CURRENT_DIR/roundcube/install.sh
 bash $CURRENT_DIR/autoconfig/install.sh
 bash $CURRENT_DIR/spamassassin/install.sh
 bash $CURRENT_DIR/autostart/install.sh
-bash $CURRENT_DIR/ManagementAPI/install.sh
 bash $CURRENT_DIR/dkim/install.sh
 
 # Save the system configurations
@@ -82,10 +76,6 @@ roundcube_web_url:https://__EASYMAIL_HOSTNAME__
 roundcube_web_username:admin@__EASYMAIL_HOSTNAME__
 roundcube_web_password:$ADMIN_PASSWORD_UNENCRYPTED
 
-[api]
-api_url:https://__EASYMAIL_HOSTNAME__/api/
-api_username:__EASYMAIL_MANAGEMENT_API_USERNAME__
-api_password:__EASYMAIL_MANAGEMENT_API_PASSWORD__
 "  >> $EASY_MAIL_DIR/config.ini
 
 cp $CURRENT_DIR/exportDb.sh $EASY_MAIL_DIR/exportDb.sh
