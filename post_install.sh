@@ -107,7 +107,7 @@ debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 
 # Set HOSTNAME for MySQL 
 export ADMIN_EMAIL="admin@$HOSTNAME"
-mysql -h $MYSQL_HOSTNAME -u$ROOT_MYSQL_USERNAME -p$OLD_ROOT_MYSQL_PASSWORD << EOF
+mysql -u$ROOT_MYSQL_USERNAME -p$OLD_ROOT_MYSQL_PASSWORD << EOF
 
 USE $MYSQL_DATABASE;
 
