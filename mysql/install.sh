@@ -1,6 +1,8 @@
 # Install MySQL
 set -e
 
+ENV DEBIAN_FRONTEND noninteractive
+
 debconf-set-selections <<< "mysql-community-server mysql-community-server/data-dir select ''"
 debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password ${ROOT_MYSQL_PASSWORD}"
 debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password ${ROOT_MYSQL_PASSWORD}"
