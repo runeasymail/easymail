@@ -24,6 +24,12 @@ spawn mysql_secure_installation
 expect \"Press y|Y for Yes, any other key for No:\"
 send \"n\r\"
 
+expect \"New password:\"
+send \"$ROOT_MYSQL_PASSWORD\r\"
+
+expect \"Re-enter new password:\"
+send \"$ROOT_MYSQL_PASSWORD\r\"
+
 expect \"Change the password for root ? ((Press y|Y for Yes, any other key for No) :\"
 send \"n\r\"
 
