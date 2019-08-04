@@ -13,10 +13,6 @@ apt-get update -y && apt-get install mysql-server expect -y
 update-alternatives --remove my.cnf /etc/mysql/my.cnf.migrated
 service mysql start
 
-#expect \"Enter password for user root:\"
-#send \"$ROOT_MYSQL_PASSWORD\r\"
-
-
 expect -c "
 set timeout 10
 spawn mysql_secure_installation
