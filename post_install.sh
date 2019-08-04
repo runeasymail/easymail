@@ -121,7 +121,7 @@ WHERE \`id\`='1';
 
 ALTER USER 'roundcube_user'@'127.0.0.1' IDENTIFIED BY '$ROUNDCUBE_MYSQL_PASSWORD';
 ALTER USER 'mailuser'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
+ALTER USER 'root'@'%' IDENTIFIED BY '$ROOT_MYSQL_PASSWORD';
 EOF
 
 # reset generate roundcubemail
